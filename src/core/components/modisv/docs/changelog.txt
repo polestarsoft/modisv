@@ -1,0 +1,14 @@
+Changelog for modISV.
+
+Quip 1.0.1
+======================================
+- Added miVersionHistory snippet
+- Added miVersionHistory & miVersionHistoryItem chunks
+- Added miClients & miRandomClient snippets
+- Added miClient & miRandomClient chunks
+- Added 'Clients' CMP.
+- Added 'Quick Create Order' menu to the 'Orders' CMP.
+
+modISV 1.0.0
+==============
+- Initial release.

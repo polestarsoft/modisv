@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="modisv.entities" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" phpdoc-package="modisv">
+
+    <object class="miProduct" table="modisv_products" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="alias" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="logo_path" dbtype="text" phptype="string" default="" />
+        <field key="desktop_application" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" default="1" />
+        <field key="short_description" dbtype="text" phptype="string" default="" />
+        <field key="description" dbtype="text" phptype="string" default="" />
+        <field key="overview_url" dbtype="text" phptype="string" default="" />
+        <field key="download_url" dbtype="text" phptype="string" default="" />
+        <field key="order_url" dbtype="text" phptype="string" default="" />
+        <field key="sort_order" dbtype="int" phptype="integer" default="0" />
+        <composite alias="Releases" class="miRelease" local="id" foreign="product" cardinality="many" owner="local" />
+        <composite alias="Clients" class="miClient" local="id" foreign="product" cardinality="many" owner="local" />
+        <validation>
+            <rule field="name" name="nameNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="name" name="uniqueName"  type="xPDOValidationRule" rule="miUniqueRule" />
+            <rule field="alias" name="aliasNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="alias" name="uniqueAlias"  type="xPDOValidationRule" rule="miUniqueRule" />
+            <rule field="overview_url" name="ovuNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="download_url" name="duNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="order_url" name="ouNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="short_description" name="sdNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="logo_path" name="logoExists" type="xPDOValidationRule" rule="miFileExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miRelease" table="modisv_releases" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="version" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="beta" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" default="1" />
+        <field key="changes" dbtype="text" phptype="string" default="" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" />
+        <field key="licensing_mode" dbtype="enum" precision="'per_user','per_developer','per_server'" phptype="string" default="per_user" />
+        <field key="licensing_method" dbtype="enum" precision="'file','code','activation'" phptype="string" default="file" />
+        <field key="code_generator" dbtype="varchar" precision="255" phptype="string" default="miRsaSha1" />
+        <field key="upgrade_rules" dbtype="text" phptype="string" default="" />
+        <field key="initial_subscription" dbtype="int" phptype="integer" attributes="unsigned" default="0" />
+        <field key="product" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <aggregate alias="Product" class="miProduct" local="product" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="Updates" class="miUpdate" local="id" foreign="release" cardinality="many" owner="local" />
+        <composite alias="Files" class="miFile" local="id" foreign="release" cardinality="many" owner="local" />
+        <composite alias="Editions" class="miEdition" local="id" foreign="release" cardinality="many" owner="local" />
+        <composite alias="Subscriptions" class="miSubscription" local="id" foreign="release" cardinality="many" owner="local" />
+        <validation>
+            <rule field="name" name="nameNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="name" name="uniqueName"  type="xPDOValidationRule" rule="miUniqueInParentRule" parentField="product" />
+            <rule field="version" name="validVersion"  type="preg_match" rule="/^\d{1,2}\.\d{1,2}(\.\d{1,5})?$/" message="Invalid version." />
+            <rule field="version" name="uniqueVersion"  type="xPDOValidationRule" rule="miUniqueInParentRule" parentField="product" />
+            <rule field="licensing_mode" name="validLMO"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+            <rule field="licensing_method" name="validLME"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+            <rule field="upgrade_rules" name="emptyURWhenNew"  type="xPDOValidationRule" rule="miEmptyRule" when="new" />
+            <rule field="upgrade_rules" name="validUR"  type="xPDOValidationRule" rule="miUpgradeRulesRule" />
+            <rule field="initial_subscription" name="validIS"  type="xPDOValidationRule" rule="miRangeRule" from="0" to="1200" />
+            <rule field="product" name="productExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miUpdate" table="modisv_updates" extends="xPDOSimpleObject">
+        <field key="version" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="changes" dbtype="text" phptype="string" default="" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" />
+        <field key="release" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <aggregate alias="Release" class="miRelease" local="release" foreign="id" cardinality="one" owner="foreign" />
+        <validation>
+            <rule field="version" name="validVersion"  type="preg_match" rule="/^\d{1,2}\.\d{1,2}(\.\d{1,5}){0,2}$/" message="Invalid version." />
+            <rule field="version" name="uniqueVersion"  type="xPDOValidationRule" rule="miUniqueInParentRule" parentField="release" />
+            <rule field="release" name="releaseExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miEdition" table="modisv_editions" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="price" dbtype="decimal" precision="5,2" phptype="float" default="0.0" />
+        <field key="description" dbtype="text" phptype="string" default="" />
+        <field key="release" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <aggregate alias="Release" class="miRelease" local="release" foreign="id" cardinality="one" owner="foreign" />
+        <validation>
+            <rule field="name" name="nameNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="name" name="uniqueName"  type="xPDOValidationRule" rule="miUniqueInParentRule" parentField="release" />
+            <rule field="price" name="validPrice"  type="preg_match" rule="/^\d{1,4}(\.\d{1,2})?$/" message="Invalid price." />
+            <rule field="release" name="releaseExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miSubscription" table="modisv_subscriptions" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="price" dbtype="decimal" precision="5,2" phptype="float" default="0.0" />
+        <field key="months" dbtype="int" phptype="integer" attributes="unsigned" default="0" />
+        <field key="release" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <aggregate alias="Release" class="miRelease" local="release" foreign="id" cardinality="one" owner="foreign" />
+        <validation>
+            <rule field="name" name="nameNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="name" name="uniqueName"  type="xPDOValidationRule" rule="miUniqueInParentRule" parentField="release" />
+            <rule field="months" name="validMonths"  type="xPDOValidationRule" rule="miRangeRule" from="0" to="1200" />
+            <rule field="release" name="releaseExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miFile" table="modisv_files" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="subtitle" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="path" dbtype="text" phptype="string" default="" />
+        <field key="icon" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="guid" dbtype="varchar" precision="255" phptype="string" null="false" index="index" />
+        <field key="size" dbtype="int" phptype="integer" attributes="unsigned" default="0" />
+        <field key="download_count" dbtype="int" phptype="integer" attributes="unsigned" default="0" />
+        <field key="checksum" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" />
+        <field key="updatedon" dbtype="datetime" phptype="datetime" />
+        <field key="requirements" dbtype="text" phptype="string" default="" />
+        <field key="description" dbtype="text" phptype="string" default="" />
+        <field key="members_only" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" default="1" />
+        <field key="customers_only" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" default="1" />
+        <field key="release" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <aggregate alias="Release" class="miRelease" local="release" foreign="id" cardinality="one" owner="foreign" />
+        <validation>
+            <rule field="name" name="nameNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="path" name="fileExists" type="xPDOValidationRule" rule="miFileExistsRule" />
+            <rule field="guid" name="guidNotEmpty"  type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="guid" name="uniqueGuid"  type="xPDOValidationRule" rule="miUniqueRule" />
+            <rule field="icon" name="validIcon"  type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="size" name="validSize"  type="xPDOValidationRule" rule="miRangeRule" from="0" />
+            <rule field="download_count" name="validDownloadCount"  type="xPDOValidationRule" rule="miRangeRule" from="0" />
+            <rule field="release" name="releaseExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miOrder" table="modisv_orders" extends="xPDOSimpleObject">
+        <field key="status" dbtype="enum" precision="'pending','complete','refunded','charged_back'" phptype="string" default="pending" />
+        <field key="guid" dbtype="varchar" precision="255" phptype="string" default="" index="index" />
+        <field key="coupon" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" />
+        <field key="updatedon" dbtype="datetime" phptype="datetime" />
+        <field key="reference_number" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="payment_processor" dbtype="enum" precision="'none','paypal','plimus','regnow'" phptype="string" default="none" />
+        <field key="test_mode" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" default="0" />
+        <field key="payment_method" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="user" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <composite alias="Items" class="miOrderItem" local="id" foreign="order" cardinality="many" owner="local" />
+        <aggregate alias="User" class="modUser" local="user" foreign="id" cardinality="one" owner="foreign" />
+        <validation>
+            <rule field="status" name="validStatus"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+            <rule field="guid" name="guidNotEmpty"  type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="guid" name="uniqueGuid"  type="xPDOValidationRule" rule="miUniqueRule" />
+            <rule field="payment_processor" name="validPP"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+            <rule field="user" name="userExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />
+        </validation>
+    </object>
+
+    <object class="miOrderItem" table="modisv_orderitems" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="unit_price" dbtype="decimal" precision="5,2" phptype="float" default="0.0" />
+        <field key="quantity" dbtype="int" phptype="integer" attributes="unsigned" default="0" />
+        <field key="action" dbtype="enum" precision="'none','license','upgrade','renew'" phptype="string" default="none" />
+        <field key="subscription_months" dbtype="int" phptype="integer" attributes="unsigned" default="0" />
+        <field key="license_type" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="order" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="license" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="edition" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <aggregate alias="Order" class="miOrder" local="order" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="License" class="miLicense" local="license" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Edition" class="miEdition" local="edition" foreign="id" cardinality="one" owner="foreign" />
+        <validation>
+            <rule field="name" name="nameNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="unit_price" name="validPrice"  type="preg_match" rule="/^\d{1,4}(\.\d{1,2})?$/" message="Invalid price." />
+            <rule field="quantity" name="validQuantity"  type="xPDOValidationRule" rule="miRangeRule" from="1" />
+            <rule field="action" name="validAction"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+            <rule field="subscription_months" name="validSM"  type="xPDOValidationRule" rule="miRangeRule" from="0" />
+            <rule field="license" name="licenseExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />
+            <rule field="edition" name="editionExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />
+            <rule field="order" name="orderExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miLicense" table="modisv_licenses" extends="xPDOSimpleObject">
+        <field key="type" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="quantity" dbtype="int" phptype="integer" attributes="unsigned" default="0" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" />
+        <field key="subscription_expiry" dbtype="datetime" phptype="datetime" />
+        <field key="code" dbtype="text" phptype="string" default="" index="fulltext" />
+        <field key="log" dbtype="text" phptype="string" default="" />
+        <field key="user" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="order" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="edition" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <aggregate alias="User" class="modUser" local="user" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Order" class="miOrder" local="order" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Edition" class="miEdition" local="edition" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="HardwareIDs" class="miHardwareID" local="id" foreign="license" cardinality="many" owner="local" />
+        <validation>
+            <rule field="type" name="typeNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="quantity" name="validSize"  type="xPDOValidationRule" rule="miRangeRule" from="1" />
+            <rule field="user" name="userExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+            <rule field="edition" name="editionExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+            <rule field="order" name="orderExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />
+        </validation>
+    </object>
+
+    <object class="miHardwareID" table="modisv_hardware_ids" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" default="" index="index" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" />
+        <field key="ip" dbtype="varchar" precision="255" phptype="string" default="" index="index" />
+        <field key="license" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <aggregate alias="License" class="miLicense" local="license" foreign="id" cardinality="one" owner="foreign" />
+        <validation>
+            <rule field="name" name="nameNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="license" name="licenseExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miCoupon" table="modisv_coupons" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="code" dbtype="varchar" precision="255" phptype="string" default="" index="index" />
+        <field key="discount" dbtype="decimal" precision="5,2" phptype="float" default="0.0" />
+        <field key="discount_in_percent" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" default="1" />
+        <field key="enabled" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" default="1" />
+        <field key="quantity" dbtype="int" phptype="integer" attributes="unsigned" default="0" />
+        <field key="used" dbtype="int" phptype="integer" attributes="unsigned" default="0" />
+        <field key="editions" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="actions" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="valid_from" dbtype="datetime" phptype="datetime" />
+        <field key="valid_to" dbtype="datetime" phptype="datetime" />
+        <validation>
+            <rule field="name" name="nameNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="code" name="codeNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="code" name="uniqueCode"  type="xPDOValidationRule" rule="miUniqueRule" />
+            <rule field="discount" name="validDiscount" from="0" to="100" type="xPDOValidationRule" rule="miRangeRule" />
+            <rule field="quantity" name="validQuantity" from="0" type="xPDOValidationRule" rule="miRangeRule" />
+            <rule field="used" name="validUsed" from="0" type="xPDOValidationRule" rule="miRangeRule" />
+        </validation>
+    </object>
+
+    <object class="miClient" table="modisv_clients" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" default="" index="index" />
+        <field key="sort_order" dbtype="int" phptype="integer" default="100" />
+        <field key="category" dbtype="enum" precision="'company','university','organization','personal','other'" phptype="string" default="company" />
+        <field key="logo_path" dbtype="text" phptype="string" default="" />
+        <field key="website" dbtype="varchar" precision="255" phptype="string" default="" />
+        <field key="testimonial" dbtype="text" phptype="string" default="" />
+        <field key="product" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <aggregate alias="Product" class="miProduct" local="product" foreign="id" cardinality="one" owner="foreign" />
+        <validation>
+            <rule field="name" name="nameNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="name" name="uniqueName"  type="xPDOValidationRule" rule="miUniqueRule" />
+            <rule field="logo_path" name="logoExists" type="xPDOValidationRule" rule="miFileExistsRule" />
+            <rule field="category" name="validCategory"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+            <rule field="product" name="productExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+        </validation>
+    </object>
+
+</model>
