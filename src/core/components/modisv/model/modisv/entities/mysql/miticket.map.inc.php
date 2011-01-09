@@ -17,6 +17,7 @@ $xpdo_meta_map['miTicket']= array (
     'subject' => '[no subject]',
     'body' => '',
     'note' => '',
+    'target_version' => 'unplanned',
     'status' => 'open',
     'source' => 'other',
     'ip' => '',
@@ -117,6 +118,14 @@ $xpdo_meta_map['miTicket']= array (
       'null' => false,
       'default' => '',
       'index' => 'fulltext',
+    ),
+    'target_version' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '50',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => 'unplanned',
     ),
     'status' => 
     array (
@@ -290,6 +299,15 @@ $xpdo_meta_map['miTicket']= array (
         array (
           'type' => 'xPDOValidationRule',
           'rule' => 'miNotEmptyRule',
+        ),
+      ),
+      'target_version' => 
+      array (
+        'validTargetVersion' => 
+        array (
+          'type' => 'preg_match',
+          'rule' => '/^(\\d{1,2}\\.\\d{1,2}(\\.\\d{1,5})?|unplanned)$/',
+          'message' => 'Invalid version.',
         ),
       ),
       'status' => 
