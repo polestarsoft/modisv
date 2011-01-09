@@ -72,7 +72,6 @@ $tickets = $modx->getCollection('miTicket', $c);
 $list = array();
 foreach ($tickets as $ticket) {
     $item = $ticket->toArray();
-    $item['releases'] = implode(',', array_keys($ticket->getReleases()));
 
     $item['menu'] = array();
     $item['menu'][] = array(
