@@ -250,4 +250,101 @@
         </validation>
     </object>
 
+    <object class="miTicket" table="modisv_tickets" extends="xPDOSimpleObject">
+        <field key="guid" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="index" />
+        <field key="priority" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="3" index="index" />
+        <field key="topic" dbtype="enum" precision="'question','problem','suggestion','task'" phptype="string" null="false" default="question" index="index" />
+        <field key="product" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="author_name" dbtype="varchar" precision="50" phptype="string" null="false" default="" />
+        <field key="author_email" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+        <field key="watchers" dbtype="text" phptype="string" null="false" default="" index="fulltext" />
+        <field key="subject" dbtype="varchar" precision="100" phptype="string" null="false" default="[no subject]" />
+        <field key="body" dbtype="text" phptype="string" null="false" default="" index="fulltext" />
+        <field key="note" dbtype="text" phptype="string" null="false" default="" index="fulltext" />
+        <field key="status" dbtype="enum" precision="'open','closed'" phptype="string" null="false" default="open" index="index" />
+        <field key="source" dbtype="enum" precision="'web','email','other'" phptype="string" null="false" default="other" />
+        <field key="ip" dbtype="varchar" precision="50" phptype="string" null="false" default="" />
+        <field key="overdue" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" null="false" default="0" />
+        <field key="answered" dbtype="tinyint" precision="1" phptype="boolean" attributes="unsigned" null="false" default="0" />
+        <field key="dueon" dbtype="datetime" phptype="datetime" index="index" />
+        <field key="reopenedon" dbtype="datetime" phptype="datetime" />
+        <field key="closedon" dbtype="datetime" phptype="datetime" index="index" />
+        <field key="lastmessageon" dbtype="datetime" phptype="datetime" />
+        <field key="lastresponseon" dbtype="datetime" phptype="datetime" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" index="index" />
+        <field key="updatedon" dbtype="datetime" phptype="datetime" />
+        <index alias="guid_email" name="guid_email" unique="true">
+            <column key="guid" collation="A" null="false" />
+            <column key="author_email" collation="A" null="false" />
+        </index>
+        <aggregate alias="Product" class="miProduct" local="product" foreign="id" cardinality="one" owner="foreign" />
+        <validation>
+            <rule field="guid" name="guidNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="priority" name="validPriority"  type="xPDOValidationRule" rule="miRangeRule" from="0" to="10"  />
+            <rule field="topic" name="topicExists"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+            <rule field="product" name="productExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />
+            <rule field="author_email" name="authorEmailNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="author_email" name="validAuthorEmail" type="preg_match" rule="/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i" />
+            <rule field="body" name="bodyNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="status" name="validStatus"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+            <rule field="source" name="validSource"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miMessage" table="modisv_messages" extends="xPDOSimpleObject">
+        <field key="ticket" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="message_id" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index" />
+        <field key="body" dbtype="text" phptype="string" null="false" default="" index="fulltext" />
+        <field key="headers" dbtype="text" phptype="string" null="false" default="" />
+        <field key="source" dbtype="enum" precision="'web','email','other'" phptype="string" null="false" default="other" />
+        <field key="ip" dbtype="varchar" precision="50" phptype="string" null="false" default="" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" />
+        <field key="updatedon" dbtype="datetime" phptype="datetime" />
+        <aggregate alias="Ticket" class="miTicket" local="ticket" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="Attachments" class="miAttachment" local="id" foreign="message" cardinality="many" owner="local" />
+        <validation>
+            <rule field="message_id" name="messageIdNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="body" name="bodyNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="source" name="validSource"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miResponse" table="modisv_responses" extends="xPDOSimpleObject">
+        <field key="ticket" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="message" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="body" dbtype="text" phptype="string" null="false" default="" index="fulltext" />
+        <field key="source" dbtype="enum" precision="'web','email','other'" phptype="string" null="false" default="other" />
+        <field key="ip" dbtype="varchar" precision="50" phptype="string" null="false" default="" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" />
+        <field key="updatedon" dbtype="datetime" phptype="datetime" />
+        <aggregate alias="Ticket" class="miTicket" local="ticket" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Message" class="miMessage" local="message" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="Attachments" class="miAttachment" local="id" foreign="response" cardinality="many" owner="local" />
+        <validation>
+            <rule field="ticket" name="ticketExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+            <rule field="message" name="messageExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+            <rule field="body" name="bodyNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="source" name="validSource"  type="xPDOValidationRule" rule="miEnumExistsRule" />
+        </validation>
+    </object>
+
+    <object class="miAttachment" table="modisv_attachments" extends="xPDOSimpleObject">
+        <field key="ticket" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="message" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="response" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
+        <field key="path" dbtype="text" phptype="string" null="false" default="" />
+        <field key="size" dbtype="int" phptype="integer" attributes="unsigned" null="false" default="0" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" />
+        <field key="updatedon" dbtype="datetime" phptype="datetime" />
+        <aggregate alias="Ticket" class="miTicket" local="ticket" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Message" class="miMessage" local="message" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Response" class="miResponse" local="response" foreign="id" cardinality="one" owner="foreign" />
+        <validation>
+            <rule field="ticket" name="ticketExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
+            <rule field="message" name="messageExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />
+            <rule field="response" name="responseExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />
+            <rule field="path" name="pathNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+        </validation>
+    </object>
+
 </model>
