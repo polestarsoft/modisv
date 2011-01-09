@@ -281,7 +281,7 @@
         <aggregate alias="Product" class="miProduct" local="product" foreign="id" cardinality="one" owner="foreign" />
         <validation>
             <rule field="guid" name="guidNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
-            <rule field="priority" name="validPriority"  type="xPDOValidationRule" rule="miRangeRule" from="0" to="10"  />
+            <rule field="priority" name="validPriority"  type="xPDOValidationRule" rule="miRangeRule" from="1" to="5"  />
             <rule field="topic" name="topicExists"  type="xPDOValidationRule" rule="miEnumExistsRule" />
             <rule field="product" name="productExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />
             <rule field="author_email" name="authorEmailNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />

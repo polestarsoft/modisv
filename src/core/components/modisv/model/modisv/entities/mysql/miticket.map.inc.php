@@ -259,8 +259,8 @@ $xpdo_meta_map['miTicket']= array (
         array (
           'type' => 'xPDOValidationRule',
           'rule' => 'miRangeRule',
-          'from' => '0',
-          'to' => '10',
+          'from' => '1',
+          'to' => '5',
         ),
       ),
       'topic' => 
