@@ -72,21 +72,17 @@ modISV.grid.Products = function (config) {
 Ext.extend(modISV.grid.Products, modISV.Grid, {
     windows: {},
     createProduct: function (btn, e) {
-        if (!this.windows.createProduct) {
-            this.windows.createProduct = MODx.load({
-                xtype: 'modisv-window-product',
-                listeners: {
-                    'success': {
-                        fn: function () {
-                            this.refresh();
-                        },
-                        scope: this
-                    }
+        MODx.load({
+            xtype: 'modisv-window-product',
+            listeners: {
+                'success': {
+                    fn: function () {
+                        this.refresh();
+                    },
+                    scope: this
                 }
-            });
-        }
-        this.windows.createProduct.fp.getForm().reset();
-        this.windows.createProduct.show(e.target);
+            }
+        }).show(e.target);
     },
     updateProduct: function (btn, e) {
         if (this.menu.record && this.menu.record.id)

@@ -48,21 +48,17 @@ modISV.grid.Updates = function (config) {
 Ext.extend(modISV.grid.Updates, MODx.grid.Grid, {
     windows: {},
     createUpdate: function (btn, e) {
-        if (!this.windows.createUpdate) {
-            this.windows.createUpdate = MODx.load({
-                xtype: 'modisv-window-update',
-                listeners: {
-                    'success': {
-                        fn: function () {
-                            this.refresh();
-                        },
-                        scope: this
-                    }
+        MODx.load({
+            xtype: 'modisv-window-update',
+            listeners: {
+                'success': {
+                    fn: function () {
+                        this.refresh();
+                    },
+                    scope: this
                 }
-            });
-        }
-        this.windows.createUpdate.fp.getForm().reset();
-        this.windows.createUpdate.show(e.target);
+            }
+        }).show(e.target);
     },
     updateUpdate: function (btn, e) {
         if (this.menu.record && this.menu.record.id)

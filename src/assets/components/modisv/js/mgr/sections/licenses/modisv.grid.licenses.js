@@ -120,21 +120,17 @@ modISV.grid.Licenses = function (config) {
 Ext.extend(modISV.grid.Licenses, MODx.grid.Grid, {
     windows: {},
     createLicense: function (btn, e) {
-        if (!this.windows.createLicense) {
-            this.windows.createLicense = MODx.load({
-                xtype: 'modisv-window-license',
-                listeners: {
-                    'success': {
-                        fn: function () {
-                            this.refresh();
-                        },
-                        scope: this
-                    }
+        MODx.load({
+            xtype: 'modisv-window-license',
+            listeners: {
+                'success': {
+                    fn: function () {
+                        this.refresh();
+                    },
+                    scope: this
                 }
-            });
-        }
-        this.windows.createLicense.fp.getForm().reset();
-        this.windows.createLicense.show(e.target);
+            }
+        }).show(e.target);
     },
     updateLicense: function (btn, e) {
         if (this.menu.record && this.menu.record.id)

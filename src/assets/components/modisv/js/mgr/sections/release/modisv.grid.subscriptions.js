@@ -47,21 +47,17 @@ modISV.grid.Subscriptions = function (config) {
 Ext.extend(modISV.grid.Subscriptions, MODx.grid.Grid, {
     windows: {},
     createSubscription: function (btn, e) {
-        if (!this.windows.createSubscription) {
-            this.windows.createSubscription = MODx.load({
-                xtype: 'modisv-window-subscription',
-                listeners: {
-                    'success': {
-                        fn: function () {
-                            this.refresh();
-                        },
-                        scope: this
-                    }
+        MODx.load({
+            xtype: 'modisv-window-subscription',
+            listeners: {
+                'success': {
+                    fn: function () {
+                        this.refresh();
+                    },
+                    scope: this
                 }
-            });
-        }
-        this.windows.createSubscription.fp.getForm().reset();
-        this.windows.createSubscription.show(e.target);
+            }
+        }).show(e.target);
     },
     updateSubscription: function (btn, e) {
         if (this.menu.record && this.menu.record.id)

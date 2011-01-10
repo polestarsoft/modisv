@@ -21,7 +21,9 @@ modISV.grid.Files = function (config) {
             header: 'Name',
             dataIndex: 'name',
             sortable: true,
-            renderer: function(val, x, store) {return val + ' ' + store.data.subtitle;},
+            renderer: function(val, x, store) {
+                return val + ' ' + store.data.subtitle;
+            },
             width: 150
         },
         {
@@ -90,21 +92,17 @@ modISV.grid.Files = function (config) {
 Ext.extend(modISV.grid.Files, MODx.grid.Grid, {
     windows: {},
     createFile: function (btn, e) {
-        if (!this.windows.createFile) {
-            this.windows.createFile = MODx.load({
-                xtype: 'modisv-window-file',
-                listeners: {
-                    'success': {
-                        fn: function () {
-                            this.refresh();
-                        },
-                        scope: this
-                    }
+        MODx.load({
+            xtype: 'modisv-window-file',
+            listeners: {
+                'success': {
+                    fn: function () {
+                        this.refresh();
+                    },
+                    scope: this
                 }
-            });
-        }
-        this.windows.createFile.fp.getForm().reset();
-        this.windows.createFile.show(e.target);
+            }
+        }).show(e.target);
     },
     updateFile: function (btn, e) {
         if (this.menu.record && this.menu.record.id)

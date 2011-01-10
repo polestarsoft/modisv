@@ -72,21 +72,17 @@ modISV.grid.OrderItems = function (config) {
 Ext.extend(modISV.grid.OrderItems, MODx.grid.Grid, {
     windows: {},
     createOrderItem: function (btn, e) {
-        if (!this.windows.createOrderItem) {
-            this.windows.createOrderItem = MODx.load({
-                xtype: 'modisv-window-orderitem',
-                listeners: {
-                    'success': {
-                        fn: function () {
-                            this.refresh();
-                        },
-                        scope: this
-                    }
+        MODx.load({
+            xtype: 'modisv-window-orderitem',
+            listeners: {
+                'success': {
+                    fn: function () {
+                        this.refresh();
+                    },
+                    scope: this
                 }
-            });
-        }
-        this.windows.createOrderItem.fp.getForm().reset();
-        this.windows.createOrderItem.show(e.target);
+            }
+        }).show(e.target);
     },
     updateOrderItem: function (btn, e) {
         if (this.menu.record && this.menu.record.id)

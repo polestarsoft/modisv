@@ -56,7 +56,9 @@ modISV.grid.Releases = function (config) {
         {
             header: 'Initial Subscription',
             dataIndex: 'initial_subscription',
-            renderer: function(val) { return val + ' months'; },
+            renderer: function(val) {
+                return val + ' months';
+            },
             width: 100
         }],
         tbar: [{
@@ -71,21 +73,17 @@ modISV.grid.Releases = function (config) {
 Ext.extend(modISV.grid.Releases, modISV.Grid, {
     windows: {},
     createRelease: function (btn, e) {
-        if (!this.windows.createRelease) {
-            this.windows.createRelease = MODx.load({
-                xtype: 'modisv-window-release',
-                listeners: {
-                    'success': {
-                        fn: function () {
-                            this.refresh();
-                        },
-                        scope: this
-                    }
+        MODx.load({
+            xtype: 'modisv-window-release',
+            listeners: {
+                'success': {
+                    fn: function () {
+                        this.refresh();
+                    },
+                    scope: this
                 }
-            });
-        }
-        this.windows.createRelease.fp.getForm().reset();
-        this.windows.createRelease.show(e.target);
+            }
+        }).show(e.target);
     },
     updateRelease: function (btn, e) {
         if (this.menu.record && this.menu.record.id)

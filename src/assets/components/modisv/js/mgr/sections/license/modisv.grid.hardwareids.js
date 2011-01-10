@@ -44,21 +44,17 @@ modISV.grid.HardwareIDs = function (config) {
 Ext.extend(modISV.grid.HardwareIDs, MODx.grid.Grid, {
     windows: {},
     createHardwareID: function (btn, e) {
-        if (!this.windows.createHardwareID) {
-            this.windows.createHardwareID = MODx.load({
-                xtype: 'modisv-window-hardwareid',
-                listeners: {
-                    'success': {
-                        fn: function () {
-                            this.refresh();
-                        },
-                        scope: this
-                    }
+        MODx.load({
+            xtype: 'modisv-window-hardwareid',
+            listeners: {
+                'success': {
+                    fn: function () {
+                        this.refresh();
+                    },
+                    scope: this
                 }
-            });
-        }
-        this.windows.createHardwareID.fp.getForm().reset();
-        this.windows.createHardwareID.show(e.target);
+            }
+        }).show(e.target);
     },
     updateHardwareID: function (btn, e) {
         if (this.menu.record && this.menu.record.id)

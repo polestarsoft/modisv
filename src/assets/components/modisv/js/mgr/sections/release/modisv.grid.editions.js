@@ -47,21 +47,17 @@ modISV.grid.Editions = function (config) {
 Ext.extend(modISV.grid.Editions, MODx.grid.Grid, {
     windows: {},
     createEdition: function (btn, e) {
-        if (!this.windows.createEdition) {
-            this.windows.createEdition = MODx.load({
-                xtype: 'modisv-window-edition',
-                listeners: {
-                    'success': {
-                        fn: function () {
-                            this.refresh();
-                        },
-                        scope: this
-                    }
+        MODx.load({
+            xtype: 'modisv-window-edition',
+            listeners: {
+                'success': {
+                    fn: function () {
+                        this.refresh();
+                    },
+                    scope: this
                 }
-            });
-        }
-        this.windows.createEdition.fp.getForm().reset();
-        this.windows.createEdition.show(e.target);
+            }
+        }).show(e.target);
     },
     updateEdition: function (btn, e) {
         if (this.menu.record && this.menu.record.id)

@@ -94,21 +94,17 @@ modISV.grid.Coupons = function (config) {
 Ext.extend(modISV.grid.Coupons, MODx.grid.Grid, {
     windows: {},
     createCoupon: function (btn, e) {
-        if (!this.windows.createCoupon) {
-            this.windows.createCoupon = MODx.load({
-                xtype: 'modisv-window-coupon',
-                listeners: {
-                    'success': {
-                        fn: function () {
-                            this.refresh();
-                        },
-                        scope: this
-                    }
+        MODx.load({
+            xtype: 'modisv-window-coupon',
+            listeners: {
+                'success': {
+                    fn: function () {
+                        this.refresh();
+                    },
+                    scope: this
                 }
-            });
-        }
-        this.windows.createCoupon.fp.getForm().reset();
-        this.windows.createCoupon.show(e.target);
+            }
+        }).show(e.target);
     },
     updateCoupon: function (btn, e) {
         if (this.menu.record && this.menu.record.id)
