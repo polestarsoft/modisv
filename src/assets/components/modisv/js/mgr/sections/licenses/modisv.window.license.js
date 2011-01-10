@@ -6,5 +6,5 @@ modISV.window.License = function (config) {
     });
     modISV.window.License.superclass.constructor.call(this, config);
 };
-Ext.extend(modISV.window.License, modISV.CreateWindow);
+Ext.extend(modISV.window.License, modISV.Window);
 Ext.reg('modisv-window-license', modISV.window.License);

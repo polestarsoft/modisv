@@ -7,5 +7,5 @@ modISV.window.Update = function (config) {
     });
     modISV.window.Update.superclass.constructor.call(this, config);
 };
-Ext.extend(modISV.window.Update, modISV.CreateWindow);
+Ext.extend(modISV.window.Update, modISV.Window);
 Ext.reg('modisv-window-update', modISV.window.Update);

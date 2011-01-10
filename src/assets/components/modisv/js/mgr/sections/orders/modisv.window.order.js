@@ -6,5 +6,5 @@ modISV.window.Order = function (config) {
     });
     modISV.window.Order.superclass.constructor.call(this, config);
 };
-Ext.extend(modISV.window.Order, modISV.CreateWindow);
+Ext.extend(modISV.window.Order, modISV.Window);
 Ext.reg('modisv-window-order', modISV.window.Order);

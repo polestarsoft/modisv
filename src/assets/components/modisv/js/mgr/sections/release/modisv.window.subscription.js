@@ -7,5 +7,5 @@ modISV.window.Subscription = function (config) {
     });
     modISV.window.Subscription.superclass.constructor.call(this, config);
 };
-Ext.extend(modISV.window.Subscription, modISV.CreateWindow);
+Ext.extend(modISV.window.Subscription, modISV.Window);
 Ext.reg('modisv-window-subscription', modISV.window.Subscription);

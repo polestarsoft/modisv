@@ -38,7 +38,7 @@ $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.tab
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.grid.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.listpanel.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.updatepanel.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.createwindow.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.window.js');
 $modx->regClientStartupHTMLBlock('<script type="text/javascript">
 Ext.onReady(function() {
     modISV.config = ' . $modx->toJSON($modisv->config) . ';

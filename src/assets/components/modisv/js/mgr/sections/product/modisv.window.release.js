@@ -7,5 +7,5 @@ modISV.window.Release = function (config) {
     });
     modISV.window.Release.superclass.constructor.call(this, config);
 };
-Ext.extend(modISV.window.Release, modISV.CreateWindow);
+Ext.extend(modISV.window.Release, modISV.Window);
 Ext.reg('modisv-window-release', modISV.window.Release);

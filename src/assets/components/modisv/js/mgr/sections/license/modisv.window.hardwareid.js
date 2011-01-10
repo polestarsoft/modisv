@@ -7,5 +7,5 @@ modISV.window.HardwareID = function (config) {
     });
     modISV.window.HardwareID.superclass.constructor.call(this, config);
 };
-Ext.extend(modISV.window.HardwareID, modISV.CreateWindow);
+Ext.extend(modISV.window.HardwareID, modISV.Window);
 Ext.reg('modisv-window-hardwareid', modISV.window.HardwareID);

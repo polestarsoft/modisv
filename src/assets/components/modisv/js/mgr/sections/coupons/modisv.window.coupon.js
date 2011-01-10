@@ -6,5 +6,5 @@ modISV.window.Coupon = function (config) {
     });
     modISV.window.Coupon.superclass.constructor.call(this, config);
 };
-Ext.extend(modISV.window.Coupon, modISV.CreateWindow);
+Ext.extend(modISV.window.Coupon, modISV.Window);
 Ext.reg('modisv-window-coupon', modISV.window.Coupon);

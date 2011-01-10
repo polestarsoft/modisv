@@ -7,5 +7,5 @@ modISV.window.Edition = function (config) {
     });
     modISV.window.Edition.superclass.constructor.call(this, config);
 };
-Ext.extend(modISV.window.Edition, modISV.CreateWindow);
+Ext.extend(modISV.window.Edition, modISV.Window);
 Ext.reg('modisv-window-edition', modISV.window.Edition);

@@ -7,5 +7,5 @@ modISV.window.OrderItem = function (config) {
     });
     modISV.window.OrderItem.superclass.constructor.call(this, config);
 };
-Ext.extend(modISV.window.OrderItem, modISV.CreateWindow);
+Ext.extend(modISV.window.OrderItem, modISV.Window);
 Ext.reg('modisv-window-orderitem', modISV.window.OrderItem);
