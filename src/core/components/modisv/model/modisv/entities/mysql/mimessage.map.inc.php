@@ -11,6 +11,9 @@ $xpdo_meta_map['miMessage']= array (
     'message_id' => '',
     'body' => '',
     'headers' => '',
+    'author_name' => '',
+    'author_email' => '',
+    'staff_response' => 0,
     'source' => 'other',
     'ip' => '',
     'createdon' => NULL,
@@ -51,6 +54,31 @@ $xpdo_meta_map['miMessage']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => '',
+    ),
+    'author_name' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '50',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'author_email' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '100',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'staff_response' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'boolean',
+      'attributes' => 'unsigned',
+      'null' => false,
+      'default' => 0,
     ),
     'source' => 
     array (
@@ -105,17 +133,9 @@ $xpdo_meta_map['miMessage']= array (
   array (
     'rules' => 
     array (
-      'message_id' => 
+      'author_email' => 
       array (
-        'messageIdNotEmpty' => 
-        array (
-          'type' => 'xPDOValidationRule',
-          'rule' => 'miNotEmptyRule',
-        ),
-      ),
-      'body' => 
-      array (
-        'bodyNotEmpty' => 
+        'authorEmailNotEmpty' => 
         array (
           'type' => 'xPDOValidationRule',
           'rule' => 'miNotEmptyRule',

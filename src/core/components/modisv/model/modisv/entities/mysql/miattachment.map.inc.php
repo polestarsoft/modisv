@@ -9,7 +9,6 @@ $xpdo_meta_map['miAttachment']= array (
   array (
     'ticket' => 0,
     'message' => 0,
-    'response' => 0,
     'path' => '',
     'size' => 0,
     'createdon' => NULL,
@@ -28,16 +27,6 @@ $xpdo_meta_map['miAttachment']= array (
       'index' => 'index',
     ),
     'message' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '10',
-      'phptype' => 'integer',
-      'attributes' => 'unsigned',
-      'null' => false,
-      'default' => 0,
-      'index' => 'index',
-    ),
-    'response' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
@@ -91,14 +80,6 @@ $xpdo_meta_map['miAttachment']= array (
       'cardinality' => 'one',
       'owner' => 'foreign',
     ),
-    'Response' => 
-    array (
-      'class' => 'miResponse',
-      'local' => 'response',
-      'foreign' => 'id',
-      'cardinality' => 'one',
-      'owner' => 'foreign',
-    ),
   ),
   'validation' => 
   array (
@@ -115,15 +96,6 @@ $xpdo_meta_map['miAttachment']= array (
       'message' => 
       array (
         'messageExists' => 
-        array (
-          'type' => 'xPDOValidationRule',
-          'rule' => 'miObjectExistsRule',
-          'allownull' => 'true',
-        ),
-      ),
-      'response' => 
-      array (
-        'responseExists' => 
         array (
           'type' => 'xPDOValidationRule',
           'rule' => 'miObjectExistsRule',

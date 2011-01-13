@@ -21,7 +21,7 @@
  * @package modisv
  */
 /**
- * Gets a list of messages/responses of a specified ticket.
+ * Gets a list of messages of a specified ticket.
  *
  * @package modisv
  * @subpackage processors
@@ -30,31 +30,25 @@ $ticket = $modx->getObject('miTicket', $scriptProperties['ticket']);
 if ($ticket == null)
     return $modx->error->failure('Ticket not specified or not exists.');
 
+// get messages
 $messages = $ticket->getMany('Messages');
-$responses = $ticket->getMany('Responses');
-
-$threads = array();
+$list = array();
 foreach ($messages as $message) {
     $item = $message->toArray();
-    $item['response'] = false;
-    $item['id'] = 'm' . $item['id'];
-    $item['author_name'] = $ticket->get('author_name') ? : '';
-    $item['author_email'] = $ticket->get('author_email');
-    $threads[] = $item;
-
-    foreach ($responses as $response) {
-        if ($response->get('message') == $message->get('id')) {
-            $item = $response->toArray();
-            $item['id'] = 'r' . $item['id'];
-            $item['response'] = true;
-            $item['name'] = 'r' . $response->get('id');
-            $item['author_name'] = 'Support Staff';
-            $threads[] = $item;
-        }
-    }
+    $list[] = $item;
 }
 
-$list = array();
-$list['ticket'] = $ticket->toArray();
-$list['threads'] = $threads;
-return $modx->error->success('', $list);
+$result = array();
+$result['messages'] = $list;
+
+// get the ticket
+$result['ticket'] = $ticket->toArray();
+$user = $modx->getObject('modUser', array('username' => $ticket->get('author_email')));
+if ($user) {
+    $result['ticket']['author_id'] = $user->get('id');
+}
+if ($ticket->get('product') && $ticket->getOne('Product')) {
+    $result['ticket']['product_name'] = $ticket->getOne('Product')->get('name');
+}
+
+return $modx->error->success('', $result);

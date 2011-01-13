@@ -43,4 +43,60 @@ class miTicket extends xPDOSimpleObject {
         return parent::save($cacheFlag);
     }
 
+    public function reply($properties) {
+        // check status
+        if ($this->get('status') != 'open')
+            return false;
+
+        // create message
+        $message = $this->xpdo->newObject('miMessage');
+        $message->fromArray($properties);
+        $message->set('ticket', $this->get('id'));
+
+        // save the reply message
+        if (!$message->save()) {
+            $this->xpdo->log(modX::LOG_LEVEL_ERROR, '[modISV] An error occured while trying to save the reply message: ' . print_r($message->toArray(), true));
+            return false;
+        }
+
+        // save the ticket
+        $this->set('lastresponseon', time());
+        $this->set('answered', true);
+        if (!$this->save()) {
+            $this->xpdo->log(modX::LOG_LEVEL_ERROR, '[modISV] An error occured while trying to save the ticket: ' . print_r($this->toArray(), true));
+            return false;
+        }
+
+        // TODO: send notification to watchers
+        
+        return true;
+    }
+
+    public function close() {
+        if ($this->get('status') == 'closed') {
+            return false;
+        }
+        $this->set('status', 'closed');
+        $this->set('closedon', time());
+        return $this->save();
+    }
+
+    public function reopen() {
+        if ($this->get('status') == 'open') {
+            return false;
+        }
+        $this->set('status', 'open');
+        $this->set('reopenedon', time());
+        return $this->save();
+    }
+
+    public function addWatcher($email, $fullname) {
+        $watchers = $this->get('watchers');
+        if (!empty($watchers))
+            $watchers .= ', ';
+        $watchers .= ( $fullname ? $fullname . ' ' : '') . '<' . $email . '>';
+        $this->set('watchers', $watchers);
+        return $this->save();
+    }
+
 }

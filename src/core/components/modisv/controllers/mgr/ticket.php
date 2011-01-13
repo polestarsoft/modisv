@@ -29,11 +29,9 @@
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.markdowneditor.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.page.ticket.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.panel.ticket.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.form.ticket.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.form.response.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.window.response.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.window.ticket.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.form.message.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.window.message.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.window.addwatcher.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.window.updateticket.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.window.replyticket.js');
 
 return '<div id="modisv-panel-root-div"></div>';

@@ -1,13 +1,13 @@
 
-modISV.window.Message = function (config) {
+modISV.window.ReplyTicket = function (config) {
     config = config || {};
     Ext.applyIf(config, {
         url: modISV.config.connector_url,
         baseParams: {
-            action: 'mgr/message/update',
+            action: 'mgr/ticket/reply',
             id: config.record.id
         },
-        title: 'Update Message',
+        title: 'Reply Ticket',
         height: 150,
         width: 530,
         labelAlign: 'left',
@@ -26,7 +26,7 @@ modISV.window.Message = function (config) {
             name: 'id'
         }]
     });
-    modISV.window.Message.superclass.constructor.call(this, config);
+    modISV.window.ReplyTicket.superclass.constructor.call(this, config);
 };
-Ext.extend(modISV.window.Message, MODx.Window);
-Ext.reg('modisv-window-message', modISV.window.Message);
+Ext.extend(modISV.window.ReplyTicket, MODx.Window);
+Ext.reg('modisv-window-reply-ticket', modISV.window.ReplyTicket);

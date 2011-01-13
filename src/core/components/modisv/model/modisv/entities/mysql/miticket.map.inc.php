@@ -242,14 +242,6 @@ $xpdo_meta_map['miTicket']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
-    'Responses' => 
-    array (
-      'class' => 'miResponse',
-      'local' => 'id',
-      'foreign' => 'ticket',
-      'cardinality' => 'many',
-      'owner' => 'local',
-    ),
   ),
   'validation' => 
   array (
