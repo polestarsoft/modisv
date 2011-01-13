@@ -32,8 +32,12 @@ $limit = isset($scriptProperties['limit']) ? $scriptProperties['limit'] : 20;
 
 // search
 $c = $modx->newQuery('miTicket');
-$c->select("target_version as name, COUNT(target_version) as total, SUM(status = 'open') as opened");
-$c->groupby('target_version', "DESC");
+$c->leftJoin('miProduct', 'miProduct', 'miTicket.product = miProduct.id');
+$c->select("miProduct.id as product, miProduct.name as product_name, miTicket.target_version as name, COUNT(miTicket.target_version) as total, SUM(miTicket.status = 'open') as opened");
+$c->groupby('miTicket.product');
+$c->groupby('miTicket.target_version', "DESC");
+if(!empty($scriptProperties['product']))
+    $c->where(array('miTicket.product' => $scriptProperties['product']));
 $c->prepare();
 $c->stmt->execute();
 $roadmaps = $c->stmt->fetchAll();
@@ -41,16 +45,16 @@ $c->stmt->closeCursor();
 
 $count = count($roadmaps);
 if ($isLimit)
-    $roadmaps = array_slice(roadmaps, 0, $limit);
+    $roadmaps = array_slice($roadmaps, 0, $limit);
 
 $list = array();
 foreach ($roadmaps as $roadmap) {
     $item = $roadmap;
 
-    $item['menu'][] = '-';
+    $item['menu'] = array();
     $item['menu'][] = array(
-        'text' => 'View Roadmap',
-        'handler' => 'this.viewRoadmap',
+        'text' => 'View Milestone',
+        'handler' => 'this.viewMilestone',
     );
 
     $list[] = $item;

@@ -28,8 +28,9 @@
  */
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/milestone/modisv.page.milestone.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/milestone/modisv.panel.milestone.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/milestone/modisv.form.milestone.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/tickets/modisv.window.ticket.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.form.ticket.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/tickets/modisv.grid.tickets.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/tickets/modisv.window.newticket.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.window.updateticket.js');
+
 
 return '<div id="modisv-panel-root-div"></div>';

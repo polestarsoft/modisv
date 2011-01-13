@@ -62,12 +62,12 @@ if (!empty($scriptProperties['text'])) {
 if (!empty($scriptProperties['priority']))
     $c->andCondition(array('priority:>=' => trim($scriptProperties['priority'])));
 $dateType = $scriptProperties['dateType'] ? : 'createdon';
-if (!empty($scriptProperties['dateFrom'])) {
+if (!empty($scriptProperties['dateFrom']))
     $c->andCondition(array("$dateType:>=" => trim($scriptProperties['dateFrom'])));
-}
-if (!empty($scriptProperties['dateTo'])) {
+if (!empty($scriptProperties['dateTo']))
     $c->andCondition(array("$dateType:<=" => trim($scriptProperties['dateTo'])));
-}
+if (!empty($scriptProperties['target_version']))    // used when get tickets list in a milestone
+    $c->andCondition(array('target_version' => trim($scriptProperties['target_version'])));
 
 $c->sortby('status');
 $c->sortby('priority', 'DESC');

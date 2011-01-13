@@ -1,5 +1,5 @@
 
-modISV.Ticket = function (config) {
+modISV.panel.Ticket = function (config) {
     config = config || {};
 
     Ext.apply(config, {
@@ -60,12 +60,12 @@ modISV.Ticket = function (config) {
         }]
     });
 
-    modISV.Ticket.superclass.constructor.call(this, config);
+    modISV.panel.Ticket.superclass.constructor.call(this, config);
 
     this.loadTicket();
 };
 
-Ext.extend(modISV.Ticket, MODx.Panel, {
+Ext.extend(modISV.panel.Ticket, MODx.Panel, {
     loadTicket: function () {
         var mask = new Ext.LoadMask( Ext.get('modisv-ticket-messages'), {
             msg: "Loading"
@@ -138,7 +138,7 @@ Ext.extend(modISV.Ticket, MODx.Panel, {
     },
     renderMessage: function(index) {
         var tpl = Ext.DomHelper.createTemplate('\
-            <div style="padding:10px 0;">\
+            <div style="padding:10px 0; overflow: auto;">\
                 <h5 style="padding:6px; margin-bottom:15px; color:#FFF; background:{bg};  font:normal 10px arial; -moz-border-radius:3px; -webkit-border-radius:3px;">\
                     <a name="{id}"></a>\
                     <a style="margin-left:5px" href="#{id}">{number}</a>\
@@ -287,5 +287,5 @@ Ext.extend(modISV.Ticket, MODx.Panel, {
         return true;
     }
 });
-Ext.reg('modisv-panel-ticket', modISV.Ticket);
+Ext.reg('modisv-panel-ticket', modISV.panel.Ticket);
 

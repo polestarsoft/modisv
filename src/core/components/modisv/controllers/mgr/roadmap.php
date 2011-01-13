@@ -28,6 +28,6 @@
  */
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/roadmap/modisv.page.roadmap.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/roadmap/modisv.panel.roadmap.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/roadmap/modisv.grid.roadmap.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/roadmap/modisv.grid.milestones.js');
 
 return '<div id="modisv-panel-root-div"></div>';
