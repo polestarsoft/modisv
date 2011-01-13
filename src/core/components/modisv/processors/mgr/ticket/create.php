@@ -27,8 +27,10 @@
  * @subpackage processors
  */
 
+// create ticket
 $ticket = $modx->newObject('miTicket');
 $ticket->fromArray($scriptProperties);
+$ticket->set('status', 'open');
 $ticket->set('author_name', $modx->user->getOne('Profile')->get('fullname'));
 $ticket->set('author_email', $modx->user->get('username'));
 $ticket->set('source', 'web');
@@ -37,6 +39,21 @@ $ticket->set('ip', $_SERVER['REMOTE_ADDR']);
 if (!$ticket->save()) {
     $modx->error->checkValidation(array($ticket));
     return $modx->error->failure('An error occurred while trying to save the ticket.');
+}
+
+// create message
+$message = $modx->newObject('miMessage');
+$message->set('body', $scriptProperties['body']);
+$message->set('staff_response', true);
+$message->set('author_name', $modx->user->getOne('Profile')->get('fullname'));
+$message->set('author_email', $modx->user->get('username'));
+$message->set('source', 'web');
+$message->set('ip', $_SERVER['REMOTE_ADDR']);
+$message->set('ticket', $ticket->get('id'));
+
+// save the message
+if (!$message->save()) {
+    return $modx->error->failure('An error occurred while trying to save the new message.');
 }
 
 return $modx->error->success('', $ticket);

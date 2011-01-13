@@ -87,7 +87,7 @@ Ext.extend(modISV.panel.Tickets, modISV.ListPanel, {
     createTicket: function(btn, e) {
         var grid = Ext.getCmp('gridTickets');
         MODx.load({
-            xtype: 'modisv-window-ticket',
+            xtype: 'modisv-window-new-ticket',
             listeners: {
                 'success': {
                     fn: function () {

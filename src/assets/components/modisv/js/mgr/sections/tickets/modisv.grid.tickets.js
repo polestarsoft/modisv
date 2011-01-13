@@ -107,6 +107,22 @@ modISV.grid.Tickets = function (config) {
 };
 
 Ext.extend(modISV.grid.Tickets, modISV.Grid, {
+    updateTicket: function (btn, e) {
+        if (this.menu.record && this.menu.record.id) {
+            MODx.load({
+                xtype: 'modisv-window-update-ticket',
+                record: this.menu.record,
+                listeners: {
+                    'success': {
+                        fn: function() {
+                            this.refresh();
+                        },
+                        scope: this
+                    }
+                }
+            }).show();
+        }
+    },
     viewTicket: function (btn, e) {
         if (this.menu.record && this.menu.record.id)
             location.href = '?a=' + modISV.request.a + '&sa=ticket&id=' + this.menu.record.id;

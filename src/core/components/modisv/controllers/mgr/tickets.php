@@ -29,7 +29,7 @@
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/tickets/modisv.page.tickets.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/tickets/modisv.panel.tickets.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/tickets/modisv.grid.tickets.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.window.ticket.js');
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.form.ticket.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/tickets/modisv.window.newticket.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.window.updateticket.js');
 
 return '<div id="modisv-panel-root-div"></div>';

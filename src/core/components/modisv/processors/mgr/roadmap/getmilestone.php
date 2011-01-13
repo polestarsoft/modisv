@@ -57,9 +57,10 @@ foreach ($tickets as $ticket) {
     
     $item['menu'] = array();
     $item['menu'][] = array(
-        'text' => 'View Ticket',
-        'handler' => 'this.viewTicket',
+        'text' => 'Update Ticket',
+        'handler' => 'this.updateTicket',
     );
+
     $item['menu'][] = '-';
     $item['menu'][] = array(
         'text' => 'Remove Ticket',
@@ -67,6 +68,10 @@ foreach ($tickets as $ticket) {
     );
 
     $item['menu'][] = '-';
+    $item['menu'][] = array(
+        'text' => 'View Ticket',
+        'handler' => 'this.viewTicket',
+    );
     $item['menu'][] = array(
         'text' => 'View Ticket in Frontend',
         'handler' => 'this.viewTicketInFrontEnd',

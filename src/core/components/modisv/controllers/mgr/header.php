@@ -40,6 +40,8 @@ $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.gri
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.listpanel.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.updatepanel.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.window.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.markdowneditor.js');
+
 $modx->regClientStartupHTMLBlock('<script type="text/javascript">
 Ext.onReady(function() {
     modISV.config = ' . $modx->toJSON($modisv->config) . ';

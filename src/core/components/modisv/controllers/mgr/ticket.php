@@ -26,7 +26,6 @@
  * @package modisv
  * @subpackage controllers
  */
-$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.markdowneditor.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.page.ticket.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.panel.ticket.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/ticket/modisv.window.message.js');
