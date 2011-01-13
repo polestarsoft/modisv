@@ -50,15 +50,18 @@ if (!empty($scriptProperties['status']))
 if (!empty($scriptProperties['product']))
     $c->andCondition(array('product' => trim($scriptProperties['product'])));
 if (!empty($scriptProperties['text'])) {
+    $c->leftJoin('miMessage', 'miMessage', 'miMessage.ticket = miTicket.id');
+    $c->leftJoin('miResponse', 'miResponse', 'miResponse.ticket = miTicket.id');
     $c->where(array(
         'subject:LIKE' => '%' . trim($scriptProperties['text']) . '%',
-        'OR:body:LIKE' => '%' . trim($scriptProperties['text']) . '%',
-        'OR:note:LIKE' => '%' . trim($scriptProperties['text']) . '%'
+        'OR:note:LIKE' => '%' . trim($scriptProperties['text']) . '%',
+        'OR:miMessage.body:LIKE' => '%' . trim($scriptProperties['text']) . '%',
+        'OR:miResponse.body:LIKE' => '%' . trim($scriptProperties['text']) . '%',
     ));
 }
 if (!empty($scriptProperties['priority']))
     $c->andCondition(array('priority:>=' => trim($scriptProperties['priority'])));
-$dateType = $scriptProperties['dateType'] ? : 'lastmessageon';
+$dateType = $scriptProperties['dateType'] ? : 'createdon';
 if (!empty($scriptProperties['dateFrom'])) {
     $c->andCondition(array("$dateType:>=" => trim($scriptProperties['dateFrom'])));
 }
@@ -66,17 +69,28 @@ if (!empty($scriptProperties['dateTo'])) {
     $c->andCondition(array("$dateType:<=" => trim($scriptProperties['dateTo'])));
 }
 
-$c->sortby($dateType, "DESC");
+$c->sortby('status');
+$c->sortby('priority', 'DESC');
+$c->sortby('miTicket.' . $dateType);
 $tickets = $modx->getCollection('miTicket', $c);
 
 $list = array();
 foreach ($tickets as $ticket) {
     $item = $ticket->toArray();
 
+    // check if the author is our user
+    $user = $modx->getObject('modUser', array('username' => $ticket->get('author_email')));
+    if($user) {
+        $item['author_id'] = $user->get('id');
+    }
+    if($ticket->get('product') && $ticket->getOne('Product')) {
+        $item['product_name'] = $ticket->getOne('Product')->get('name');
+    }
+
     $item['menu'] = array();
     $item['menu'][] = array(
-        'text' => 'Update Ticket',
-        'handler' => 'this.updateTicket',
+        'text' => 'View Ticket',
+        'handler' => 'this.viewTicket',
     );
     $item['menu'][] = '-';
     $item['menu'][] = array(
@@ -86,8 +100,8 @@ foreach ($tickets as $ticket) {
 
     $item['menu'][] = '-';
     $item['menu'][] = array(
-        'text' => 'View Ticket',
-        'handler' => 'this.viewTicket',
+        'text' => 'View Ticket in Frontend',
+        'handler' => 'this.viewTicketInFrontEnd',
     );
 
     $list[] = $item;

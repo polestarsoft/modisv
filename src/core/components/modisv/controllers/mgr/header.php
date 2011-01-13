@@ -30,6 +30,7 @@ $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/modisv.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/utils/vtypes.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/utils/renderers.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/utils/tooltip.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/utils/functions.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.combo.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.checkbox.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.licensetypefield.js');

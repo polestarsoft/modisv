@@ -15,7 +15,6 @@ $xpdo_meta_map['miTicket']= array (
     'author_email' => '',
     'watchers' => '',
     'subject' => '[no subject]',
-    'body' => '',
     'note' => '',
     'target_version' => 'unplanned',
     'status' => 'open',
@@ -102,14 +101,6 @@ $xpdo_meta_map['miTicket']= array (
       'phptype' => 'string',
       'null' => false,
       'default' => '[no subject]',
-    ),
-    'body' => 
-    array (
-      'dbtype' => 'text',
-      'phptype' => 'string',
-      'null' => false,
-      'default' => '',
-      'index' => 'fulltext',
     ),
     'note' => 
     array (
@@ -241,6 +232,25 @@ $xpdo_meta_map['miTicket']= array (
       'owner' => 'foreign',
     ),
   ),
+  'composites' => 
+  array (
+    'Messages' => 
+    array (
+      'class' => 'miMessage',
+      'local' => 'id',
+      'foreign' => 'ticket',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'Responses' => 
+    array (
+      'class' => 'miResponse',
+      'local' => 'id',
+      'foreign' => 'ticket',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+  ),
   'validation' => 
   array (
     'rules' => 
@@ -287,19 +297,6 @@ $xpdo_meta_map['miTicket']= array (
           'type' => 'xPDOValidationRule',
           'rule' => 'miNotEmptyRule',
         ),
-        'validAuthorEmail' => 
-        array (
-          'type' => 'preg_match',
-          'rule' => '/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i',
-        ),
-      ),
-      'body' => 
-      array (
-        'bodyNotEmpty' => 
-        array (
-          'type' => 'xPDOValidationRule',
-          'rule' => 'miNotEmptyRule',
-        ),
       ),
       'target_version' => 
       array (
@@ -307,7 +304,7 @@ $xpdo_meta_map['miTicket']= array (
         array (
           'type' => 'preg_match',
           'rule' => '/^(\\d{1,2}\\.\\d{1,2}(\\.\\d{1,5})?|unplanned)$/',
-          'message' => 'Invalid version.',
+          'message' => 'Invalid target version, must be a valid version number or \'unplanned\'.',
         ),
       ),
       'status' => 

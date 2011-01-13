@@ -21,22 +21,17 @@
  * @package modisv
  */
 /**
- * Creates a ticket.
+ * Removes a message.
  *
  * @package modisv
  * @subpackage processors
  */
+$message = $modx->getObject('miMessage', $scriptProperties['id']);
+if ($message == null)
+    return $modx->error->failure('Message not specified or not exists.');
 
-$ticket = $modx->newObject('miTicket');
-$ticket->fromArray($scriptProperties);
-$ticket->set('author_name', $modx->user->getOne('Profile')->get('fullname'));
-$ticket->set('author_email', $modx->user->get('username'));
-$ticket->set('source', 'web');
-$ticket->set('ip', $_SERVER['REMOTE_ADDR']);
-
-if (!$ticket->save()) {
-    $modx->error->checkValidation(array($ticket));
-    return $modx->error->failure('An error occurred while trying to save the ticket.');
+if (!$message->remove()) {
+    return $modx->error->failure('An error occurred while trying to remove the message.');
 }
 
-return $modx->error->success('', $ticket);
+return $modx->error->success();

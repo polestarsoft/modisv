@@ -37,35 +37,41 @@ if ($isLimit)
     $c->limit($limit, $start);
 
 $c->where(array('target_version', $scriptProperties['name']));
-$c->sortby('status', 'DESC');
+$c->sortby('status');
 $c->sortby('priority', 'DESC');
+$c->sortby('createdon');
 $tickets = $modx->getCollection('miTicket', $c);
 
 $list = array();
 foreach ($tickets as $ticket) {
     $item = $ticket->toArray();
-
-    $item['menu'][] = '-';
+    
+    // check if the author is our user
+    $user = $modx->getObject('modUser', array('username' => $ticket->get('author_email')));
+    if($user) {
+        $item['author_id'] = $user->get('id');
+    }
+    if($ticket->get('product') && $ticket->getOne('Product')) {
+        $item['product_name'] = $ticket->getOne('Product')->get('name');
+    }
+    
+    $item['menu'] = array();
     $item['menu'][] = array(
         'text' => 'View Ticket',
         'handler' => 'this.viewTicket',
+    );
+    $item['menu'][] = '-';
+    $item['menu'][] = array(
+        'text' => 'Remove Ticket',
+        'handler' => 'this.removeTicket',
+    );
+
+    $item['menu'][] = '-';
+    $item['menu'][] = array(
+        'text' => 'View Ticket in Frontend',
+        'handler' => 'this.viewTicketInFrontEnd',
     );
 
     $list[] = $item;
 }
 return $this->outputArray($list, $count);
-
-
-
-
-
-
-
-
-
-$ticket = $modx->getObject('miTicket', $scriptProperties['name']);
-if ($ticket == null)
-    return $modx->error->failure('Ticket not specified or not exists.');
-
-$list = $ticket->toArray();
-return $modx->error->success('', $list);

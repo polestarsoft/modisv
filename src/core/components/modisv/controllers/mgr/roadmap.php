@@ -21,22 +21,13 @@
  * @package modisv
  */
 /**
- * Creates a ticket.
+ * Loads the roadmap page.
  *
  * @package modisv
- * @subpackage processors
+ * @subpackage controllers
  */
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/roadmap/modisv.page.roadmap.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/roadmap/modisv.panel.roadmap.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/sections/roadmap/modisv.grid.roadmap.js');
 
-$ticket = $modx->newObject('miTicket');
-$ticket->fromArray($scriptProperties);
-$ticket->set('author_name', $modx->user->getOne('Profile')->get('fullname'));
-$ticket->set('author_email', $modx->user->get('username'));
-$ticket->set('source', 'web');
-$ticket->set('ip', $_SERVER['REMOTE_ADDR']);
-
-if (!$ticket->save()) {
-    $modx->error->checkValidation(array($ticket));
-    return $modx->error->failure('An error occurred while trying to save the ticket.');
-}
-
-return $modx->error->success('', $ticket);
+return '<div id="modisv-panel-root-div"></div>';
