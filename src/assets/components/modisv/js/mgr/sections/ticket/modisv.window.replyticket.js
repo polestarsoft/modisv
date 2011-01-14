@@ -17,7 +17,7 @@ modISV.window.ReplyTicket = function (config) {
             xtype: 'modisv-maskdowneditor',
             fieldLabel: 'Body',
             name: 'body',
-            width: 400,
+            width: '90%',
             grow: true,
             growMax: 300
         },

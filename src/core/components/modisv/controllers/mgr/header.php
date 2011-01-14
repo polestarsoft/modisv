@@ -40,6 +40,11 @@ $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.gri
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.listpanel.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.updatepanel.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.window.js');
+
+$modx->regClientCSS($modisv->config['cssUrl'] . 'wmd.css');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/3rdparty/wmd.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/3rdparty/showdown.js');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/3rdparty/ps.wmdeditor.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.markdowneditor.js');
 
 $modx->regClientStartupHTMLBlock('<script type="text/javascript">
