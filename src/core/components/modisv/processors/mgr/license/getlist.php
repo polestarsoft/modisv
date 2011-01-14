@@ -30,12 +30,8 @@ $isLimit = !empty($scriptProperties['limit']);
 $start = isset($scriptProperties['start']) ? $scriptProperties['start'] : 0;
 $limit = isset($scriptProperties['limit']) ? $scriptProperties['limit'] : 20;
 
-$c = $modx->newQuery('miLicense');
-$count = $modx->getCount('miLicense', $c);
-if ($isLimit)
-    $c->limit($limit, $start);
-
 // search
+$c = $modx->newQuery('miLicense');
 if (!empty($scriptProperties['user'])) {
     $c->innerJoin('modUser', 'User');
     $c->where(array('User.username:LIKE' => '%' . trim($scriptProperties['user']) . '%'));
@@ -46,6 +42,10 @@ if (!empty($scriptProperties['dateTo']))
     $c->andCondition(array('createdon:<=' => trim($scriptProperties['dateTo'])));
 if (!empty($scriptProperties['edition']))
     $c->andCondition(array('edition' => trim($scriptProperties['edition'])));
+
+$count = $modx->getCount('miLicense', $c);
+if ($isLimit)
+    $c->limit($limit, $start);
 
 $c->sortby('createdon', 'DESC');
 $licenses = $modx->getCollection('miLicense', $c);

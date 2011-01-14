@@ -30,12 +30,8 @@ $isLimit = !empty($scriptProperties['limit']);
 $start = isset($scriptProperties['start']) ? $scriptProperties['start'] : 0;
 $limit = isset($scriptProperties['limit']) ? $scriptProperties['limit'] : 20;
 
-$c = $modx->newQuery('miTicket');
-$count = $modx->getCount('miTicket', $c);
-if ($isLimit)
-    $c->limit($limit, $start);
-
 // search
+$c = $modx->newQuery('miTicket');
 if (!empty($scriptProperties['user'])) {
     $c->where(array(
         'author_name:LIKE' => '%' . trim($scriptProperties['user']) . '%',
@@ -68,6 +64,10 @@ if (!empty($scriptProperties['dateTo']))
     $c->andCondition(array("$dateType:<=" => trim($scriptProperties['dateTo'])));
 if (!empty($scriptProperties['target_version']))    // used when get tickets list in a milestone
     $c->andCondition(array('target_version' => trim($scriptProperties['target_version'])));
+
+$count = $modx->getCount('miTicket', $c);
+if ($isLimit)
+    $c->limit($limit, $start);
 
 $c->sortby('status');
 $c->sortby('priority', 'DESC');

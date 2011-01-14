@@ -30,12 +30,8 @@ $isLimit = !empty($scriptProperties['limit']);
 $start = isset($scriptProperties['start']) ? $scriptProperties['start'] : 0;
 $limit = isset($scriptProperties['limit']) ? $scriptProperties['limit'] : 20;
 
-$c = $modx->newQuery('miOrder');
-$count = $modx->getCount('miOrder', $c);
-if ($isLimit)
-    $c->limit($limit, $start);
-
 // search
+$c = $modx->newQuery('miOrder');
 if (!empty($scriptProperties['user'])) {
     $c->innerJoin('modUser', 'User');
     $c->where(array('User.username:LIKE' => '%' . trim($scriptProperties['user']) . '%'));
@@ -52,6 +48,10 @@ if (!empty($scriptProperties['status']))
     $c->andCondition(array('status' => trim($scriptProperties['status'])));
 if (!empty($scriptProperties['processor']))
     $c->andCondition(array('payment_processor' => trim($scriptProperties['processor'])));
+
+$count = $modx->getCount('miOrder', $c);
+if ($isLimit)
+    $c->limit($limit, $start);
 
 $c->sortby('updatedon', 'DESC');
 $orders = $modx->getCollection('miOrder', $c);
