@@ -98,7 +98,6 @@ class MarkdownParser {
 		$this->html_hashes = array();
 	}
 
-
 	function transform($text) {
 	#
 	# Main function. Performs some preprocessing on the input text
@@ -135,6 +134,13 @@ class MarkdownParser {
 
 		$this->teardown();
 
+                // addeb by wenqiang, to sync with showdown, Auto-link URLs and emails
+                $text = preg_replace_callback('/(\<[^\>]+?)?(https?\:\/\/[^\"\s\<\>]*[^.,;\'\"\>\:\s\<\>\)\]\!])([^\>]*?\>)?/',
+                        create_function('$m', 'if ($m[1] && $m[3]) return $m[0]; return "<a href=\'$m[2]\'>$m[2]</a>";'),
+                        $text);
+                $text = preg_replace_callback('/[a-z0-9_\-\+=.]+@[a-z0-9\-]+(\.[a-z0-9-]+)+/i',
+                        create_function('$m', 'return "<a href=\'mailto:$m[0]\'>$m[0]</a>";'),
+                        $text);
 		return $text . "\n";
 	}
 
