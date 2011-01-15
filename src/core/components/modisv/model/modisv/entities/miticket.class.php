@@ -90,11 +90,11 @@ class miTicket extends xPDOSimpleObject {
         return $this->save();
     }
 
-    public function addWatcher($email, $fullname) {
+    public function addWatcher($email) {
         $watchers = $this->get('watchers');
         if (!empty($watchers))
-            $watchers .= ', ';
-        $watchers .= ( $fullname ? $fullname . ' ' : '') . '<' . $email . '>';
+            $watchers .= ',';
+        $watchers .= $email;
         $this->set('watchers', $watchers);
         return $this->save();
     }

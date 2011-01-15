@@ -30,14 +30,12 @@ $ticket = $modx->getObject('miTicket', $scriptProperties['id']);
 if ($ticket == null)
     return $modx->error->failure('Ticket not specified or not exists.');
 
-if (!preg_match('/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/', $scriptProperties['email']))
+if (!preg_match('/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/', $scriptProperties['email'])) {
     $modx->error->addField('email', 'Invalid watcher email.');
-if (!preg_match('/^[\w\s\.]*$/', $scriptProperties['fullname']))
-    $modx->error->addField('fullname', 'Invalid watcher full name.');
-if($modx->error->hasError())
     return $modx->error->failure();
+}
 
-if (!$ticket->addWatcher($scriptProperties['email'], $scriptProperties['fullname'])) {
+if (!$ticket->addWatcher($scriptProperties['email'])) {
     return $modx->error->failure('An error occurred while trying to add the watcher.');
 }
 

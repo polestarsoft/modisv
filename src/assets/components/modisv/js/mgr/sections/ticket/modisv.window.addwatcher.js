@@ -15,12 +15,6 @@ modISV.window.AddWatcher = function (config) {
         keys: {}, // to suppress enter-submit
         fields: [{
             xtype: 'textfield',
-            fieldLabel: 'Full Name',
-            name: 'fullname',
-            width: 300
-        },
-        {
-            xtype: 'textfield',
             fieldLabel: 'Email',
             name: 'email',
             width: 300
