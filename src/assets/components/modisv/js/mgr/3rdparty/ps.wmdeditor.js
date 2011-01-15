@@ -54,6 +54,29 @@ Ext.extend(PS.WmdEditor, Ext.form.TextArea, {
         this.buttonBar.setWidth('100%');
         this.preview.setWidth('100%');
         this.wrap.setWidth(w);
+    },
+    fireKey : function(e){
+        if (e.getKey() == e.TAB) {
+            var ta = this.el.dom;
+            if (e.srcElement)
+            {
+                ta.selection = document.selection.createRange();
+                ta.selection.text = "    ";
+            }
+            else if (e.target)
+            {
+                var start = ta.value.substring(0, ta.selectionStart);
+                var end = ta.value.substring(ta.selectionEnd, ta.value.length);
+                var newRange = ta.selectionEnd + 4;
+                var scrollPos = ta.scrollTop;
+                ta.value = String.concat(start, "    ", end);
+                ta.setSelectionRange(newRange, newRange);
+                ta.scrollTop = scrollPos;
+            }
+            e.stopEvent();
+        } else {
+            PS.WmdEditor.superclass.fireKey.call(this, e);
+        }
     }
 });
 Ext.reg('modisv-maskdowneditor', PS.WmdEditor);
