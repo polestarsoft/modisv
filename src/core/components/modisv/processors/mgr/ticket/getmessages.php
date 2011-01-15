@@ -31,7 +31,10 @@ if ($ticket == null)
     return $modx->error->failure('Ticket not specified or not exists.');
 
 // get messages
-$messages = $ticket->getMany('Messages');
+$c = $modx->newQuery('miMessage');
+$c->where(array('ticket' => $ticket->get('id')));
+$c->sortby('id');
+$messages = $modx->getCollection('miMessage', $c);
 $list = array();
 foreach ($messages as $message) {
     $item = $message->toArray();
