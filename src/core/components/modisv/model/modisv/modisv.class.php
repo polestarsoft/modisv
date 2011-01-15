@@ -110,7 +110,7 @@ class modISV {
         $mail->set(modMail::MAIL_SUBJECT, $subject);
         $recipents = explode(',', $to);
         foreach ($recipents as $recipient) {
-            if (preg_match("/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$", $recipient, $ts_key_match)) {
+            if (preg_match("/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/", $recipient)) {
                 $mail->address('to', $recipient);
             }
         }

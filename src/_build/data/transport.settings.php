@@ -127,4 +127,22 @@ $settings['modisv.rsa1024_modulus']->fromArray(array(
     'area' => 'keygen'
 ), '', true, true);
 
+$settings['modisv.ticket_reply_separator'] = $modx->newObject('modSystemSetting');
+$settings['modisv.ticket_reply_separator']->fromArray(array(
+    'key' => 'modisv.ticket_reply_separator',
+    'value' => '===== REPLY ABOVE THIS LINE =====',
+    'xtype' => 'textfield',
+    'namespace' => 'modisv',
+    'area' => 'ticket'
+), '', true, true);
+
+$settings['modisv.view_ticket_page'] = $modx->newObject('modSystemSetting');
+$settings['modisv.view_ticket_page']->fromArray(array(
+    'key' => 'modisv.view_ticket_page',
+    'value' => '1',
+    'xtype' => 'textfield',
+    'namespace' => 'modisv',
+    'area' => 'ticket'
+), '', true, true);
+
 return $settings;

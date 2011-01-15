@@ -48,3 +48,7 @@ $_lang['setting_modisv.rsa1024_private_key'] = 'RSA private key';
 $_lang['setting_modisv.rsa1024_private_key_desc'] = 'The 1024-bit RSA private key for generating license code.';
 $_lang['setting_modisv.rsa1024_modulus'] = 'RSA modulus';
 $_lang['setting_modisv.rsa1024_modulus_desc'] = 'The 1024-bit RSA modulus for generating license code.';
+$_lang['setting_modisv.ticket_reply_separator'] = 'Ticket reply separator ';
+$_lang['setting_modisv.ticket_reply_separator_desc'] = 'The line in ticket emails used as the marker for the end of the reply message.';
+$_lang['setting_modisv.view_ticket_page'] = 'View ticket page';
+$_lang['setting_modisv.view_ticket_page_desc'] = 'The resource ID of the view ticket page.';

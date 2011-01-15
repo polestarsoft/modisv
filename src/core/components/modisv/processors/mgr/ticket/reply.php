@@ -34,11 +34,6 @@ if ($ticket == null)
 if ($ticket->get('status') != 'open')
     return $modx->error->failure('Ticket already closed.');
 
-$scriptProperties['staff_response'] = true;
-$scriptProperties['author_name'] = $modx->user->getOne('Profile')->get('fullname');
-$scriptProperties['author_email'] = $modx->user->get('username');
-$scriptProperties['source'] = 'web';
-$scriptProperties['ip'] = $_SERVER['REMOTE_ADDR'];
 if (!$ticket->reply($scriptProperties))
     return $modx->error->failure('An error occurred while trying to reply the ticket.');
 
