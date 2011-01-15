@@ -108,7 +108,12 @@ class modISV {
         $mail->set(modMail::MAIL_FROM_NAME, $this->modx->getOption('site_name'));
         $mail->set(modMail::MAIL_SENDER, $from);
         $mail->set(modMail::MAIL_SUBJECT, $subject);
-        $mail->address('to', $to);
+        $recipents = explode(',', $to);
+        foreach ($recipents as $recipient) {
+            if (preg_match("/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$", $recipient, $ts_key_match)) {
+                $mail->address('to', $recipient);
+            }
+        }
         $mail->setHTML($html);
         $sent = $mail->send();
         $mail->reset();
