@@ -377,7 +377,7 @@
 			return d;
 		}
 	}; // }}}
-	var position = { // {{{ 
+	var position = { // {{{
 		// UNFINISHED
 		// The assignment in the while loop makes jslint cranky.
 		// I'll change it to a better loop later.
@@ -945,6 +945,11 @@
                                 return (tag.match(okTags) || tag.match(okLinks) || tag.match(okImg)) ? tag : ""
                             })
 
+                            // addeded by wenqiang, to prettify code output
+                            text = text.replace(/<pre><code>([^\r]*?)<\/code><\/pre>/gi, function (wholeMatch, m1) {
+                                return '<pre><code class="prettyprint">' + prettyPrintOne(m1) + '</code></pre>';
+                            })
+
                             wmd.panels.preview.innerHTML = text;  // original code
 			}
 
@@ -1176,7 +1181,7 @@
 					setMode("escape");
 				}
 				else if ((keyCode < 16 || keyCode > 20) && keyCode != 91) {
-					// 16-20 are shift, etc. 
+					// 16-20 are shift, etc.
 					// 91: left window key
 					// I think this might be a little messed up since there are
 					// a lot of nonprinting keys above 20.
@@ -1271,7 +1276,7 @@
 		var command = wmd.Command;
 
 		// Internet explorer has problems with CSS sprite buttons that use HTML
-		// lists.  When you click on the background image "button", IE will 
+		// lists.  When you click on the background image "button", IE will
 		// select the non-existent link text and discard the selection in the
 		// textarea.  The solution to this is to cache the textarea selection
 		// on the button's mousedown event and set a flag.  In the part of the
@@ -1331,7 +1336,7 @@
 					//
 					// var link = CreateLinkDialog();
 					// makeMarkdownLink(link);
-					// 
+					//
 					// Instead of this straightforward method of handling a
 					// dialog I have to pass any code which would execute
 					// after the dialog is dismissed (e.g. link creation)

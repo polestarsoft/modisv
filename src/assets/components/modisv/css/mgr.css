@@ -1,0 +1,57 @@
+/* View Ticket Message */
+
+.modisv-ticket-message
+{
+    padding: 10px 0;
+    overflow: auto;
+}
+
+.modisv-ticket-message h5.header
+{
+    padding: 6px;
+    margin-bottom: 15px;
+    color: #FFF;
+    background: #628F2C;
+    font: normal 10px arial;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.modisv-ticket-message h5.header.staff-response
+{
+    background: #4C9ACF
+}
+
+.modisv-ticket-message h5.header a.num
+{
+    margin-left: 5px
+}
+
+.modisv-ticket-message h5.header span.info
+{
+    margin-left: 10px
+}
+
+.modisv-ticket-message h5.header span.actions
+{
+    float: right
+}
+
+.modisv-ticket-message h5.header span.actions a
+{
+    margin-right: 5px;
+    color: #ccc;
+}
+
+.modisv-ticket-message img.avatar
+{
+    position: absolute;
+    margin-left: 3px;
+}
+
+.modisv-ticket-message div.content
+{
+    margin-left: 45px;
+    padding-left: 15px;
+}

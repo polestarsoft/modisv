@@ -107,6 +107,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
                         for(var i=0; i<this.messages.length; i++)
                             html += this.renderMessage(i);
                         Ext.select('#modisv-ticket-messages .x-grid3-body').update(html);
+                        prettyPrint();  // prettify the code
                         mask.hide();
                     },
                     scope: this
@@ -138,20 +139,18 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
     },
     renderMessage: function(index) {
         var tpl = Ext.DomHelper.createTemplate('\
-            <div style="padding:10px 0; overflow: auto;">\
-                <h5 style="padding:6px; margin-bottom:15px; color:#FFF; background:{bg};  font:normal 10px arial; -moz-border-radius:3px; -webkit-border-radius:3px;">\
+            <div class="modisv-ticket-message">\
+                <h5 class="header {cls}">\
                     <a name="{id}"></a>\
-                    <a style="margin-left:5px" href="#{id}">{number}</a>\
-                    <span style="margin-left:10px">{posted} by <b>{author}</b> on {date} via {source} ({ip})</span>\
-                    <span style="float:right;">\
-                        <a style="margin-right:5px; color:#ccc;" href="#" onclick="Ext.getCmp(\'modisv-ticketpanel\').updateMessage(\'{index}\');">Update</a>\
-                        <a style="margin-right:5px; color:#ccc;" href="#" onclick="Ext.getCmp(\'modisv-ticketpanel\').removeMessage(\'{index}\');">Remove</a>\
+                    <a class="num" href="#{id}">{number}</a>\
+                    <span class="info">{posted} by <b>{author}</b> on {date} via {source} ({ip})</span>\
+                    <span class="actions">\
+                        <a href="#" onclick="Ext.getCmp(\'modisv-ticketpanel\').updateMessage(\'{index}\');">Update</a>\
+                        <a href="#" onclick="Ext.getCmp(\'modisv-ticketpanel\').removeMessage(\'{index}\');">Remove</a>\
                     </span>\
                 </h5>\
-                <img style="float:left; margin-left:3px;" src="http://www.gravatar.com/avatar/{hash}?s=32&d=identicon" />\
-                <div style="margin-left:45px; padding-left:15px; border-left:1px solid #ddd;">\
-                    <pre style="font:normal 12px Helvetica,Arial,sans-serif;">{content}</pre>\
-                </div>\
+                <img class="avatar" src="http://www.gravatar.com/avatar/{hash}?s=32&d=identicon" />\
+                <div class="content wmd">{content}</div>\
             </div>');
 
         var message = this.messages[index];
@@ -163,10 +162,10 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             hash: MD5((message.author_email || '').replace(/^\s+|\s+$/g, '').toLowerCase()),
             posted: index == 0 ? 'Created' : 'Posted',
             author: message.author_name ? (message.author_name + (message.author_email ? (' &lt;' + message.author_email + '&gt;') : '' )) : message.author_email,
-            bg: message.staff_response ? '#4C9ACF' : '#628F2C',
+            cls: message.staff_response ? 'staff-response' : '',
             source: message.source,
             ip: message.ip,
-            content: Ext.util.Format.htmlEncode(message.body) //TODO: fix me
+            content: message.html
         });
     },
     replyTicket: function() {

@@ -18,4 +18,21 @@ class miMessage extends xPDOSimpleObject {
         return parent::save($cacheFlag);
     }
 
+    public function getHtmlBody() {
+        // get the body markdown txt
+        $body = $this->get('body') ? : '';
+        if (empty($body)) {
+            return '';
+        }
+
+        // transform using the markdown parser
+        $parserClass = $this->xpdo->loadClass('markdown.MarkdownParser', dirname(dirname(dirname(__FILE__))) . '/', true, true);
+        $parser = new $parserClass();
+        $html = $parser->transform($body);
+
+        //TODO: filter unwanted tags
+
+        return $html;
+    }
+
 }

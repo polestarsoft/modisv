@@ -35,6 +35,7 @@ $messages = $ticket->getMany('Messages');
 $list = array();
 foreach ($messages as $message) {
     $item = $message->toArray();
+    $item['html'] = $message->getHtmlBody();
     $list[] = $item;
 }
 

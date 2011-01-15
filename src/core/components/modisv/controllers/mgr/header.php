@@ -26,6 +26,7 @@
  * @package modisv
  * @subpackage controllers
  */
+$modx->regClientCSS($modisv->config['cssUrl'] . 'mgr.css');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/modisv.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/utils/vtypes.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/utils/renderers.js');
@@ -42,6 +43,8 @@ $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.upd
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.window.js');
 
 $modx->regClientCSS($modisv->config['cssUrl'] . 'wmd.css');
+$modx->regClientCSS($modisv->config['cssUrl'] . 'prettify.css');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/3rdparty/prettify.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/3rdparty/wmd.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/3rdparty/showdown.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/3rdparty/ps.wmdeditor.js');
