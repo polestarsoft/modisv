@@ -30,6 +30,8 @@ PS.WmdEditor = function(config){
     PS.WmdEditor.superclass.constructor.call(this, config);
 };
 Ext.extend(PS.WmdEditor, Ext.form.TextArea, {
+    allowTab: true,
+    tabString: '    ',
     onRender: function(ct, position) {
         PS.WmdEditor.superclass.onRender.call(this, ct, position);
         this.wrap = this.el.wrap({
@@ -56,20 +58,20 @@ Ext.extend(PS.WmdEditor, Ext.form.TextArea, {
         this.wrap.setWidth(w);
     },
     fireKey : function(e){
-        if (e.getKey() == e.TAB) {
+        if (e.getKey() == e.TAB && this.allowTab) {
             var ta = this.el.dom;
             if (e.srcElement)
             {
                 ta.selection = document.selection.createRange();
-                ta.selection.text = "    ";
+                ta.selection.text = this.tabString;
             }
             else if (e.target)
             {
                 var start = ta.value.substring(0, ta.selectionStart);
                 var end = ta.value.substring(ta.selectionEnd, ta.value.length);
-                var newRange = ta.selectionEnd + 4;
+                var newRange = ta.selectionEnd + this.tabString.length;
                 var scrollPos = ta.scrollTop;
-                ta.value = String.concat(start, "    ", end);
+                ta.value = String.concat(start, this.tabString, end);
                 ta.setSelectionRange(newRange, newRange);
                 ta.scrollTop = scrollPos;
             }
