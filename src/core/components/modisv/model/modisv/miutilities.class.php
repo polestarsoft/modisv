@@ -106,6 +106,60 @@ class miUtilities {
         return false;
     }
 
+    public static function joinPaths() {
+        $args = func_get_args();
+        $paths = array();
+        foreach ($args as $arg) {
+            $paths = array_merge($paths, (array) $arg);
+        }
+
+        $paths = array_map(create_function('$p', 'return trim($p, "/");'), $paths);
+        $paths = array_filter($paths);
+        return join('/', $paths);
+    }
+
+    public static function createDirectory($path, $relativeToModxBase = true) {
+        global $modx;
+        $fileHandler = $modx->getService('fileHandler', 'modFileHandler');
+
+        // get full path
+        if ($relativeToModxBase) {
+            $path = self::joinPaths(MODX_BASE_PATH, $path);
+        }
+
+        $directory = $fileHandler->make($path, array(), 'modDirectory');
+        $directory->create();
+        if (!is_dir($directory->getPath()) || !$directory->isReadable() || !$directory->isWritable()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function sanitizePath($path) {
+        $path = str_replace(array('../', './'), '', $path);
+        $path = strtr($path, '\\', '/');
+        $path = str_replace('//', '/', $path);
+
+        return $path;
+    }
+
+    public static function removeFile($file, $relativeToModxBase = true) {
+        global $modx;
+        $fileHandler = $modx->getService('fileHandler', 'modFileHandler');
+
+        // get full path
+        if ($relativeToModxBase) {
+            $file = self::joinPaths(MODX_BASE_PATH, $file);
+        }
+
+        $file = $fileHandler->make($file);
+        if (!($file instanceof modFile))
+            return false;
+
+        return $file->remove();
+    }
+
 }
 
 ?>
