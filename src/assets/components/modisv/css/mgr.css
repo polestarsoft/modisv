@@ -10,9 +10,9 @@
 {
     padding: 6px;
     margin-bottom: 15px;
-    color: #FFF;
-    background: #628F2C;
-    font: normal 10px arial;
+    color: #333;
+    background: #ddd;
+    font: normal 11px arial;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;
@@ -20,17 +20,17 @@
 
 .modisv-ticket-message h5.header.staff-response
 {
-    background: #4C9ACF
+    background: #6b6;
 }
 
 .modisv-ticket-message h5.header a.num
 {
-    margin-left: 5px
+    margin-left: 5px;
 }
 
 .modisv-ticket-message h5.header span.info
 {
-    margin-left: 10px
+    margin-left: 10px;
 }
 
 .modisv-ticket-message h5.header span.actions
@@ -38,10 +38,12 @@
     float: right
 }
 
-.modisv-ticket-message h5.header span.actions a
+.modisv-ticket-message h5.header span.actions a,
+.modisv-ticket-message h5.header span.actions a:visited
 {
+    font-size:10px;
+    color: #111;
     margin-right: 5px;
-    color: #ccc;
 }
 
 .modisv-ticket-message img.avatar
@@ -55,3 +57,26 @@
     margin-left: 45px;
     padding-left: 15px;
 }
+
+.modisv-ticket-message div.attachments
+{
+    margin:10px 0 0 350px;
+    padding:8px 6px 8px 20px;
+    font-size:10px;
+    background:#ace;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+}
+
+.modisv-ticket-message div.attachment span
+{
+    margin-left:10px;
+}
+
+.modisv-ticket-message div.attachments a.remove
+{
+    float:right;
+    margin-right:5px;
+}
+

@@ -42,6 +42,11 @@ $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.lis
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.updatepanel.js');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/widgets/modisv.window.js');
 
+// file upload
+$modx->regClientCSS($modisv->config['cssUrl'] . 'fileuploadfield.css');
+$modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/3rdparty/fileuploadfield.js');
+
+// wmd & prettyPrint
 $modx->regClientCSS($modisv->config['cssUrl'] . 'wmd.css');
 $modx->regClientCSS($modisv->config['cssUrl'] . 'prettify.css');
 $modx->regClientStartupScript($modisv->config['jsUrl'] . 'mgr/3rdparty/prettify.js');

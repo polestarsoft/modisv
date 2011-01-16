@@ -62,11 +62,11 @@ modISV.panel.Ticket = function (config) {
 
     modISV.panel.Ticket.superclass.constructor.call(this, config);
 
-    this.loadTicket();
+    this._refresh();
 };
 
 Ext.extend(modISV.panel.Ticket, MODx.Panel, {
-    loadTicket: function () {
+    _refresh: function () {
         var mask = new Ext.LoadMask( Ext.get('modisv-ticket-messages'), {
             msg: "Loading"
         });
@@ -150,7 +150,10 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
                     </span>\
                 </h5>\
                 <img class="avatar" src="http://www.gravatar.com/avatar/{hash}?s=32&d=identicon" />\
-                <div class="content wmd">{content}</div>\
+                <div class="content wmd">\
+                    {content}\
+                    {attachments}\
+                </div>\
             </div>');
 
         var message = this.messages[index];
@@ -165,8 +168,33 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             cls: message.staff_response ? 'staff-response' : '',
             source: message.source,
             ip: message.ip,
-            content: message.html
+            content: message.html,
+            attachments: this.renderAttachments(message.attachments)
         });
+    },
+    renderAttachments: function(attachments)  {
+        if(!attachments || attachments.length == 0)
+            return '';
+
+        var tpl = Ext.DomHelper.createTemplate('\
+            <div class="attachment">\
+                <a class="name" href="{url}" title="Download">{name}</a>\
+                <span class="size">{size}</span>\
+                <a href="#" class="remove" onclick="Ext.getCmp(\'modisv-ticketpanel\').removeAttachment(\'{id}\');">Remove</a>\
+            </div>');
+
+        var attachments_html = '<div class="attachments">';
+        for(var i=0; i<attachments.length; i++) {
+            var a = attachments[i];
+            attachments_html += tpl.apply({
+                id: a.id,
+                url: a.url,
+                name: a.name,
+                size: (a.size / 1024).toFixed(1) + 'KB'
+            });
+        }
+        attachments_html += '</div>';
+        return attachments_html;
     },
     replyTicket: function() {
         MODx.load({
@@ -175,7 +203,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             listeners: {
                 'success': {
                     fn: function () {
-                        this.loadTicket();
+                        this._refresh();
                     },
                     scope: this
                 }
@@ -195,7 +223,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             listeners: {
                 'success': {
                     fn: function (r) {
-                        this.loadTicket();
+                        this._refresh();
                     },
                     scope: this
                 }
@@ -216,7 +244,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             listeners: {
                 'success': {
                     fn: function (r) {
-                        this.loadTicket();
+                        this._refresh();
                     },
                     scope: this
                 }
@@ -230,7 +258,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             listeners: {
                 'success': {
                     fn: function() {
-                        this.loadTicket();
+                        this._refresh();
                     },
                     scope: this
                 }
@@ -244,7 +272,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             listeners: {
                 'success': {
                     fn: function() {
-                        this.loadTicket();
+                        this._refresh();
                     },
                     scope: this
                 }
@@ -258,7 +286,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             listeners: {
                 'success': {
                     fn: function () {
-                        this.loadTicket();
+                        this._refresh();
                     },
                     scope: this
                 }
@@ -277,7 +305,27 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             listeners: {
                 'success': {
                     fn: function (r) {
-                        this.loadTicket();
+                        this._refresh();
+                    },
+                    scope: this
+                }
+            }
+        });
+        return true;
+    },
+    removeAttachment: function(id) {
+        MODx.msg.confirm({
+            title: 'Remove Attachment',
+            text: 'Are you sure you want to remove this attachment?',
+            url: modISV.config.connector_url,
+            params: {
+                action: 'mgr/attachment/remove',
+                id: id
+            },
+            listeners: {
+                'success': {
+                    fn: function (r) {
+                        this._refresh();
                     },
                     scope: this
                 }

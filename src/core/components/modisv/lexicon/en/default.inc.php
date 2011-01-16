@@ -52,3 +52,5 @@ $_lang['setting_modisv.ticket_reply_separator'] = 'Ticket reply separator ';
 $_lang['setting_modisv.ticket_reply_separator_desc'] = 'The line in ticket emails used as the marker for the end of the reply message.';
 $_lang['setting_modisv.view_ticket_page'] = 'View ticket page';
 $_lang['setting_modisv.view_ticket_page_desc'] = 'The resource ID of the view ticket page.';
+$_lang['setting_modisv.ticket_attachments_dir'] = 'Ticket attachements directory';
+$_lang['setting_modisv.ticket_attachments_dir_desc'] = 'The relative path to the MODx base directory, where to store ticket attachment files.';

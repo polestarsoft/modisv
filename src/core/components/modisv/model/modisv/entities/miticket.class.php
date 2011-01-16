@@ -43,68 +43,6 @@ class miTicket extends xPDOSimpleObject {
         return parent::save($cacheFlag);
     }
 
-    public function reply($properties) {
-        global $modx;
-
-        // check status
-        if ($this->get('status') != 'open')
-            return false;
-
-        // create message
-        $message = $modx->newObject('miMessage');
-        $message->fromArray($properties);
-        $message->set('ticket', $this->get('id'));
-        $message->set('staff_response', true);
-        $message->set('author_name', $modx->user->getOne('Profile')->get('fullname'));
-        $message->set('author_email', $modx->user->get('username'));
-        $message->set('source', 'web');
-        $message->set('ip', $_SERVER['REMOTE_ADDR']);
-        $message->set('ticket', $this->get('id'));
-
-        // save the reply message
-        if (!$message->save()) {
-            $modx->log(modX::LOG_LEVEL_ERROR, '[modISV] An error occured while trying to save the reply message: ' . print_r($message->toArray(), true));
-            return false;
-        }
-
-        // save the ticket
-        $this->set('lastresponseon', time());
-        $this->set('answered', true);
-        if (!$this->save()) {
-            $modx->log(modX::LOG_LEVEL_ERROR, '[modISV] An error occured while trying to save the ticket: ' . print_r($this->toArray(), true));
-            return false;
-        }
-
-        // get view ticket url
-        $xhtmlUrlSetting = $modx->config['xhtml_urls'];
-        $modx->config['xhtml_urls'] = false;            // disable xhtml_urls temporarily
-        $url = $modx->makeUrl($modx->context->getOption('modisv.view_ticket_page'), '', array('guid' => strtolower($this->get('guid')), 'email' => $this->get('author_email')), 'full');
-        $url = str_replace('%40', '@', $url);
-        $modx->config['xhtml_urls'] = $xhtmlUrlSetting; // restore xhtml_urls
-        // send notification to watchers
-        $phs = $this->toArray('ticket.');
-        $phs = array_merge($phs, $message->toArray('message.'));
-        $phs['ticket.url'] = $url;
-        $phs['message.attchements'] = '';
-        foreach ($message->getMany('Attachments') as $att) {
-            $phs['message.attchements'] .= sprintf('- %s %s\n', $att->getFileName(), $att->getUrl());
-        }
-        if ($this->get('watchers')) {
-            $sent = $modx->modisv->sendEmail(
-                            $this->get('watchers'),
-                            sprintf('RE: %s [#%s]', $this->get('subject'), strtoupper($this->get('guid'))),
-                            $modx->modisv->getChunk('miTicketReply', $phs),
-                            $modx->context->getOption('modisv.support_email')
-            );
-            if (!$sent) {
-                $modx->log(modX::LOG_LEVEL_ERROR, '[modISV] An error occured while trying to send ticket reply email to user: ' . print_r($this->toArray(), true));
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public function close() {
         if ($this->get('status') == 'closed') {
             return false;
@@ -130,6 +68,20 @@ class miTicket extends xPDOSimpleObject {
         $watchers .= $email;
         $this->set('watchers', $watchers);
         return $this->save();
+    }
+
+    public function getUrl($includeEmail = true) {
+        global $modx;
+        $xhtmlUrlSetting = $modx->config['xhtml_urls'];
+        $modx->config['xhtml_urls'] = false;            // disable xhtml_urls temporarily
+        if ($includeEmail) {
+            $url = $modx->makeUrl($modx->getOption('modisv.view_ticket_page'), '', array('guid' => strtolower($this->get('guid')), 'email' => $this->get('author_email')), 'full');
+            $url = str_replace('%40', '@', $url);   // replace %40 back to @
+        } else {
+            $url = $modx->makeUrl($modx->getOption('modisv.view_ticket_page'), '', array('guid' => strtolower($this->get('guid'))), 'full');
+        }
+        $modx->config['xhtml_urls'] = $xhtmlUrlSetting; // restore xhtml_urls
+        return $url;
     }
 
 }

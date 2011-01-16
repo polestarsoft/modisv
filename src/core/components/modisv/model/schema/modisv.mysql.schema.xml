@@ -286,6 +286,7 @@
             <rule field="product" name="productExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />
             <rule field="author_email" name="authorEmailNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
             <rule field="target_version" name="validTargetVersion"  type="preg_match" rule="/^(\d{1,2}\.\d{1,2}(\.\d{1,5})?|unplanned)$/" message="Invalid target version, must be a valid version number or 'unplanned'." />
+            <rule field="watchers" name="validWatchers"  type="preg_match" rule="/^([^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+(,[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+)*)?$/" message="Invalid watchers." />
             <rule field="status" name="validStatus"  type="xPDOValidationRule" rule="miEnumExistsRule" />
             <rule field="source" name="validSource"  type="xPDOValidationRule" rule="miEnumExistsRule" />
         </validation>
@@ -315,6 +316,7 @@
         <field key="ticket" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
         <field key="message" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
         <field key="path" dbtype="text" phptype="string" null="false" default="" />
+        <field key="name" dbtype="text" phptype="string" null="false" default="" />
         <field key="size" dbtype="int" phptype="integer" attributes="unsigned" null="false" default="0" />
         <field key="createdon" dbtype="datetime" phptype="datetime" />
         <field key="updatedon" dbtype="datetime" phptype="datetime" />
@@ -323,7 +325,7 @@
         <validation>
             <rule field="ticket" name="ticketExists"  type="xPDOValidationRule" rule="miObjectExistsRule" />
             <rule field="message" name="messageExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />
-            <rule field="path" name="pathNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
+            <rule field="path" name="fileExists" type="xPDOValidationRule" rule="miFileExistsRule" />
         </validation>
     </object>
 

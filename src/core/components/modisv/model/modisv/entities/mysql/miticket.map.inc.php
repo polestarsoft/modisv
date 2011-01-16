@@ -299,6 +299,15 @@ $xpdo_meta_map['miTicket']= array (
           'message' => 'Invalid target version, must be a valid version number or \'unplanned\'.',
         ),
       ),
+      'watchers' => 
+      array (
+        'validWatchers' => 
+        array (
+          'type' => 'preg_match',
+          'rule' => '/^([^@]+@[a-zA-Z0-9._-]+\\.[a-zA-Z]+(,[^@]+@[a-zA-Z0-9._-]+\\.[a-zA-Z]+)*)?$/',
+          'message' => 'Invalid watchers.',
+        ),
+      ),
       'status' => 
       array (
         'validStatus' => 

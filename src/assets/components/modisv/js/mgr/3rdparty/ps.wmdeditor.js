@@ -52,10 +52,10 @@ Ext.extend(PS.WmdEditor, Ext.form.TextArea, {
     },
     onResize: function(w, h) {
         PS.WmdEditor.superclass.onResize.call(this, w, h);
-        this.el.setWidth('100%');
-        this.buttonBar.setWidth('100%');
-        this.preview.setWidth('100%');
         this.wrap.setWidth(w);
+        this.el.setWidth(this.wrap.getWidth());
+        this.buttonBar.setWidth(this.wrap.getWidth());
+        this.preview.setWidth(this.wrap.getWidth());
     },
     fireKey : function(e){
         if (e.getKey() == e.TAB && this.allowTab) {

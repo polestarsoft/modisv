@@ -10,6 +10,7 @@ $xpdo_meta_map['miAttachment']= array (
     'ticket' => 0,
     'message' => 0,
     'path' => '',
+    'name' => '',
     'size' => 0,
     'createdon' => NULL,
     'updatedon' => NULL,
@@ -37,6 +38,13 @@ $xpdo_meta_map['miAttachment']= array (
       'index' => 'index',
     ),
     'path' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'name' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
@@ -104,10 +112,10 @@ $xpdo_meta_map['miAttachment']= array (
       ),
       'path' => 
       array (
-        'pathNotEmpty' => 
+        'fileExists' => 
         array (
           'type' => 'xPDOValidationRule',
-          'rule' => 'miNotEmptyRule',
+          'rule' => 'miFileExistsRule',
         ),
       ),
     ),

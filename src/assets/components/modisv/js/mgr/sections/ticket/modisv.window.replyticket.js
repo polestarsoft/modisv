@@ -8,8 +8,9 @@ modISV.window.ReplyTicket = function (config) {
             id: config.record.id
         },
         title: 'Reply Ticket',
+        fileUpload: true,
         height: 150,
-        width: 530,
+        width: 730,
         labelAlign: 'left',
         labelWidth: 50,
         keys: {}, // to suppress enter-submit
@@ -17,13 +18,30 @@ modISV.window.ReplyTicket = function (config) {
             xtype: 'modisv-maskdowneditor',
             fieldLabel: 'Body',
             name: 'body',
-            width: '90%',
+            width: 600,
             grow: true,
             growMax: 300
         },
         {
-            xtype: 'hidden',
-            name: 'id'
+            xtype: 'fileuploadfield',
+            fieldLabel: 'File 1',
+            name: 'file1',
+            width: 600,
+            height:26
+        },
+        {
+            xtype: 'fileuploadfield',
+            fieldLabel: 'File 2',
+            name: 'file2',
+            width: 600,
+            height:26
+        },
+        {
+            xtype: 'fileuploadfield',
+            fieldLabel: 'File 3',
+            name: 'file3',
+            width: 600,
+            height:26
         }]
     });
     modISV.window.ReplyTicket.superclass.constructor.call(this, config);

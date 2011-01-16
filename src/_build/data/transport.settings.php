@@ -145,4 +145,13 @@ $settings['modisv.view_ticket_page']->fromArray(array(
     'area' => 'ticket'
 ), '', true, true);
 
+$settings['modisv.ticket_attachments_dir'] = $modx->newObject('modSystemSetting');
+$settings['modisv.ticket_attachments_dir']->fromArray(array(
+    'key' => 'modisv.ticket_attachments_dir',
+    'value' => 'assets/tickets',
+    'xtype' => 'textfield',
+    'namespace' => 'modisv',
+    'area' => 'ticket'
+), '', true, true);
+
 return $settings;

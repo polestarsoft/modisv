@@ -39,6 +39,12 @@ $list = array();
 foreach ($messages as $message) {
     $item = $message->toArray();
     $item['html'] = $message->getHtmlBody();
+    
+    // get attachments
+    $item['attachments'] = array();
+    foreach($message->getMany('Attachments') as $att) {
+        $item['attachments'][] = array('id' => $att->get('id'), 'name' => $att->getFileName(), 'size' => $att->get('size'), 'url' => $att->getUrl());
+    }
     $list[] = $item;
 }
 
