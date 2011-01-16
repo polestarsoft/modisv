@@ -81,7 +81,6 @@ class miTicket extends xPDOSimpleObject {
         $url = $modx->makeUrl($modx->context->getOption('modisv.view_ticket_page'), '', array('guid' => strtolower($this->get('guid')), 'email' => $this->get('author_email')), 'full');
         $url = str_replace('%40', '@', $url);
         $modx->config['xhtml_urls'] = $xhtmlUrlSetting; // restore xhtml_urls
-
         // send notification to watchers
         $phs = $this->toArray('ticket.');
         $phs = array_merge($phs, $message->toArray('message.'));
@@ -90,16 +89,19 @@ class miTicket extends xPDOSimpleObject {
         foreach ($message->getMany('Attachments') as $att) {
             $phs['message.attchements'] .= sprintf('- %s %s\n', $att->getFileName(), $att->getUrl());
         }
-        $sent = $modx->modisv->sendEmail(
-                $this->get('watchers'),
-                sprintf('RE: %s [#%s]', $this->get('subject'), strtoupper($this->get('guid'))),
-                $modx->modisv->getChunk('miTicketReply', $phs),
-                $modx->context->getOption('modisv.support_email')
-        );
-        if(!$sent) {
-            $modx->log(modX::LOG_LEVEL_ERROR, '[modISV] An error occured while trying to send ticket reply email to user: ' . print_r($this->toArray(), true));
-            return false;
+        if ($this->get('watchers')) {
+            $sent = $modx->modisv->sendEmail(
+                            $this->get('watchers'),
+                            sprintf('RE: %s [#%s]', $this->get('subject'), strtoupper($this->get('guid'))),
+                            $modx->modisv->getChunk('miTicketReply', $phs),
+                            $modx->context->getOption('modisv.support_email')
+            );
+            if (!$sent) {
+                $modx->log(modX::LOG_LEVEL_ERROR, '[modISV] An error occured while trying to send ticket reply email to user: ' . print_r($this->toArray(), true));
+                return false;
+            }
         }
+
         return true;
     }
 
