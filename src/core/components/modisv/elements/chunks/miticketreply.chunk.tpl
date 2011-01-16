@@ -4,7 +4,7 @@ Subject: [[+ticket.subject]]
 
 [[+message.body]]
 
-[[!If? &subject=`[[+message.attachments]]` &operator=`isnotempty` &then=`
+[[+message.attachments:is=``:then=``:else=`
 Attachments for this ticket:
 [[+message.attachments]]
 `]]
