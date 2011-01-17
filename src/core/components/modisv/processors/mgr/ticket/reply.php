@@ -45,34 +45,20 @@ $message->set('author_name', $modx->user->getOne('Profile')->get('fullname'));
 $message->set('author_email', $modx->user->get('username'));
 $message->set('source', 'web');
 $message->set('ip', $_SERVER['REMOTE_ADDR']);
-$message->set('ticket', $ticket->get('id'));
 if (!$message->save()) {
     return $modx->error->failure('An error occurred while trying to save the reply message.');
 }
 
 // create attachments
-$allowedFileTypes = array_merge(explode(',', $modx->getOption('upload_files')), explode(',', $modx->getOption('upload_images')), explode(',', $modx->getOption('upload_media')), explode(',', $modx->getOption('upload_flash')));
-$maxFileSize = $modx->getOption('upload_maxsize', 1048576);
 foreach ($_FILES as $file) {
     if ($file['error'] != 0)
         continue;
     if (empty($file['name']))
         continue;
-    // check extension
-    $ext = @pathinfo($file['name'], PATHINFO_EXTENSION);
-    if (empty($ext) || !in_array($ext, $allowedFileTypes)) {
-        return $modx->error->failure("The extension '{$ext}' is not permitted.");
-    }
-
-    // check file size
-    $size = @filesize($file['tmp_name']);
-    if ($size > $maxFileSize) {
-        return $modx->error->failure('Uploaded file is too large.');
-    }
 
     // create attachment
     $attachment = $modx->newObject('miAttachment');
-    if (!$attachment->fromFile($file['tmp_name'], $message, $file['name'], $size)) {
+    if (!$attachment->fromFile($file['tmp_name'], $message, $file['name'])) {
         return $modx->error->failure("An error occurred while trying to create the attachment '{$file['name']}'.");
     }
     if (!$attachment->save()) {
@@ -99,7 +85,7 @@ if ($ticket->get('watchers')) {
     $sent = $modx->modisv->sendEmail(
                     $ticket->get('watchers'),
                     sprintf('RE: %s [#%s]', $ticket->get('subject'), strtoupper($ticket->get('guid'))),
-                    $modx->modisv->getChunk('miTicketReply', $phs),
+                    $modx->modisv->getChunk('miTicketReplyEmail', $phs),
                     $modx->getOption('modisv.support_email')
     );
     if (!$sent) {
