@@ -84,4 +84,5 @@ class miTicket extends xPDOSimpleObject {
         return $url;
     }
 
+
 }

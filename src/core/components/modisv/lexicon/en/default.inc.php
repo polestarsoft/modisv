@@ -54,3 +54,5 @@ $_lang['setting_modisv.view_ticket_page'] = 'View ticket page';
 $_lang['setting_modisv.view_ticket_page_desc'] = 'The resource ID of the view ticket page.';
 $_lang['setting_modisv.ticket_attachments_dir'] = 'Ticket attachements directory';
 $_lang['setting_modisv.ticket_attachments_dir_desc'] = 'The relative path to the MODx base directory, where to store ticket attachment files.';
+$_lang['setting_modisv.notification_emails'] = 'Notification emails';
+$_lang['setting_modisv.notification_emails_desc'] = 'A comma separated email addresses, to which the new ticket/message notifications will be sent.';

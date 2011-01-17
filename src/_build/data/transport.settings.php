@@ -154,4 +154,13 @@ $settings['modisv.ticket_attachments_dir']->fromArray(array(
     'area' => 'ticket'
 ), '', true, true);
 
+$settings['modisv.notification_emails'] = $modx->newObject('modSystemSetting');
+$settings['modisv.notification_emails']->fromArray(array(
+    'key' => 'modisv.notification_emails',
+    'value' => '',
+    'xtype' => 'textfield',
+    'namespace' => 'modisv',
+    'area' => 'ticket'
+), '', true, true);
+
 return $settings;
