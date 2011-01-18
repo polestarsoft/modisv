@@ -79,7 +79,12 @@ if (!empty($_POST)) {
     }
 }
 
-if (empty($phs))
+if (empty($phs)) {
     $phs = array();
+    if($modx->user && $modx->user->isAuthenticated($modx->context->get('key'))) {
+        $phs['author_name'] = $modx->user->getOne('Profile')->get('fullname');
+        $phs['author_email'] = $modx->user->get('username');
+    }
+}
 return $modisv->getChunk($tpl, $phs);
 
