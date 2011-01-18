@@ -119,7 +119,7 @@ if (!empty($_POST)) { // post reply
         $phs = $ticket->toArray('ticket.');
         $phs = array_merge($phs, $message->toArray('message.'));
         $phs['ticket.url'] = $ticket->getUrl(false);
-        $staffs = $modx->getOption('modisv.notification_emails');
+        $staffs = $modx->getOption('modisv.ticket_notification_emails');
         if (!empty($staffs)) {
             $sent = $modisv->sendEmail(
                             $staffs,
@@ -160,7 +160,6 @@ foreach ($messages as $message) {
 
 $phs = $ticket->toArray();
 $phs['messages'] = $wrapperMessages;
-$phs['product_name'] = $ticket->getOne('Product')->get('name');
 $phs = array_merge($phs, $_POST);
 foreach ($errors as $k => $v) {
     $phs['error.' . $k] = $v;
