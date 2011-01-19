@@ -20,7 +20,7 @@ function renderImageSmall(val) {
 }
 
 function renderFilePath(val) {
-    return '<a href="' + MODx.config.base_url + val.replace(/^\//, "") + '">' +  MODx.config.base_url + val.replace(/^\//, "") + '</a>';
+    return '<a href="?a=' + modISV.request.a + '&sa=download' + '&path=' + val.replace(/^\//, "") + '">' + val.replace(/^\//, "") + '</a>';
 }
 
 function renderFileSize(val) {
