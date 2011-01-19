@@ -127,10 +127,6 @@ Ext.extend(modISV.grid.Tickets, modISV.Grid, {
         if (this.menu.record && this.menu.record.id)
             location.href = '?a=' + modISV.request.a + '&sa=ticket&id=' + this.menu.record.id;
     },
-    viewTicketInFrontEnd: function (btn, e) {
-        if (this.menu.record && this.menu.record.id)
-            location.href = MODx.config.site_url + 'index.php?id=' + MODx.config['modisv.view_ticket_page'] + '&guid=' + this.menu.record.guid;
-    },
     removeTicket: function (btn, e) {
         if (!this.menu.record) return false;
 

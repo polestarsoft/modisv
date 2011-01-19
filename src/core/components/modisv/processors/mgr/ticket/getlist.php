@@ -80,10 +80,10 @@ foreach ($tickets as $ticket) {
 
     // check if the author is our user
     $user = $modx->getObject('modUser', array('username' => $ticket->get('author_email')));
-    if($user) {
+    if ($user) {
         $item['author_id'] = $user->get('id');
     }
-    if($ticket->get('product') && $ticket->getOne('Product')) {
+    if ($ticket->get('product') && $ticket->getOne('Product')) {
         $item['product_name'] = $ticket->getOne('Product')->get('name');
     }
 
@@ -92,7 +92,7 @@ foreach ($tickets as $ticket) {
         'text' => 'Update Ticket',
         'handler' => 'this.updateTicket',
     );
-    
+
     $item['menu'][] = '-';
     $item['menu'][] = array(
         'text' => 'Remove Ticket',
@@ -103,10 +103,6 @@ foreach ($tickets as $ticket) {
     $item['menu'][] = array(
         'text' => 'View Ticket',
         'handler' => 'this.viewTicket',
-    );
-    $item['menu'][] = array(
-        'text' => 'View Ticket in Frontend',
-        'handler' => 'this.viewTicketInFrontEnd',
     );
 
     $list[] = $item;

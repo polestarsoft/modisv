@@ -10,6 +10,7 @@ $promoteCount = (int) $modx->getOption('promoteCount', $scriptProperties, 0);
 $maxAttempts = (int) $modx->getOption('maxAttempts', $scriptProperties, 10);
 $timeout = (int) $modx->getOption('timeout', $scriptProperties, 60 * 10);
 $concurrentLimit = (int) $modx->getOption('timeout', $scriptProperties, 10);
+
 $answer = $modx->getOption('answer', $scriptProperties, '');
 $id = $modx->getOption('id', $scriptProperties, '');
 

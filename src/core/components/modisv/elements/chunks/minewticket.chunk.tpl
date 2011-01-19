@@ -1,6 +1,7 @@
 <div class="new_ticket">
   <form action="[[~[[*id]]]]" method="post">
     [[!If? &subject=`[[+error.error_message]]` &operator=`isnotempty` &then=`<span class="error">[[+error.error_message]]</span>` ]]
+    [[+error.error_message:is=``:then=``:else=`<span class="error">[[+error.error_message]]</span>` ]]
     <fieldset>
       <dl class="name">
         <dt><label for="name">Name <em>(Optional)</em></label></dt>

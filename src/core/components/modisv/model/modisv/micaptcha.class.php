@@ -62,13 +62,13 @@ class miCaptcha {
         }
 
         // get the captcha
-        $this->captcha = & $_SESSION['captcha'];
+        $this->captcha = & $_SESSION['modisv.captcha'];
         if (!is_array($this->captcha) || empty($this->captcha)) {
             $this->captcha = array(
                 'successes' => 0,
                 'errors' => 0,
                 'answers' => array());
-            $_SESSION['captcha'] = & $this->captcha;
+            $_SESSION['modisv.captcha'] = & $this->captcha;
         }
 
         // clear expired captcha

@@ -30,7 +30,7 @@ class miAttachment extends xPDOSimpleObject {
         return $this->get('name');
     }
 
-    public function getUrl($includeEmail = true) {
+    public function getUrl() {
         $ticket = $this->getOne('Ticket');
         $url = $ticket->getUrl() . '&file=' . $this->get('id');
         return $url;
@@ -82,6 +82,16 @@ class miAttachment extends xPDOSimpleObject {
         $this->set('ticket', $ticket->get('id'));
 
         return true;
+    }
+
+
+    public function toArray($keyPrefix= '', $rawValues= false, $excludeLazy= false) {
+        $result = parent::toArray($keyPrefix, $rawValues, $excludeLazy);
+
+        // extra fields
+        $result[$keyPrefix . 'url'] = $this->getUrl();
+        
+        return $result;
     }
 
 }

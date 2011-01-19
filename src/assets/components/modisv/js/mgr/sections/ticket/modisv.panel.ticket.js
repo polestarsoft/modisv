@@ -74,7 +74,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
         MODx.Ajax.request({
             url: modISV.config.connector_url,
             params: {
-                action: 'mgr/ticket/getmessages',
+                action: 'mgr/ticket/get',
                 ticket: modISV.request.id
             },
             listeners: {
@@ -188,7 +188,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             var a = attachments[i];
             attachments_html += tpl.apply({
                 id: a.id,
-                url: a.url,
+                url: '?a=' + modISV.request.a + '&sa=download' + '&path=' + a.path.replace(/^\//, ""),
                 name: a.name,
                 size: (a.size / 1024).toFixed(1) + 'KB'
             });

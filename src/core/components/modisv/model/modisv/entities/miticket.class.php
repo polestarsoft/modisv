@@ -36,7 +36,6 @@ class miTicket extends xPDOSimpleObject {
         $this->set('updatedon', time());
         if ($this->isNew()) {
             $this->set('createdon', time());
-            $this->set('lastmessageon', time());
             miUtilities::setGuid($this);
         }
 
@@ -70,19 +69,193 @@ class miTicket extends xPDOSimpleObject {
         return $this->save();
     }
 
-    public function getUrl($includeEmail = true) {
+    public function getUrl() {
         global $modx;
         $xhtmlUrlSetting = $modx->config['xhtml_urls'];
         $modx->config['xhtml_urls'] = false;            // disable xhtml_urls temporarily
-        if ($includeEmail) {
-            $url = $modx->makeUrl($modx->getOption('modisv.view_ticket_page'), '', array('guid' => strtolower($this->get('guid')), 'email' => $this->get('author_email')), 'full');
-            $url = str_replace('%40', '@', $url);   // replace %40 back to @
-        } else {
-            $url = $modx->makeUrl($modx->getOption('modisv.view_ticket_page'), '', array('guid' => strtolower($this->get('guid'))), 'full');
-        }
+        $url = $modx->makeUrl($modx->getOption('modisv.view_ticket_page'), '', array('guid' => strtolower($this->get('guid'))), 'full');
         $modx->config['xhtml_urls'] = $xhtmlUrlSetting; // restore xhtml_urls
         return $url;
     }
 
+    public function getMessages() {
+        global $modx;
+        $c = $modx->newQuery('miMessage');
+        $c->where(array('ticket' => $this->get('id')));
+        $c->sortby('id');
+        return $modx->getCollection('miMessage', $c);
+    }
+
+    public function toArray($keyPrefix= '', $rawValues= false, $excludeLazy= false) {
+        $result = parent::toArray($keyPrefix, $rawValues, $excludeLazy);
+
+        // extra fields
+        $result[$keyPrefix . 'url'] = $this->getUrl();
+
+        return $result;
+    }
+
+    public function createNew($properties) {
+        global $modx;
+
+        // check input
+        if (empty($properties['body']) || strlen($properties['body']) < 20)
+            return false;
+        if (!preg_match("/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/", $properties['author_email']))
+            return false;
+        if (count($properties['files']) > $modx->getOption('modisv.upload_max_files', null, 10))
+            return false;
+        else if (array_reduce($properties['files'], create_function('$s,$f', 'return $s + $f["size"];')) > $modx->getOption('modisv.upload_max_size', null, 4194304))
+            return false;
+
+        // preprocess input
+        if (empty($properties['subject']))
+            $properties['subject'] = '[no subject]';
+
+        // create the ticket
+        $this->fromArray($properties);
+        if (!$this->get('watchers'))    // add the author as watcher in default
+            $this->set('watchers', $this->get('author_email'));
+        $this->set('lastmessageon', time());
+        if (!$this->save()) {
+            $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to save the ticket: " . print_r($this->toArray(), true));
+            return false;
+        }
+
+        // create the first message
+        $message = $modx->newObject('miMessage');
+        $message->fromArray($properties);
+        $message->set('ticket', $this->get('id'));
+        if (!$message->save()) {
+            $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to save the message:" . print_r($message->toArray(), true));
+            return false;
+        }
+
+        // send notification to staffs
+        $phs = $this->toArray('ticket.');
+        $phs['ticket.url'] = miUtilities::getManagerUrl('modisv', 'index', "&sa=ticket&id={$this->get('id')}");
+        $phs = array_merge($phs, $message->toArray('message.'));
+        $staffs = $modx->getOption('modisv.ticket_staffs');
+        if (!empty($staffs)) {
+            if (!miUtilities::sendEmail(
+                            $staffs,
+                            sprintf('New Ticket Created (Ticket: #%s)', $this->get('guid')),
+                            $modx->modisv->getChunk('miNewTicketNotification', $phs))) {
+                $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to send new ticket notification to staffs [#{$this->get('id')}].");
+                return false;
+            }
+        }
+
+        // send auto response
+        $phs['ticket.url'] = $this->getUrl() . "&anon_token=" . miTicketAuth::generateAnonToken($this->get('author_email'));
+        if (!miUtilities::sendEmail(
+                        $this->get('author_email'),
+                        sprintf('%s - New Ticket Created [#%s]', $modx->getOption('site_name'), strtoupper($this->get('guid'))),
+                        $modx->modisv->getChunk('miTicketAutoresponse', $phs),
+                        $modx->getOption('modisv.support_email'))) {
+            $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to send ticket auto response to user [#{$this->get('id')}].");
+            return false;
+        }
+
+        return true;
+    }
+
+    public function reply($properties) {
+        global $modx;
+
+        // check status
+        if ($this->get('status') != 'open')
+            return false;
+
+        // check input
+        if (empty($properties['body']) || strlen($properties['body']) < 20)
+            return false;
+        if (!preg_match("/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/", $properties['author_email']))
+            return false;
+        if (count($properties['files']) > $modx->getOption('modisv.upload_max_files', null, 10))
+            return false;
+        else if (array_reduce($properties['files'], create_function('$s,$f', 'return $s + $f["size"];')) > $modx->getOption('modisv.upload_max_size', null, 4194304))
+            return false;
+
+        // create message
+        $message = $modx->newObject('miMessage');
+        $message->fromArray($properties);
+        $message->set('ticket', $this->get('id'));
+        if (!$message->save()) {
+            $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to save the reply message:" . print_r($message->toArray(), true));
+            return false;
+        }
+
+        // create attachments
+        foreach ($properties['files'] as $file) {
+            if ($file['error'] != 0 || empty($file['name']))
+                continue;
+
+            // create attachment
+            $attachment = $modx->newObject('miAttachment');
+            if (!$attachment->fromFile($file['tmp_name'], $message, $file['name'])) {
+                $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to create the attachment '{$file['name']}'.");
+                return false;
+            }
+            if (!$attachment->save()) {
+                $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to save the attachment '{$file['name']}'.");
+                return false;
+            }
+        }
+
+        // save the ticket
+        if ($message->get('staff_response')) {
+            $this->set('answered', true);
+            $this->set('lastresponseon', time());
+        } else {
+            $this->set('lastmessageon', time());
+        }
+        if (!$this->save()) {
+            $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to save the ticket #{$this->get('id')}.");
+            return false;
+        }
+
+        // send notification to staffs
+        $phs = $this->toArray('ticket.');
+        $phs['ticket.url'] = miUtilities::getManagerUrl('modisv', 'index', "&sa=ticket&id={$this->get('id')}");
+        $phs = array_merge($phs, $message->toArray('message.'));
+
+        $staffs = array_filter(array_map('trim', explode(',', $modx->getOption('modisv.ticket_staffs'))));
+        foreach ($staffs as $staff) {
+            if ($staff === $message->get('author_email'))
+                continue;
+
+            if (!miUtilities::sendEmail(
+                            $staff,
+                            sprintf('New Message Received (Ticket: #%s)', $this->get('guid')),
+                            $modx->modisv->getChunk('miNewMessageNotification', $phs))) {
+                $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to send new message notification to staffs [#{$this->get('id')}].");
+                return false;
+            }
+        }
+
+        // send notification to watchers
+        $watchers = array_filter(array_map('trim', explode(',', $this->get('watchers'))));
+        foreach ($watchers as $watcher) {
+            if ($watcher === $message->get('author_email'))
+                continue;
+
+            $phs['ticket.url'] = $this->getUrl() . "&anon_token=" . miTicketAuth::generateAnonToken($watcher);
+            $phs['message.attachments'] = '';
+            foreach ($message->getMany('Attachments') as $att) {
+                $phs['message.attachments'] .= sprintf("- %s %s\n", $att->getFileName(), $att->getUrl() . "&anon_token=" . miTicketAuth::generateAnonToken($watcher));
+            }
+            if (!miUtilities::sendEmail(
+                            $watcher,
+                            sprintf('RE: %s [#%s]', $this->get('subject'), strtoupper($this->get('guid'))),
+                            $modx->modisv->getChunk('miTicketReply', $phs),
+                            $modx->getOption('modisv.support_email'))) {
+                $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to send new message notification to watcher {$watcher} [#{$this->get('id')}].");
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 }

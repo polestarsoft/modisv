@@ -67,6 +67,7 @@ class modISV {
         $this->modx->loadClass('modisv.miOrderFulfiller', $this->config['modelPath'], true, true);
         $this->modx->loadClass('modisv.miOrderMessageBuilder', $this->config['modelPath'], true, true);
         $this->modx->loadClass('modisv.miPaypal', $this->config['modelPath'], true, true);
+        $this->modx->loadClass('modisv.miTicketAuth', $this->config['modelPath'], true, true);
 
         switch ($ctx) {
             case 'mgr':
@@ -99,26 +100,7 @@ class modISV {
      * @return boolean Whehther the email was sent sucessfully.
      */
     public function sendEmail($to, $subject, $body, $from = null, $html = false) {
-        if ($from === null)
-            $from = $this->modx->getOption('misv.noreply_email');
-
-        $mail = $this->modx->getService('mail', 'mail.modPHPMailer');
-        $mail->set(modMail::MAIL_BODY, $body);
-        $mail->set(modMail::MAIL_FROM, $from);
-        $mail->set(modMail::MAIL_FROM_NAME, $this->modx->getOption('site_name'));
-        $mail->set(modMail::MAIL_SENDER, $from);
-        $mail->set(modMail::MAIL_SUBJECT, $subject);
-        $recipents = explode(',', $to);
-        foreach ($recipents as $recipient) {
-            if (preg_match("/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/", $recipient)) {
-                $mail->address('to', $recipient);
-            }
-        }
-        $mail->setHTML($html);
-        $sent = $mail->send();
-        $mail->reset();
-
-        return $sent;
+        return miUtilities::sendEmail($to, $subject, $body, $from, $html);
     }
 
     /**

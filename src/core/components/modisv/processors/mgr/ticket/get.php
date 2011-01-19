@@ -21,14 +21,40 @@
  * @package modisv
  */
 /**
- * Gets a ticket.
+ * Gets the ticket and a list of messages.
  *
  * @package modisv
  * @subpackage processors
  */
-$ticket = $modx->getObject('miTicket', $scriptProperties['id']);
+$ticket = $modx->getObject('miTicket', $scriptProperties['ticket']);
 if ($ticket == null)
     return $modx->error->failure('Ticket not specified or not exists.');
 
-$list = $ticket->toArray();
-return $modx->error->success('', $list);
+// get messages
+$list = array();
+foreach ($ticket->getMessages() as $message) {
+    $item = $message->toArray();
+    $item['html'] = $message->getHtmlBody();
+
+    // get attachments
+    $item['attachments'] = array();
+    foreach($message->getMany('Attachments') as $att) {
+        $item['attachments'][] = $att->toArray();
+    }
+    $list[] = $item;
+}
+
+$result = array();
+$result['messages'] = $list;
+
+// get the ticket
+$result['ticket'] = $ticket->toArray();
+$user = $modx->getObject('modUser', array('username' => $ticket->get('author_email')));
+if ($user) {
+    $result['ticket']['author_id'] = $user->get('id');
+}
+if ($ticket->get('product') && $ticket->getOne('Product')) {
+    $result['ticket']['product_name'] = $ticket->getOne('Product')->get('name');
+}
+
+return $modx->error->success('', $result);

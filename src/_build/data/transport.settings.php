@@ -127,10 +127,19 @@ $settings['modisv.rsa1024_modulus']->fromArray(array(
     'area' => 'keygen'
 ), '', true, true);
 
+$settings['modisv.captcha_qas'] = $modx->newObject('modSystemSetting');
+$settings['modisv.captcha_qas']->fromArray(array(
+    'key' => 'modisv.captcha_qas',
+    'value' => "What number comes after 8? 9,nine\nWhat number comes after 3? 4,four\nWhat number comes after 11? 12,twelve\nWhat number comes before 6? 5,five\nWhat number comes before 12? 11,eleven\nThe name of David is? david\nThe name of Holly is? holly\nWhat is the name of Mike? mike\nWhat is the name of John? john\nThe green shark is what colour? green\nThe brown duck is what colour? brown\nTwo add four is what? 6,six\nWhat is one plus one? 2,two\nWhat is six add three? 9,nine\nFour plus one = ? 5,five\nOne plus two = ? 3,three\n3 add 8 = ? 11,eleven\nFive times two is what? 10,ten\nTwo times three is what? 6,six\nWhat is the 2nd digit in 12345? 2,two\nWhat is the last digit in 56789? 9,nine\nWhat is the first digit in 54321? 5,five\nWhat is the opposite of cold? hot,warm\nWhat is the opposite of bad? good\nWhat is the opposite of north? south\nWhat is the opposite of true? false\nWhat day comes after Monday? tuesday\nWhat day comes after Thursday? friday\nWhat day comes after Saturday? sunday\nIs ice hot or cold? cold\n",
+    'xtype' => 'textarea',
+    'namespace' => 'modisv',
+    'area' => 'captcha'
+), '', true, true);
+
 $settings['modisv.ticket_reply_separator'] = $modx->newObject('modSystemSetting');
 $settings['modisv.ticket_reply_separator']->fromArray(array(
     'key' => 'modisv.ticket_reply_separator',
-    'value' => '===== REPLY ABOVE THIS LINE =====',
+    'value' => '----------reply above this line-----------',
     'xtype' => 'textfield',
     'namespace' => 'modisv',
     'area' => 'ticket'
@@ -154,22 +163,22 @@ $settings['modisv.ticket_attachments_dir']->fromArray(array(
     'area' => 'ticket'
 ), '', true, true);
 
-$settings['modisv.ticket_notification_emails'] = $modx->newObject('modSystemSetting');
-$settings['modisv.ticket_notification_emails']->fromArray(array(
-    'key' => 'modisv.ticket_notification_emails',
+$settings['modisv.ticket_staffs'] = $modx->newObject('modSystemSetting');
+$settings['modisv.ticket_staffs']->fromArray(array(
+    'key' => 'modisv.ticket_staffs',
     'value' => '',
     'xtype' => 'textfield',
     'namespace' => 'modisv',
     'area' => 'ticket'
 ), '', true, true);
 
-$settings['modisv.captcha_qas'] = $modx->newObject('modSystemSetting');
-$settings['modisv.captcha_qas']->fromArray(array(
-    'key' => 'modisv.captcha_qas',
-    'value' => "What number comes after 8? 9,nine\nWhat number comes after 3? 4,four\nWhat number comes after 11? 12,twelve\nWhat number comes before 6? 5,five\nWhat number comes before 12? 11,eleven\nThe name of David is? david\nThe name of Holly is? holly\nWhat is the name of Mike? mike\nWhat is the name of John? john\nThe green shark is what colour? green\nThe brown duck is what colour? brown\nTwo add four is what? 6,six\nWhat is one plus one? 2,two\nWhat is six add three? 9,nine\nFour plus one = ? 5,five\nOne plus two = ? 3,three\n3 add 8 = ? 11,eleven\nFive times two is what? 10,ten\nTwo times three is what? 6,six\nWhat is the 2nd digit in 12345? 2,two\nWhat is the last digit in 56789? 9,nine\nWhat is the first digit in 54321? 5,five\nWhat is the opposite of cold? hot,warm\nWhat is the opposite of bad? good\nWhat is the opposite of north? south\nWhat is the opposite of true? false\nWhat day comes after Monday? tuesday\nWhat day comes after Thursday? friday\nWhat day comes after Saturday? sunday\nIs ice hot or cold? cold\n",
-    'xtype' => 'textarea',
+$settings['modisv.ticket_auth_salt'] = $modx->newObject('modSystemSetting');
+$settings['modisv.ticket_auth_salt']->fromArray(array(
+    'key' => 'modisv.ticket_auth_salt',
+    'value' => '#modisv#',
+    'xtype' => 'textfield',
     'namespace' => 'modisv',
-    'area' => 'captcha'
+    'area' => 'ticket'
 ), '', true, true);
 
 return $settings;

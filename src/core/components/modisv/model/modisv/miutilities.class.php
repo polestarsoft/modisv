@@ -78,7 +78,7 @@ class miUtilities {
             return false;
         }
 
-        return $modx->getOption('site_url') . $modx->getOption('manager_url') . '?a=' . $action->get('id') . $args;
+        return $modx->getOption('url_scheme') . $modx->getOption('http_host') . $modx->getOption('manager_url') . '?a=' . $action->get('id') . $args;
     }
 
     public static function generateRandomId($length = 8, $digits = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890') {
@@ -121,6 +121,7 @@ class miUtilities {
     public static function createDirectory($path, $relativeToModxBase = true) {
         global $modx;
         $fileHandler = $modx->getService('fileHandler', 'modFileHandler');
+        $fileHandler->context = $modx->context; // fix bug 
 
         // get full path
         if ($relativeToModxBase) {
@@ -147,6 +148,7 @@ class miUtilities {
     public static function removeFile($file, $relativeToModxBase = true) {
         global $modx;
         $fileHandler = $modx->getService('fileHandler', 'modFileHandler');
+        $fileHandler->context = $modx->context; // fix bug
 
         // get full path
         if ($relativeToModxBase) {
@@ -158,6 +160,30 @@ class miUtilities {
             return false;
 
         return $file->remove();
+    }
+
+    public static function sendEmail($to, $subject, $body, $from = null, $html = false) {
+        global $modx;
+        if ($from === null)
+            $from = $modx->getOption('misv.noreply_email');
+
+        $mail = $modx->getService('mail', 'mail.modPHPMailer');
+        $mail->set(modMail::MAIL_BODY, $body);
+        $mail->set(modMail::MAIL_FROM, $from);
+        $mail->set(modMail::MAIL_FROM_NAME, $modx->getOption('site_name'));
+        $mail->set(modMail::MAIL_SENDER, $from);
+        $mail->set(modMail::MAIL_SUBJECT, $subject);
+        $recipents = explode(',', $to);
+        foreach ($recipents as $recipient) {
+            if (preg_match("/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/", $recipient)) {
+                $mail->address('to', $recipient);
+            }
+        }
+        $mail->setHTML($html);
+        $sent = $mail->send();
+        $mail->reset();
+
+        return $sent;
     }
 
 }

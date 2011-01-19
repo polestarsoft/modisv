@@ -1,6 +1,6 @@
 [[++modisv.ticket_reply_separator]]
 
-Hello[[!If? &subject=`[[+ticket.author_name]]` &operator=`isnotempty` &then=` [[+ticket.author_name]]` ]],
+Hello[[+ticket.author_name:is=``:then=``:else=` [[+ticket.author_name]]` ]],
 
 This is an automated response from [[++site_name]]. Thank you very much for contacting us.
 We try and respond to our support tickets within 1 business day.
