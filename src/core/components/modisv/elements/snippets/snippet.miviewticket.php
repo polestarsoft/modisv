@@ -2,19 +2,16 @@
 
 $modisv = $modx->getService('modisv', 'modISV', $modx->getOption('modisv.core_path', null, $modx->getOption('core_path') . 'components/modisv/') . 'model/modisv/', $scriptProperties);
 $modisv->initialize();
-$ticketAuth = new miTicketAuth();
+$session = new miTicketSession();
 
 // get the ticket
-$ticket = $ticketAuth->ticket;
+$ticket = $modx->getObject('miTicket', array('guid' => $_REQUEST['guid']));
 if (!$ticket)
     $modx->sendErrorPage();
 
 // check permission
-if (!$ticketAuth->canRead() || (!empty($_POST) && !$ticketAuth->canWrite()))
+if (!$session->canRead($ticket) || (!empty($_POST) && !$session->canWrite($ticket)))
     $modx->sendUnauthorizedPage();
-
-// store anon token in session
-$ticketAuth->storeAnonToken($ticket->get('author_email'));
 
 // get properties
 $tpl = $modx->getOption('tpl', $scriptProperties, 'miViewTicket');
@@ -51,8 +48,8 @@ if (!empty($_POST)) { // post reply
         // reply
         $properties = array();
         $properties['body'] = $_POST['body'];
-        $properties['author_name'] = $ticketAuth->name;
-        $properties['author_email'] = $ticketAuth->email;
+        $properties['author_name'] = $session->name;
+        $properties['author_email'] = $session->email;
         $properties['staff_response'] = false;
         $properties['source'] = 'web';
         $properties['ip'] = $_SERVER['REMOTE_ADDR'];
@@ -76,8 +73,7 @@ foreach ($ticket->getMessages() as $message) {
         $wrapperAttachments .= $modisv->getChunk($attachmentTpl, $phs);
     }
 
-    $phs = $message->toArray();
-    $phs['html'] = $message->getHtmlBody();
+    $phs = $message->toArraySanitized();
     $phs['classes'] = $message->get('staff_response') ? 'staff' : '';
     $phs['number'] = ++$i;
     $phs['gravatar_url'] = 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($message->get('author_email'))));
@@ -86,7 +82,7 @@ foreach ($ticket->getMessages() as $message) {
 }
 
 // output
-$phs = $ticket->toArray();
+$phs = $ticket->toArraySanitized();
 $phs['messages'] = $wrapperMessages;
 $phs = array_merge($phs, $_POST);
 foreach ($errors as $k => $v) {

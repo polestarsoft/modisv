@@ -39,8 +39,26 @@ class miMessage extends xPDOSimpleObject {
         $config->set('HTML.Allowed', 'a[href|title],img[src|width|height|alt|title],code[class],b,blockquote,del,dd,dl,dt,em,h1,h2,h3,i,kbd,li,ol,p,pre,s,sup,sub,strong,strike,ul,br,hr');
         $purifier = new HTMLPurifier($config);
         $pure_html = $purifier->purify($html);
-        
+
         return $pure_html;
+    }
+
+    public function toArray($keyPrefix= '', $rawValues= false, $excludeLazy= false) {
+        $result = parent::toArray($keyPrefix, $rawValues, $excludeLazy);
+
+        // extra fields
+        $result[$keyPrefix . 'html_body'] = $this->getHtmlBody();
+
+        return $result;
+    }
+
+    public function toArraySanitized($keyPrefix= '', $rawValues= false, $excludeLazy= false) {
+        $result = $this->toArray($keyPrefix, $rawValues, $excludeLazy);
+
+        $result[$keyPrefix . 'author_name'] = htmlspecialchars($result[$keyPrefix . 'author_name']);
+        $result[$keyPrefix . 'author_email'] = htmlspecialchars($result[$keyPrefix . 'author_email']);
+
+        return $result;
     }
 
 }

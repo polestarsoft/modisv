@@ -168,7 +168,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             cls: message.staff_response ? 'staff-response' : '',
             source: message.source,
             ip: message.ip,
-            content: message.html,
+            content: message.html_body,
             attachments: this.renderAttachments(message.attachments)
         });
     },

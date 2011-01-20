@@ -76,7 +76,7 @@ $tickets = $modx->getCollection('miTicket', $c);
 
 $list = array();
 foreach ($tickets as $ticket) {
-    $item = $ticket->toArray();
+    $item = $ticket->toArraySanitized();
 
     // check if the author is our user
     $user = $modx->getObject('modUser', array('username' => $ticket->get('author_email')));

@@ -67,7 +67,7 @@ class modISV {
         $this->modx->loadClass('modisv.miOrderFulfiller', $this->config['modelPath'], true, true);
         $this->modx->loadClass('modisv.miOrderMessageBuilder', $this->config['modelPath'], true, true);
         $this->modx->loadClass('modisv.miPaypal', $this->config['modelPath'], true, true);
-        $this->modx->loadClass('modisv.miTicketAuth', $this->config['modelPath'], true, true);
+        $this->modx->loadClass('modisv.miTicketSession', $this->config['modelPath'], true, true);
 
         switch ($ctx) {
             case 'mgr':

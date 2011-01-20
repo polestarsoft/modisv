@@ -33,9 +33,7 @@ if ($ticket == null)
 // get messages
 $list = array();
 foreach ($ticket->getMessages() as $message) {
-    $item = $message->toArray();
-    $item['html'] = $message->getHtmlBody();
-
+    $item = $message->toArraySanitized();
     // get attachments
     $item['attachments'] = array();
     foreach($message->getMany('Attachments') as $att) {
@@ -48,7 +46,7 @@ $result = array();
 $result['messages'] = $list;
 
 // get the ticket
-$result['ticket'] = $ticket->toArray();
+$result['ticket'] = $ticket->toArraySanitized();
 $user = $modx->getObject('modUser', array('username' => $ticket->get('author_email')));
 if ($user) {
     $result['ticket']['author_id'] = $user->get('id');

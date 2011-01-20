@@ -95,6 +95,16 @@ class miTicket extends xPDOSimpleObject {
         return $result;
     }
 
+    public function toArraySanitized($keyPrefix= '', $rawValues= false, $excludeLazy= false) {
+        $result = $this->toArray($keyPrefix, $rawValues, $excludeLazy);
+
+        $result[$keyPrefix . 'author_name'] = htmlspecialchars($result[$keyPrefix . 'author_name']);
+        $result[$keyPrefix . 'author_email'] = htmlspecialchars($result[$keyPrefix . 'author_email']);
+        $result[$keyPrefix . 'subject'] = htmlspecialchars($result[$keyPrefix . 'subject']);
+
+        return $result;
+    }
+
     public function createNew($properties) {
         global $modx;
 
@@ -147,7 +157,7 @@ class miTicket extends xPDOSimpleObject {
         }
 
         // send auto response
-        $phs['ticket.url'] = $this->getUrl() . "&anon_token=" . miTicketAuth::generateAnonToken($this->get('author_email'));
+        $phs['ticket.url'] = $this->getUrl() . "&anon_token=" . miTicketSession::generateAnonToken($this->get('author_email'));
         if (!miUtilities::sendEmail(
                         $this->get('author_email'),
                         sprintf('%s - New Ticket Created [#%s]', $modx->getOption('site_name'), strtoupper($this->get('guid'))),
@@ -240,10 +250,10 @@ class miTicket extends xPDOSimpleObject {
             if ($watcher === $message->get('author_email'))
                 continue;
 
-            $phs['ticket.url'] = $this->getUrl() . "&anon_token=" . miTicketAuth::generateAnonToken($watcher);
+            $phs['ticket.url'] = $this->getUrl() . "&anon_token=" . miTicketSession::generateAnonToken($watcher);
             $phs['message.attachments'] = '';
             foreach ($message->getMany('Attachments') as $att) {
-                $phs['message.attachments'] .= sprintf("- %s %s\n", $att->getFileName(), $att->getUrl() . "&anon_token=" . miTicketAuth::generateAnonToken($watcher));
+                $phs['message.attachments'] .= sprintf("- %s %s\n", $att->getFileName(), $att->getUrl() . "&anon_token=" . miTicketSession::generateAnonToken($watcher));
             }
             if (!miUtilities::sendEmail(
                             $watcher,

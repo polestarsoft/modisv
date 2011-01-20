@@ -54,6 +54,9 @@ class miAttachment extends xPDOSimpleObject {
         if ($size === null)
             $size = @filesize($path);
 
+        // sanitize name
+        $name = ereg_replace("[^A-Za-z0-9_\.]", "", str_replace(" ", "_", $name));
+
         // create attchement directory
         $attachmentsDir = miUtilities::joinPaths($this->xpdo->getOption('modisv.ticket_attachments_dir', null, 'assets/tickets'), $ticket->get('id')) . '/';
         if (!miUtilities::createDirectory($attachmentsDir)) {
@@ -84,13 +87,12 @@ class miAttachment extends xPDOSimpleObject {
         return true;
     }
 
-
     public function toArray($keyPrefix= '', $rawValues= false, $excludeLazy= false) {
         $result = parent::toArray($keyPrefix, $rawValues, $excludeLazy);
 
         // extra fields
         $result[$keyPrefix . 'url'] = $this->getUrl();
-        
+
         return $result;
     }
 

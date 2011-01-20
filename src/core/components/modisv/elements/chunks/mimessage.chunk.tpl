@@ -6,7 +6,7 @@
     </h5>
     <img class="avatar" src="[[+gravatar_url]]?s=32&d=identicon" />
     <div class="content wmd">
-        [[+html]]
+        [[+html_body]]
         [[+attachments:is=``:then=``:else=`
             <div class="attachments">[[+attachments]]</div>
         `]]

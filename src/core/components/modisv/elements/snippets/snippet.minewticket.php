@@ -2,7 +2,7 @@
 
 $modisv = $modx->getService('modisv', 'modISV', $modx->getOption('modisv.core_path', null, $modx->getOption('core_path') . 'components/modisv/') . 'model/modisv/', $scriptProperties);
 $modisv->initialize();
-$ticketAuth = new miTicketAuth();
+$session = new miTicketSession();
 
 // get properties
 $tpl = $modx->getOption('tpl', $scriptProperties, 'miNewTicket');
@@ -48,11 +48,11 @@ if (!empty($_POST)) {
             return "Sorry, an internal error occured. Please contact {$modx->getOption('modisv.support_email')} for help.";
         }
 
-        // store anon token in session
-        $ticketAuth->storeAnonToken($ticket->get('author_email'));
+        // store email in session
+        $session->storeEmail($ticket->get('author_email'));
 
         // return success message
-        $phs = $ticket->toArray();
+        $phs = $ticket->toArraySanitized();
         return $modisv->getChunk($successTpl, $phs);
     } else {
         $phs = $_POST;
@@ -64,8 +64,8 @@ if (!empty($_POST)) {
 
 if (empty($phs)) {
     $phs = array();
-    $phs['name'] = $ticketAuth->name;
-    $phs['email'] = $ticketAuth->email;
+    $phs['name'] = $session->name;
+    $phs['email'] = $session->email;
 }
 return $modisv->getChunk($tpl, $phs);
 
