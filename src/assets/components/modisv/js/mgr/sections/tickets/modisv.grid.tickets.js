@@ -9,23 +9,17 @@ modISV.grid.Tickets = function (config) {
         },
         fields: ['id', 'guid', 'priority', 'topic', 'product', 'product_name', 'author_name', 'author_email', 'author_id', 'watchers', 'subject', 'note', 'target_version', 'status', 'source', 'ip', 'overdue', 'answered', 'dueon', 'reopenedon', 'closedon', 'lastmessageon', 'lastresponseon', 'createdon', 'updatedon', 'menu'],
         columns: [{
-            header: 'ID',
-            dataIndex: 'id',
-            sortable: true,
-            width: 30
-        },
-        {
             header: 'GUID',
             dataIndex: 'guid',
             renderer: renderTicketLink,
             sortable: true,
-            width: 30
+            width: 40
         },
         {
             header: 'Topic',
             dataIndex: 'topic',
             sortable: true,
-            width: 30
+            width: 40
         },
         {
             header: 'Subject',
@@ -38,28 +32,28 @@ modISV.grid.Tickets = function (config) {
             dataIndex: 'status',
             renderer: renderTicketStatus,
             sortable: true,
-            width: 30
+            width: 40
         },
         {
             header: 'Answered',
             dataIndex: 'answered',
             renderer: renderTicketAnswered,
             sortable: true,
-            width: 30
+            width: 40
         },
         {
             header: 'Overdue',
             dataIndex: 'overdue',
             renderer: renderTicketOverdue,
             sortable: true,
-            width: 30
+            width: 40
         },
         {
             header: 'Priority',
             dataIndex: 'priority',
             renderer: renderTicketPriority,
             sortable: true,
-            width: 30
+            width: 40
         },
         {
             header: 'Author',
@@ -73,7 +67,7 @@ modISV.grid.Tickets = function (config) {
             dataIndex: 'watchers',
             renderer: renderTicketWatchers,
             sortable: true,
-            width: 30
+            width: 40
         },
         {
             header: 'Product',
@@ -94,13 +88,13 @@ modISV.grid.Tickets = function (config) {
             dataIndex: 'source',
             renderer: renderTicketSource,
             sortable: true,
-            width: 30
+            width: 40
         },
         {
             header: 'Misc',
             dataIndex: 'id',
             renderer: renderTicketMiscInfo,
-            width: 20
+            width: 30
         }]
     });
     modISV.grid.Tickets.superclass.constructor.call(this, config);
