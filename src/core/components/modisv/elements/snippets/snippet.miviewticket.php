@@ -5,7 +5,7 @@ $modisv->initialize();
 $session = new miTicketSession();
 
 // get the ticket
-$ticket = $modx->getObject('miTicket', array('guid' => $_REQUEST['guid']));
+$ticket = $modx->getObject('miTicket', array('guid' => strtoupper($_REQUEST['guid'])));
 if (!$ticket)
     $modx->sendErrorPage();
 
@@ -58,7 +58,8 @@ if (!empty($_POST)) { // post reply
             return "Sorry, an internal error occured. Please contact {$modx->getOption('modisv.support_email')} for help.";
         }
 
-        $_POST = array();   // don't send those values back to client
+        // redirect back to this page
+        $modx->sendRedirect($modx->makeUrl($modx->resource->get('id'), '', array('guid' => $ticket->get('guid'))));
     }
 }
 

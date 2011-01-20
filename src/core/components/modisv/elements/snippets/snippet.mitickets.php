@@ -19,7 +19,7 @@ if (empty($tickets))
 $wrapper = '';
 $i = 0;
 foreach ($tickets as $t) {
-    $phs = $t->toArray();
+    $phs = $t->toArraySanitized();
     $phs['class'] = $i++ % 2 ? "alt i{$i}" : "i{$i}";
     $wrapper .= $modisv->getChunk($itemTpl, $phs);
 }

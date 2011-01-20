@@ -7,6 +7,9 @@
     <div class="messages">
         [[+messages]]
     </div>
+    [[+status:is=`closed`:then=`
+        <div class="activity">The ticket was closed on [[+closedon:strtotime:date=`%Y-%m-%d %H:%M`]].</div>
+    `]]
     [[+status:is=`open`:then=`
         <form action="" enctype="multipart/form-data" method="post">
             <h2>Reply to this ticket</h2>
@@ -21,8 +24,8 @@
                 <dl class="attachments">
                     <dt><label>Attach File</label></dt>
                     <dd>
-                        <input type="file" name="file" />
-                        <span class="error">[[+error.file]]</span>
+                        <input type="file" name="files" />
+                        <span class="error">[[+error.files]]</span>
                     </dd>
                 </dl>
                 <dl class="submit">

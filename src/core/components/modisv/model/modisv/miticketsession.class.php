@@ -43,12 +43,12 @@ class miTicketSession {
             $this->email = $_SESSION['modisv.ticket_session_email'];
         } else if (!empty($_REQUEST['guid']) && !empty($_REQUEST['anon_token'])) {
             // try to get email by comparing anon_token and email hashes
-            $ticket = $modx->getObject('miTicket', array('guid' => $_REQUEST['guid']));
+            $ticket = $modx->getObject('miTicket', array('guid' => strtoupper($_REQUEST['guid'])));
             if ($ticket) {
                 $emails = array_filter(array_map('trim', explode(',', $ticket->get('watchers'))));
                 $emails[] = $ticket->get('author_email');
                 foreach ($emails as $e) {
-                    if (self::validateAnonToken($e, $this->anonToken)) {
+                    if (self::validateAnonToken($e, $_REQUEST['anon_token'])) {
                         $this->email = $e;
                         $this->storeEmail($e);  // store email in session variable
                         break;
@@ -71,7 +71,7 @@ class miTicketSession {
         global $modx;
 
         if (!$ticket)
-            $ticket = $modx->getObject('miTicket', array('guid' => $_REQUEST['guid']));
+            $ticket = $modx->getObject('miTicket', array('guid' => strtoupper($_REQUEST['guid'])));
 
         if ($this->email && $ticket) {
             if ($this->email === $ticket->get('author_email'))    // author
@@ -104,7 +104,7 @@ class miTicketSession {
     }
 
     public static function validateAnonToken($email, $anonToken) {
-        return self::generateAnonToken($email) === $anonToken;
+        return strcasecmp(self::generateAnonToken($email), trim($anonToken)) === 0;
     }
 
 }

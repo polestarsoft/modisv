@@ -80,3 +80,16 @@
     margin-right:5px;
 }
 
+.modisv-ticket-activity
+{
+    padding: 6px;
+    margin: 20px 0;
+    padding-left: 30px;
+    color: #333;
+    background: #ddd;
+    font: bold 11px arial;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+

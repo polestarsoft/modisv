@@ -42,6 +42,11 @@ if (empty($scriptProperties['body'])) {
     return $modx->error->failure('');
 }
 
+if (strlen($scriptProperties['body']) < 20) {
+    $modx->error->addField('body', 'Message to short.');
+    return $modx->error->failure('');
+}
+
 // admin is not allowed to reply
 if (!preg_match("/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/", $modx->user->get('username'))) {
     return $modx->error->failure('Current user\'s username must be a valid email address to reply tickets.');
@@ -60,4 +65,4 @@ if (!$ticket->reply($properties)) {
     return $modx->error->failure('An error occurred while trying to reply the ticket.');
 }
 
-return $modx->error->success('', $message);
+return $modx->error->success('');

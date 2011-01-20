@@ -55,7 +55,7 @@ class miAttachment extends xPDOSimpleObject {
             $size = @filesize($path);
 
         // sanitize name
-        $name = ereg_replace("[^A-Za-z0-9_\.]", "", str_replace(" ", "_", $name));
+        $name = preg_replace("/[^A-Za-z0-9_\.]/", "", str_replace(" ", "_", $name));
 
         // create attchement directory
         $attachmentsDir = miUtilities::joinPaths($this->xpdo->getOption('modisv.ticket_attachments_dir', null, 'assets/tickets'), $ticket->get('id')) . '/';

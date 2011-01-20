@@ -106,6 +106,8 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
                         var html = '';
                         for(var i=0; i<this.messages.length; i++)
                             html += this.renderMessage(i);
+                        if(this.ticket.status == 'closed')
+                            html += '<div class="modisv-ticket-activity">The ticket was closed on ' + this.ticket.closedon + '</div>';
                         Ext.select('#modisv-ticket-messages .x-grid3-body').update(html);
                         prettyPrint();  // prettify the code
                         mask.hide();

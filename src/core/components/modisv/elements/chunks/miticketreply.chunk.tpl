@@ -1,5 +1,5 @@
 [[++modisv.ticket_reply_separator]]
-From: [[+message.author_name]]
+From: [[+message.author_name:is=``:then=`[[+message.author_email]]`:else=`[[+message.author_name]] <[[+message.author_email]]>` ]]
 Subject: [[+ticket.subject]]
 
 [[+message.body]]
