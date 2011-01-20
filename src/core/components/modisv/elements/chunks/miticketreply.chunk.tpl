@@ -8,5 +8,4 @@ Subject: [[+ticket.subject]]
 Attachments for this ticket:
 [[+message.attachments]]
 `]]
-
-View this ticket at site online: [[+ticket.url]]
+View this ticket at our site online: [[+ticket.url]]

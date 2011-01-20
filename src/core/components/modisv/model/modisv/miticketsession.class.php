@@ -45,8 +45,9 @@ class miTicketSession {
             // try to get email by comparing anon_token and email hashes
             $ticket = $modx->getObject('miTicket', $_REQUEST['id']);
             if ($ticket) {
-                $emails = array_filter(array_map('trim', explode(',', $ticket->get('watchers'))));
-                $emails[] = $ticket->get('author_email');
+                $emails = array_filter(array_map('trim', explode(',', $ticket->get('watchers'))));  // watchers
+                $emails[] = $ticket->get('author_email'); // author
+                $emails = array_merge($emails, array_filter(array_map('trim', explode(',', $modx->getOption('modisv.ticket_staffs'))))); // staffs
                 foreach ($emails as $e) {
                     if (self::validateAnonToken($e, $_REQUEST['anon_token'])) {
                         $this->email = $e;
@@ -62,7 +63,7 @@ class miTicketSession {
             return $modx->user->getOne('Profile')->get('fullname');
         } else if (!empty($_SESSION['modisv.ticket_session_name'])) {
             // try to get name from session
-            $this->email = $_SESSION['modisv.ticket_session_name'];
+            $this->name = $_SESSION['modisv.ticket_session_name'];
         } else if ($this->email) {
             // try get author_name if current user is the ticket author
             $ticket = $modx->getObject('miTicket', $_REQUEST['id']);
@@ -87,13 +88,17 @@ class miTicketSession {
             $watchers = array_filter(array_map('trim', explode(',', $ticket->get('watchers'))));
             if (in_array($this->email, $watchers)) // watcher
                 return true;
+
+            $staffs = array_filter(array_map('trim', explode(',', $modx->getOption('modisv.ticket_staffs'))));
+            if (in_array($this->email, $staffs)) // staff
+                return true;
         }
 
         return false;
     }
 
     public function canWrite($ticket = null) {
-        // for now, ticket author and all watchers can perform read & write operation
+        // for now, ticket author, watchers and all staffs can perform both read & write operation
         return $this->canRead($ticket);
     }
 

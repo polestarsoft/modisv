@@ -35,10 +35,10 @@ if (!empty($_POST)) {
     if (empty($errors)) { // no error
         // create new ticket
         $properties = array();
-        $properties['subject'] = $_POST['subject'];
+        $properties['subject'] = trim($_POST['subject']);
         $properties['body'] = $_POST['body'];
-        $properties['author_name'] = $_POST['name'];
-        $properties['author_email'] = $_POST['email'];
+        $properties['author_name'] = trim($_POST['name']);
+        $properties['author_email'] = trim($_POST['email']);
         $properties['source'] = 'web';
         $properties['ip'] = $_SERVER['REMOTE_ADDR'];
         $properties['status'] = 'open';

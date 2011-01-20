@@ -5,7 +5,7 @@ $modisv->initialize();
 $session = new miTicketSession();
 
 // get the ticket
-$ticket = $modx->getObject('miTicket', 'id');
+$ticket = $modx->getObject('miTicket', $_REQUEST['id']);
 if (!$ticket)
     $modx->sendErrorPage();
 
@@ -50,7 +50,6 @@ if (!empty($_POST)) { // post reply
         $properties['body'] = $_POST['body'];
         $properties['author_name'] = $session->name;
         $properties['author_email'] = $session->email;
-        $properties['staff_response'] = false;
         $properties['source'] = 'web';
         $properties['ip'] = $_SERVER['REMOTE_ADDR'];
         $properties['files'] = $_FILES;
