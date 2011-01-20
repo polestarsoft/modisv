@@ -1,6 +1,6 @@
 <table class="orders hgrid">
     <tr>
-        <th>Guid</th>
+        <th>ID</th>
         <th>Subject</th>
         <th>Date</th>
         <th>Status</th>

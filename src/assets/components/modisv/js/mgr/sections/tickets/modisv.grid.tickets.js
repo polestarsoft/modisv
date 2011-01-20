@@ -7,10 +7,10 @@ modISV.grid.Tickets = function (config) {
         baseParams: {
             action: 'mgr/ticket/getlist'
         },
-        fields: ['id', 'guid', 'priority', 'topic', 'product', 'product_name', 'author_name', 'author_email', 'author_id', 'watchers', 'subject', 'note', 'target_version', 'status', 'source', 'ip', 'overdue', 'answered', 'dueon', 'reopenedon', 'closedon', 'lastmessageon', 'lastresponseon', 'createdon', 'updatedon', 'menu'],
+        fields: ['id', 'priority', 'topic', 'product', 'product_name', 'author_name', 'author_email', 'author_id', 'watchers', 'subject', 'note', 'target_version', 'status', 'source', 'ip', 'overdue', 'answered', 'dueon', 'reopenedon', 'closedon', 'lastmessageon', 'lastresponseon', 'createdon', 'updatedon', 'menu'],
         columns: [{
-            header: 'GUID',
-            dataIndex: 'guid',
+            header: 'ID',
+            dataIndex: 'id',
             renderer: renderTicketLink,
             sortable: true,
             width: 40

@@ -128,7 +128,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
         var tpl = Ext.DomHelper.createTemplate('\
             <h2 style="margin-bottom:0;">{subject}</h2>\
             <div style="margin-bottom:15px; font-size:10px; font-weight:bold; color:#666;">\
-                <span>GUID: </span><u style="margin-right:20px;">{guid}</u>\
+                <span>ID: </span><u style="margin-right:20px;">{id}</u>\
                 <span>Status: </span><u style="margin-right:20px;">{status}</u>\
                 <span>Topic: </span><u style="margin-right:20px;">{topic}</u>\
                 <span>Priority: </span><u style="margin-right:20px;">{priority}</u>\

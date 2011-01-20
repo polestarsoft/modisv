@@ -18,7 +18,7 @@ if (!empty($_POST)) {
         $errors['email'] = 'Sorry, the email address is not valid.';
     if (empty($_POST['body']))
         $errors['body'] = 'Please enter the message.';
-    else if (strlen($_POST['body']) < 20)
+    else if (strlen($_POST['body']) < 10)
         $errors['body'] = 'Message too short.';
 
     // validate the captcha
@@ -48,8 +48,8 @@ if (!empty($_POST)) {
             return "Sorry, an internal error occured. Please contact {$modx->getOption('modisv.support_email')} for help.";
         }
 
-        // store email in session
-        $session->storeEmail($ticket->get('author_email'));
+        // store info in session
+        $session->storeUserInfo($ticket->get('author_name'), $ticket->get('author_email'));
 
         // return success message
         $phs = $ticket->toArraySanitized();

@@ -251,7 +251,6 @@
     </object>
 
     <object class="miTicket" table="modisv_tickets" extends="xPDOSimpleObject">
-        <field key="guid" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="index" />
         <field key="priority" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="3" index="index" />
         <field key="topic" dbtype="enum" precision="'question','problem','suggestion','task'" phptype="string" null="false" default="question" index="index" />
         <field key="product" dbtype="int" precision="10" phptype="integer" attributes="unsigned" null="false" default="0" index="index" />
@@ -273,14 +272,13 @@
         <field key="lastresponseon" dbtype="datetime" phptype="datetime" />
         <field key="createdon" dbtype="datetime" phptype="datetime" index="index" />
         <field key="updatedon" dbtype="datetime" phptype="datetime" />
-        <index alias="guid_email" name="guid_email" unique="true">
-            <column key="guid" collation="A" null="false" />
+        <index alias="id_email" name="id_email" unique="true">
+            <column key="id" collation="A" null="false" />
             <column key="author_email" collation="A" null="false" />
         </index>
         <aggregate alias="Product" class="miProduct" local="product" foreign="id" cardinality="one" owner="foreign" />
         <composite alias="Messages" class="miMessage" local="id" foreign="ticket" cardinality="many" owner="local" />
         <validation>
-            <rule field="guid" name="guidNotEmpty" type="xPDOValidationRule" rule="miNotEmptyRule" />
             <rule field="priority" name="validPriority"  type="xPDOValidationRule" rule="miRangeRule" from="1" to="5"  />
             <rule field="topic" name="topicExists"  type="xPDOValidationRule" rule="miEnumExistsRule" />
             <rule field="product" name="productExists"  type="xPDOValidationRule" rule="miObjectExistsRule" allownull="true" />

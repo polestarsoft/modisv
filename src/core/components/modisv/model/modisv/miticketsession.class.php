@@ -41,16 +41,15 @@ class miTicketSession {
         } else if (!empty($_SESSION['modisv.ticket_session_email'])) {
             // try to get email from session
             $this->email = $_SESSION['modisv.ticket_session_email'];
-        } else if (!empty($_REQUEST['guid']) && !empty($_REQUEST['anon_token'])) {
+        } else if (!empty($_REQUEST['id']) && !empty($_REQUEST['anon_token'])) {
             // try to get email by comparing anon_token and email hashes
-            $ticket = $modx->getObject('miTicket', array('guid' => strtoupper($_REQUEST['guid'])));
+            $ticket = $modx->getObject('miTicket', $_REQUEST['id']);
             if ($ticket) {
                 $emails = array_filter(array_map('trim', explode(',', $ticket->get('watchers'))));
                 $emails[] = $ticket->get('author_email');
                 foreach ($emails as $e) {
                     if (self::validateAnonToken($e, $_REQUEST['anon_token'])) {
                         $this->email = $e;
-                        $this->storeEmail($e);  // store email in session variable
                         break;
                     }
                 }
@@ -61,17 +60,25 @@ class miTicketSession {
         if ($modx->user && $modx->user->isAuthenticated($modx->context->get('key')) && $modx->user->getOne('Profile')) {
             // then try to get fullname from modx user profile
             return $modx->user->getOne('Profile')->get('fullname');
-        } else if ($this->email && $ticket && $this->email == $ticket->get('author_email')) {
+        } else if (!empty($_SESSION['modisv.ticket_session_name'])) {
+            // try to get name from session
+            $this->email = $_SESSION['modisv.ticket_session_name'];
+        } else if ($this->email) {
             // try get author_name if current user is the ticket author
-            $this->name = $ticket->get('author_name');
+            $ticket = $modx->getObject('miTicket', $_REQUEST['id']);
+            if ($ticket && $this->email == $ticket->get('author_email'))
+                $this->name = $ticket->get('author_name');
         }
+
+        // store user info in session variables
+        $this->storeUserInfo($this->name, $this->email);
     }
 
     public function canRead($ticket = null) {
         global $modx;
 
         if (!$ticket)
-            $ticket = $modx->getObject('miTicket', array('guid' => strtoupper($_REQUEST['guid'])));
+            $ticket = $modx->getObject('miTicket', $_REQUEST['id']);
 
         if ($this->email && $ticket) {
             if ($this->email === $ticket->get('author_email'))    // author
@@ -90,11 +97,9 @@ class miTicketSession {
         return $this->canRead($ticket);
     }
 
-    public function storeEmail($email) {
-        if ($email)
-            $_SESSION['modisv.ticket_session_email'] = $email;
-        else
-            unset($_SESSION['modisv.ticket_session_email']);
+    public function storeUserInfo($name, $email) {
+        $_SESSION['modisv.ticket_session_email'] = $email ? : '';
+        $_SESSION['modisv.ticket_session_name'] = $name ? : '';
     }
 
     public static function generateAnonToken($email) {

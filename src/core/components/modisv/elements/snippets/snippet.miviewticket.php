@@ -5,7 +5,7 @@ $modisv->initialize();
 $session = new miTicketSession();
 
 // get the ticket
-$ticket = $modx->getObject('miTicket', array('guid' => strtoupper($_REQUEST['guid'])));
+$ticket = $modx->getObject('miTicket', 'id');
 if (!$ticket)
     $modx->sendErrorPage();
 
@@ -35,7 +35,7 @@ if (!empty($_POST)) { // post reply
     // check input
     if (empty($_POST['body']))
         $errors['body'] = 'Please enter the message.';
-    else if (strlen($_POST['body']) < 20)
+    else if (strlen($_POST['body']) < 10)
         $errors['body'] = 'Message too short.';
 
     // check upload
@@ -59,7 +59,7 @@ if (!empty($_POST)) { // post reply
         }
 
         // redirect back to this page
-        $modx->sendRedirect($modx->makeUrl($modx->resource->get('id'), '', array('guid' => $ticket->get('guid'))));
+        $modx->sendRedirect($modx->makeUrl($modx->resource->get('id'), '', array('id' => $ticket->get('id'))));
     }
 }
 

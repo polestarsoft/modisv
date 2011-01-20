@@ -36,7 +36,6 @@ class miTicket extends xPDOSimpleObject {
         $this->set('updatedon', time());
         if ($this->isNew()) {
             $this->set('createdon', time());
-            miUtilities::setGuid($this);
         }
 
         return parent::save($cacheFlag);
@@ -73,7 +72,7 @@ class miTicket extends xPDOSimpleObject {
         global $modx;
         $xhtmlUrlSetting = $modx->config['xhtml_urls'];
         $modx->config['xhtml_urls'] = false;            // disable xhtml_urls temporarily
-        $url = $modx->makeUrl($modx->getOption('modisv.view_ticket_page'), '', array('guid' => strtolower($this->get('guid'))), 'full');
+        $url = $modx->makeUrl($modx->getOption('modisv.view_ticket_page'), '', array('id' => $this->get('id')), 'full');
         $modx->config['xhtml_urls'] = $xhtmlUrlSetting; // restore xhtml_urls
         return $url;
     }
@@ -109,7 +108,7 @@ class miTicket extends xPDOSimpleObject {
         global $modx;
 
         // check input
-        if (empty($properties['body']) || strlen($properties['body']) < 20)
+        if (empty($properties['body']))
             return false;
         if (!preg_match("/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/", $properties['author_email']))
             return false;
@@ -149,7 +148,7 @@ class miTicket extends xPDOSimpleObject {
         if (!empty($staffs)) {
             if (!miUtilities::sendEmail(
                             $staffs,
-                            sprintf('New Ticket Received [#%s]', strtolower($this->get('guid'))),
+                            sprintf('New Ticket Received [#%s]', $this->get('id')),
                             $modx->modisv->getChunk('miNewTicketNotification', $phs))) {
                 $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to send new ticket notification to staffs [#{$this->get('id')}].");
                 return false;
@@ -160,7 +159,7 @@ class miTicket extends xPDOSimpleObject {
         $phs['ticket.url'] = $this->getUrl() . "&anon_token=" . miTicketSession::generateAnonToken($this->get('author_email'));
         if (!miUtilities::sendEmail(
                         $this->get('author_email'),
-                        sprintf('%s - New Ticket Created [#%s]', $modx->getOption('site_name'), strtolower($this->get('guid'))),
+                        sprintf('%s - New Ticket Created [#%s]', $modx->getOption('site_name'), $this->get('id')),
                         $modx->modisv->getChunk('miTicketAutoresponse', $phs),
                         $modx->getOption('modisv.support_email'))) {
             $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to send ticket auto response to user [#{$this->get('id')}].");
@@ -237,7 +236,7 @@ class miTicket extends xPDOSimpleObject {
 
             if (!miUtilities::sendEmail(
                             $staff,
-                            sprintf('New Message Received [#%s]', strtolower($this->get('guid'))),
+                            sprintf('New Message Received [#%s]', $this->get('id')),
                             $modx->modisv->getChunk('miNewMessageNotification', $phs))) {
                 $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to send new message notification to staffs [#{$this->get('id')}].");
                 return false;
@@ -257,7 +256,7 @@ class miTicket extends xPDOSimpleObject {
             }
             if (!miUtilities::sendEmail(
                             $watcher,
-                            sprintf('RE: %s [#%s]', $this->get('subject'), strtolower($this->get('guid'))),
+                            sprintf('RE: %s [#%s]', $this->get('subject'), $this->get('id')),
                             $modx->modisv->getChunk('miTicketReply', $phs),
                             $modx->getOption('modisv.support_email'))) {
                 $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to send new message notification to watcher {$watcher} [#{$this->get('id')}].");

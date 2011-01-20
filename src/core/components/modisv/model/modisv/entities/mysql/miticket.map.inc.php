@@ -7,7 +7,6 @@ $xpdo_meta_map['miTicket']= array (
   'table' => 'modisv_tickets',
   'fields' => 
   array (
-    'guid' => '',
     'priority' => 3,
     'topic' => 'question',
     'product' => 0,
@@ -32,15 +31,6 @@ $xpdo_meta_map['miTicket']= array (
   ),
   'fieldMeta' => 
   array (
-    'guid' => 
-    array (
-      'dbtype' => 'varchar',
-      'precision' => '50',
-      'phptype' => 'string',
-      'null' => false,
-      'default' => '',
-      'index' => 'index',
-    ),
     'priority' => 
     array (
       'dbtype' => 'int',
@@ -202,13 +192,13 @@ $xpdo_meta_map['miTicket']= array (
   ),
   'indexes' => 
   array (
-    'guid_email' => 
+    'id_email' => 
     array (
-      'alias' => 'guid_email',
+      'alias' => 'id_email',
       'unique' => true,
       'columns' => 
       array (
-        'guid' => 
+        'id' => 
         array (
           'collation' => 'A',
           'null' => false,
@@ -247,14 +237,6 @@ $xpdo_meta_map['miTicket']= array (
   array (
     'rules' => 
     array (
-      'guid' => 
-      array (
-        'guidNotEmpty' => 
-        array (
-          'type' => 'xPDOValidationRule',
-          'rule' => 'miNotEmptyRule',
-        ),
-      ),
       'priority' => 
       array (
         'validPriority' => 

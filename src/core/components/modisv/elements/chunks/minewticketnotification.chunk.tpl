@@ -1,6 +1,6 @@
 A new ticket has been received.
 
-GUID                    :[[+ticket.guid]]
+ID                      :[[+ticket.id]]
 Subject                 :[[+ticket.subject]]
 Topic                   :[[+ticket.topic]]
 Author                  :[[+message.author_name:is=``:then=`[[+message.author_email]]`:else=`[[+message.author_name]] <[[+message.author_email]]>` ]]

@@ -1,6 +1,6 @@
 A new message has been received.
 
-Ticket GUID             :[[+ticket.guid]]
+Ticket ID               :[[+ticket.id]]
 Ticket Subject          :[[+ticket.subject]]
 Ticket Topic            :[[+ticket.topic]]
 Ticket Created On       :[[+ticket.createdon]]
