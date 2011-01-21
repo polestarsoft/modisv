@@ -85,6 +85,21 @@ class miTicket extends xPDOSimpleObject {
         return $modx->getCollection('miMessage', $c);
     }
 
+    public function isAuthorWatcherOrStaff($email) {
+        if ($email === $this->get('author_email'))    // author
+            return true;
+
+        $watchers = array_filter(array_map('trim', explode(',', $this->get('watchers'))));
+        if (in_array($email, $watchers)) // watcher
+            return true;
+
+        $staffs = array_filter(array_map('trim', explode(',', $modx->getOption('modisv.ticket_staffs'))));
+        if (in_array($email, $staffs)) // staff
+            return true;
+
+        return false;
+    }
+
     public function toArray($keyPrefix= '', $rawValues= false, $excludeLazy= false) {
         $result = parent::toArray($keyPrefix, $rawValues, $excludeLazy);
 

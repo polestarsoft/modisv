@@ -81,17 +81,8 @@ class miTicketSession {
         if (!$ticket)
             $ticket = $modx->getObject('miTicket', $_REQUEST['id']);
 
-        if ($this->email && $ticket) {
-            if ($this->email === $ticket->get('author_email'))    // author
-                return true;
-
-            $watchers = array_filter(array_map('trim', explode(',', $ticket->get('watchers'))));
-            if (in_array($this->email, $watchers)) // watcher
-                return true;
-
-            $staffs = array_filter(array_map('trim', explode(',', $modx->getOption('modisv.ticket_staffs'))));
-            if (in_array($this->email, $staffs)) // staff
-                return true;
+        if ($this->email && $ticket && $ticket->isAuthorWatcherOrStaff($this->email)) {
+            return true;
         }
 
         return false;
