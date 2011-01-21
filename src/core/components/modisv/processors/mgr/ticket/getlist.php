@@ -90,8 +90,8 @@ foreach ($tickets as $ticket) {
 
     $item['menu'] = array();
     $item['menu'][] = array(
-        'text' => 'Update Ticket',
-        'handler' => 'this.updateTicket',
+        'text' => 'View Ticket',
+        'handler' => 'this.viewTicket',
     );
 
     $item['menu'][] = '-';
@@ -102,8 +102,8 @@ foreach ($tickets as $ticket) {
 
     $item['menu'][] = '-';
     $item['menu'][] = array(
-        'text' => 'View Ticket',
-        'handler' => 'this.viewTicket',
+        'text' => 'Update Ticket',
+        'handler' => 'this.updateTicket',
     );
 
     $list[] = $item;

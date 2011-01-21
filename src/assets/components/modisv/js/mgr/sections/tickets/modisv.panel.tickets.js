@@ -18,6 +18,18 @@ modISV.panel.Tickets = function (config) {
                     text: 'Create Ticket',
                     handler: this.createTicket,
                     scope: this
+                }, '-', {
+                    text: 'Bulk Actions',
+                    menu: [{
+                        text: 'Remove Selected',
+                        handler: this.removeSelected,
+                        scope: this
+                    },
+                    {
+                        text: 'Close Selected',
+                        handler: this.closeSelected,
+                        scope: this
+                    }]
                 }, '->', 'User:',
                 {
                     xtype: 'textfield',
@@ -97,6 +109,52 @@ Ext.extend(modISV.panel.Tickets, modISV.ListPanel, {
                 }
             }
         }).show(e.target);
+    } ,
+    removeSelected: function() {
+        var grid = Ext.getCmp('gridTickets');
+        var cs = grid.getSelectedAsList();
+        if (cs === false) return false;
+
+        MODx.Ajax.request({
+            url: modISV.config.connector_url,
+            params: {
+                action: 'mgr/ticket/removeMultiple',
+                ids: cs
+            },
+            listeners: {
+                'success': {
+                    fn:function(r) {
+                        this.getSelectionModel().clearSelections(true);
+                        this.refresh();
+                    },
+                    scope:grid
+                }
+            }
+        });
+        return true;
+    },
+    closeSelected: function() {
+        var grid = Ext.getCmp('gridTickets');
+        var cs = grid.getSelectedAsList();
+        if (cs === false) return false;
+
+        MODx.Ajax.request({
+            url: modISV.config.connector_url,
+            params: {
+                action: 'mgr/ticket/closeMultiple',
+                ids: cs
+            },
+            listeners: {
+                'success': {
+                    fn:function(r) {
+                        this.getSelectionModel().clearSelections(true);
+                        this.refresh();
+                    },
+                    scope:grid
+                }
+            }
+        });
+        return true;
     },
     search: function(btn, e) {
         var grid = Ext.getCmp('gridTickets');

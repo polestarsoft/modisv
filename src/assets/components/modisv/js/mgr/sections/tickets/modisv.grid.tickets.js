@@ -1,6 +1,8 @@
 
 modISV.grid.Tickets = function (config) {
     config = config || {};
+
+    this.sm = new Ext.grid.CheckboxSelectionModel();
     Ext.applyIf(config, {
         id: 'modisv-grid-tickets',
         url: modISV.config.connector_url,
@@ -8,7 +10,8 @@ modISV.grid.Tickets = function (config) {
             action: 'mgr/ticket/getlist'
         },
         fields: ['id', 'priority', 'topic', 'product', 'product_name', 'author_name', 'author_email', 'author_id', 'watchers', 'subject', 'note', 'target_version', 'status', 'source', 'ip', 'overdue', 'answered', 'dueon', 'reopenedon', 'closedon', 'lastmessageon', 'lastresponseon', 'createdon', 'updatedon', 'message_count', 'menu'],
-        columns: [{
+        sm: this.sm,
+        columns: [this.sm, {
             header: 'ID',
             dataIndex: 'id',
             renderer: renderTicketLink,
