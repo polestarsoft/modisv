@@ -27,6 +27,7 @@
  * @subpackage controllers
  */
 $path = trim($_REQUEST['path']);
+$name = trim($_REQUEST['name']);
 if (empty($path))
     return '<p style="padding:30px;">Invalid file path.</p>';
 
@@ -36,4 +37,4 @@ if (strpos($path, 'assets/') !== 0)
 if (!file_exists(MODX_BASE_PATH . $path))
     return '<p style="padding:30px;">File not exists.</p>';
 
-return miUtilities::sendDownload($path);
+return miUtilities::sendDownload($path, $name);

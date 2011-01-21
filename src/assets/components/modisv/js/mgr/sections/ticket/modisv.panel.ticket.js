@@ -190,7 +190,7 @@ Ext.extend(modISV.panel.Ticket, MODx.Panel, {
             var a = attachments[i];
             attachments_html += tpl.apply({
                 id: a.id,
-                url: '?a=' + modISV.request.a + '&sa=download' + '&path=' + a.path.replace(/^\//, ""),
+                url: '?a=' + modISV.request.a + '&sa=download' + '&name=' + a.name + '&path=' + a.path.replace(/^\//, ""),
                 name: a.name,
                 size: (a.size / 1024).toFixed(1) + 'KB'
             });
