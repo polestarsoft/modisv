@@ -86,6 +86,8 @@ class miTicket extends xPDOSimpleObject {
     }
 
     public function isAuthorWatcherOrStaff($email) {
+        global $modx;
+        
         if ($email === $this->get('author_email'))    // author
             return true;
 

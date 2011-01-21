@@ -326,5 +326,12 @@
             <rule field="path" name="fileExists" type="xPDOValidationRule" rule="miFileExistsRule" />
         </validation>
     </object>
+    
+    <object class="miTicketFetch" table="modisv_ticket_fetches" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+        <field key="last_fetch" dbtype="datetime" phptype="datetime" />
+        <field key="last_error" dbtype="datetime" phptype="datetime" />
+        <field key="errors" dbtype="text" phptype="string" null="false" default="0" />
+    </object>
 
 </model>

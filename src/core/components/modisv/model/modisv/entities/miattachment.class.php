@@ -50,7 +50,7 @@ class miAttachment extends xPDOSimpleObject {
             return false;
 
         // sanitize name
-        $name = preg_replace("/[^A-Za-z0-9_\.]/", "", str_replace(array(" ", ".."), "_", $name));
+        $name = preg_replace("/[^A-Za-z0-9_\.]/", "", str_replace(array(" ", ".."), "_", $file['name']));
 
         // create attchement directory
         $attachmentsDir = miUtilities::joinPaths($this->xpdo->getOption('modisv.ticket_attachments_dir', null, 'assets/tickets'), $ticket->get('id')) . '/';
@@ -66,14 +66,18 @@ class miAttachment extends xPDOSimpleObject {
         } while (file_exists($newPath));
 
         // create/move file
-        if (isset($file['content']) && !miUtilities::createFile($newPath, $file['content'])) {
-            return false;
-        } else if (!@move_uploaded_file($path, $newPath)) {
-            return false;
+        if (isset($file['content'])) {
+            if (!miUtilities::createFile($newPath, $file['content'])) {
+                return false;
+            }
+        } else {
+            if (!@move_uploaded_file($file['tmp_name'], $newPath)) {
+                return false;
+            }
         }
 
         // create attachment
-        $this->set('size', $size);
+        $this->set('size', $file['size']);
         $this->set('name', $name);
         $this->set('path', $attachmentsDir . $newFilename);
         $this->set('message', $message->get('id'));

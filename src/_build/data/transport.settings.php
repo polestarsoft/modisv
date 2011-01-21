@@ -181,4 +181,22 @@ $settings['modisv.ticket_auth_salt']->fromArray(array(
     'area' => 'ticket'
 ), '', true, true);
 
+$settings['modisv.upload_max_size'] = $modx->newObject('modSystemSetting');
+$settings['modisv.upload_max_size']->fromArray(array(
+    'key' => 'modisv.upload_max_size',
+    'value' => '4194304',
+    'xtype' => 'textfield',
+    'namespace' => 'modisv',
+    'area' => 'ticket'
+), '', true, true);
+
+$settings['modisv.upload_max_files'] = $modx->newObject('modSystemSetting');
+$settings['modisv.upload_max_files']->fromArray(array(
+    'key' => 'modisv.upload_max_files',
+    'value' => '10',
+    'xtype' => 'textfield',
+    'namespace' => 'modisv',
+    'area' => 'ticket'
+), '', true, true);
+
 return $settings;

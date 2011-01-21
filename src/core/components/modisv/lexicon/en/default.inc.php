@@ -60,3 +60,7 @@ $_lang['setting_modisv.ticket_staffs'] = 'Ticket Staffs';
 $_lang['setting_modisv.ticket_staffs_desc'] = 'A comma separated staff email addresses, to which the new ticket/message notifications will be sent.';
 $_lang['setting_modisv.ticket_auth_salt'] = 'Ticket auth salt';
 $_lang['setting_modisv.ticket_auth_salt_desc'] = 'A salt string used to generate ticket anonymous token.';
+$_lang['setting_modisv.upload_max_size'] = 'Max upload files size';
+$_lang['setting_modisv.upload_max_size_desc'] = 'Max upload files total size allowed in a single request.';
+$_lang['setting_modisv.upload_max_files'] = 'Max upload files count';
+$_lang['setting_modisv.upload_max_files_desc'] = 'Max upload files count allowed in a single request.';
