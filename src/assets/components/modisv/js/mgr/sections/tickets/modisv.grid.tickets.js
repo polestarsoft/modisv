@@ -7,30 +7,36 @@ modISV.grid.Tickets = function (config) {
         baseParams: {
             action: 'mgr/ticket/getlist'
         },
-        fields: ['id', 'priority', 'topic', 'product', 'product_name', 'author_name', 'author_email', 'author_id', 'watchers', 'subject', 'note', 'target_version', 'status', 'source', 'ip', 'overdue', 'answered', 'dueon', 'reopenedon', 'closedon', 'lastmessageon', 'lastresponseon', 'createdon', 'updatedon', 'menu'],
+        fields: ['id', 'priority', 'topic', 'product', 'product_name', 'author_name', 'author_email', 'author_id', 'watchers', 'subject', 'note', 'target_version', 'status', 'source', 'ip', 'overdue', 'answered', 'dueon', 'reopenedon', 'closedon', 'lastmessageon', 'lastresponseon', 'createdon', 'updatedon', 'message_count', 'menu'],
         columns: [{
             header: 'ID',
             dataIndex: 'id',
             renderer: renderTicketLink,
             sortable: true,
-            width: 40
+            width: 30
         },
         {
             header: 'Topic',
             dataIndex: 'topic',
             sortable: true,
-            width: 40
+            width: 30
         },
         {
             header: 'Subject',
             dataIndex: 'subject',
             sortable: true,
-            width: 200
+            width: 180
         },
         {
             header: 'Status',
             dataIndex: 'status',
             renderer: renderTicketStatus,
+            sortable: true,
+            width: 40
+        },
+        {
+            header: 'Replies',
+            dataIndex: 'message_count',
             sortable: true,
             width: 40
         },
@@ -74,7 +80,7 @@ modISV.grid.Tickets = function (config) {
             dataIndex: 'product',
             renderer: renderProduct,
             sortable: true,
-            width: 50
+            width: 40
         },
         {
             header: 'Target Version',

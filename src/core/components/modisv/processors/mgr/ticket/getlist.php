@@ -77,6 +77,7 @@ $tickets = $modx->getCollection('miTicket', $c);
 $list = array();
 foreach ($tickets as $ticket) {
     $item = $ticket->toArraySanitized();
+    $item['message_count'] = $modx->getCount('miMessage', array('ticket' => $ticket->get('id')));
 
     // check if the author is our user
     $user = $modx->getObject('modUser', array('username' => $ticket->get('author_email')));
