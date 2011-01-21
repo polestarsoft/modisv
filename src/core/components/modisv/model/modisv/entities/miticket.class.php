@@ -150,11 +150,12 @@ class miTicket extends xPDOSimpleObject {
 
             // create attachment
             $attachment = $modx->newObject('miAttachment');
-            if (!$attachment->fromFile($file['tmp_name'], $message, $file['name'])) {
+            if (!$attachment->createNew($file, $message)) {
                 $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to create the attachment '{$file['name']}'.");
                 return false;
             }
             if (!$attachment->save()) {
+                @unlink(MODX_BASE_PATH . $attachment->get('path'));  // delete file
                 $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to save the attachment '{$file['name']}'.");
                 return false;
             }
@@ -231,11 +232,12 @@ class miTicket extends xPDOSimpleObject {
 
             // create attachment
             $attachment = $modx->newObject('miAttachment');
-            if (!$attachment->fromFile($file['tmp_name'], $message, $file['name'])) {
+            if (!$attachment->createNew($file, $message)) {
                 $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to create the attachment '{$file['name']}'.");
                 return false;
             }
             if (!$attachment->save()) {
+                @unlink(MODX_BASE_PATH . $attachment->get('path'));  // delete file
                 $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] An error occurred while trying to save the attachment '{$file['name']}'.");
                 return false;
             }

@@ -121,8 +121,7 @@ class miUtilities {
     public static function createDirectory($path, $relativeToModxBase = true) {
         global $modx;
         $fileHandler = $modx->getService('fileHandler', 'modFileHandler');
-        $fileHandler->context = $modx->context; // fix bug 
-
+        $fileHandler->context = $modx->context; // fix bug
         // get full path
         if ($relativeToModxBase) {
             $path = self::joinPaths(MODX_BASE_PATH, $path);
@@ -149,7 +148,6 @@ class miUtilities {
         global $modx;
         $fileHandler = $modx->getService('fileHandler', 'modFileHandler');
         $fileHandler->context = $modx->context; // fix bug
-
         // get full path
         if ($relativeToModxBase) {
             $file = self::joinPaths(MODX_BASE_PATH, $file);
@@ -160,6 +158,18 @@ class miUtilities {
             return false;
 
         return $file->remove();
+    }
+
+    public static function createFile($file, $content = '', $mode = 'w+') {
+        global $modx;
+        $fileHandler = $modx->getService('fileHandler', 'modFileHandler');
+        $fileHandler->context = $modx->context; // fix bug
+
+        $file = $fileHandler->make($file);
+        if (!$file || !($file instanceof modFile))
+            return false;
+
+        return $file->create($content, $mode) !== false;
     }
 
     public static function sendEmail($to, $subject, $body, $from = null, $html = false) {

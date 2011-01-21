@@ -40,8 +40,8 @@ class miAttachment extends xPDOSimpleObject {
         return MODX_BASE_PATH . $this->get('path');
     }
 
-    public function fromFile($path, $message, $name = null, $size = null) {
-        if (!file_exists($path))
+    public function createNew($file, $message) {
+        if (!isset($file['content']) && !file_exists($file['tmp_name']))
             return false;
         if (!$message || !$message->get('id'))
             return false;
@@ -49,32 +49,27 @@ class miAttachment extends xPDOSimpleObject {
         if (!$ticket || !$ticket->get('id'))
             return false;
 
-        if ($name === null)
-            $name = basename($path);
-        if ($size === null)
-            $size = @filesize($path);
-
         // sanitize name
-        $name = preg_replace("/[^A-Za-z0-9_\.]/", "", str_replace(" ", "_", $name));
+        $name = preg_replace("/[^A-Za-z0-9_\.]/", "", str_replace(array(" ", ".."), "_", $name));
 
         // create attchement directory
         $attachmentsDir = miUtilities::joinPaths($this->xpdo->getOption('modisv.ticket_attachments_dir', null, 'assets/tickets'), $ticket->get('id')) . '/';
         if (!miUtilities::createDirectory($attachmentsDir)) {
-            $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] Invalid directory for ticket #{$ticket->get('id')}.");
+            $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] Failed to create directory for ticket #{$ticket->get('id')}.");
             return false;
         }
 
-        // move file
-        $newFilename = strtolower(miUtilities::generateRandomId()) . '_' . miUtilities::sanitizePath($name);
-        $newPath = miUtilities::joinPaths(MODX_BASE_PATH, $attachmentsDir, $newFilename);
-        if (is_uploaded_file($path)) {
-            if (!@move_uploaded_file($path, $newPath)) {
-                return false;
-            }
-        } else {
-            if (!rename($path, $newPath)) {
-                return false;
-            }
+        // get new path
+        do {
+            $newFilename = strtolower(miUtilities::generateRandomId()) . '_' . $name;
+            $newPath = miUtilities::joinPaths(MODX_BASE_PATH, $attachmentsDir, $newFilename);
+        } while (file_exists($newPath));
+
+        // create/move file
+        if (isset($file['content']) && !miUtilities::createFile($newPath, $file['content'])) {
+            return false;
+        } else if (!@move_uploaded_file($path, $newPath)) {
+            return false;
         }
 
         // create attachment
