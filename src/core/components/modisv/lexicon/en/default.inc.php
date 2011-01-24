@@ -64,3 +64,13 @@ $_lang['setting_modisv.upload_max_size'] = 'Max upload files size';
 $_lang['setting_modisv.upload_max_size_desc'] = 'Max upload files total size allowed in a single request.';
 $_lang['setting_modisv.upload_max_files'] = 'Max upload files count';
 $_lang['setting_modisv.upload_max_files_desc'] = 'Max upload files count allowed in a single request.';
+$_lang['setting_modisv.ticket_autoresponse_template'] = 'Ticket autoresponse template';
+$_lang['setting_modisv.ticket_autoresponse_template_desc'] = 'The name of the chunk used as the new ticket autoresponse email template (to user).';
+$_lang['setting_modisv.ticket_reply_template'] = 'Ticket reply template';
+$_lang['setting_modisv.ticket_reply_template_desc'] = 'The name of the chunk used as new the ticket reply email template (to both staff & user).';
+$_lang['setting_modisv.new_ticket_notification_template'] = 'New ticket notification template';
+$_lang['setting_modisv.new_ticket_notification_template_desc'] = 'The name of the chunk used as the new ticket notification email template (to staff).';
+$_lang['setting_modisv.new_message_notification_template'] = 'New message notification template';
+$_lang['setting_modisv.new_message_notification_template_desc'] = 'The name of the chunk used as the new message notification email template (to staff).';
+
+

@@ -113,9 +113,12 @@ Ext.extend(modISV.panel.Tickets, modISV.ListPanel, {
     removeSelected: function() {
         var grid = Ext.getCmp('gridTickets');
         var cs = grid.getSelectedAsList();
-        if (cs === false) return false;
+        if (cs === false)
+            return false;
 
-        MODx.Ajax.request({
+        MODx.msg.confirm({
+            title: 'Remove Tickets',
+            text: 'Are you sure you want to remove the selected tickets?',
             url: modISV.config.connector_url,
             params: {
                 action: 'mgr/ticket/removeMultiple',
@@ -138,7 +141,9 @@ Ext.extend(modISV.panel.Tickets, modISV.ListPanel, {
         var cs = grid.getSelectedAsList();
         if (cs === false) return false;
 
-        MODx.Ajax.request({
+        MODx.msg.confirm({
+            title: 'Close Tickets',
+            text: 'Are you sure you want to close the selected tickets?',
             url: modISV.config.connector_url,
             params: {
                 action: 'mgr/ticket/closeMultiple',

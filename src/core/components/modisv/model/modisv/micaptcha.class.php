@@ -83,7 +83,7 @@ class miCaptcha {
         }
     }
 
-    public function render($tpl = '[[+question]]<input type="text" name="captcha" /><input type="hidden" name="captcha_id" value="[[+id]]" />') {
+    public function render($tpl) {
         if ($this->skipMember && $this->modx->user->isAuthenticated($this->modx->context->get('key')))   // skip memebers
             return '';
         if ($this->promoteCount && $this->promoteCount <= $this->captcha['successes']) // skip if validated for enough times

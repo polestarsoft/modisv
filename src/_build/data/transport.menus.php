@@ -98,6 +98,30 @@ $menus['Coupons']->fromArray(array(
 ), '', true, true);
 $menus['Coupons']->addOne($action);
 
+$menus['Tickets'] = $modx->newObject('modMenu');
+$menus['Tickets']->fromArray(array(
+    'text' => 'Tickets',
+    'parent' => 'modISV',
+    'description' => 'Manage Tickets',
+    'icon' => 'images/icons/plugin.gif',
+    'menuindex' => 4,
+    'params' => '&sa=tickets',
+    'handler' => '',
+), '', true, true);
+$menus['Tickets']->addOne($action);
+
+$menus['Roadmap'] = $modx->newObject('modMenu');
+$menus['Roadmap']->fromArray(array(
+    'text' => 'Roadmap',
+    'parent' => 'modISV',
+    'description' => 'Manage Roadmap',
+    'icon' => 'images/icons/plugin.gif',
+    'menuindex' => 4,
+    'params' => '&sa=roadmap',
+    'handler' => '',
+), '', true, true);
+$menus['Roadmap']->addOne($action);
+
 unset($action);
 
 return $menus;

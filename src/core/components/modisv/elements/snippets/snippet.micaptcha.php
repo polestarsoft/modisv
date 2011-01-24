@@ -5,6 +5,7 @@ $modisv = $modx->getService('modisv', 'modISV', $modx->getOption('modisv.core_pa
 $modisv->initialize();
 
 // get properties
+$tpl = $modx->getOption('tpl', $scriptProperties, '[[+question]]<input type="text" name="captcha" /><input type="hidden" name="captcha_id" value="[[+id]]" />');
 $skipMember = (bool) $modx->getOption('skipMember', $scriptProperties, false);
 $promoteCount = (int) $modx->getOption('promoteCount', $scriptProperties, 0);
 $maxAttempts = (int) $modx->getOption('maxAttempts', $scriptProperties, 10);
@@ -19,4 +20,4 @@ $captcha->maxAttempts = $maxAttempts;
 $captcha->timeout = $timeout;
 $captcha->concurrentLimit = $concurrentLimit;
 
-return $captcha->render();
+return $captcha->render($tpl);

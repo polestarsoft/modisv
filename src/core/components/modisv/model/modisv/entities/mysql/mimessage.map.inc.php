@@ -60,7 +60,7 @@ $xpdo_meta_map['miMessage']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => false,
+      'null' => true,
       'default' => '',
     ),
     'author_email' => 

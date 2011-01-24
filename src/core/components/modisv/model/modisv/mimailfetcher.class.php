@@ -39,12 +39,11 @@ class miMailFetcher {
             $this->serverstr.='/ssl';
         }
         $this->serverstr.='/novalidate-cert}INBOX'; //add other flags here as needed.
-        //echo $this->serverstr;
-        //Charset to convert the mail to.
+        // charset to convert the mail to.
         $this->charset = 'UTF-8';
         //Set timeouts 
         if (function_exists('imap_timeout')) {
-            imap_timeout(1, 20); // open timeout
+            imap_timeout(1, 30); // open timeout
         }
     }
 
@@ -56,7 +55,7 @@ class miMailFetcher {
         if ($this->mbox && imap_ping($this->mbox))
             return $this->mbox;
 
-        $this->mbox = @imap_open($this->serverstr, $this->username, $this->password);
+        $this->mbox = @imap_open($this->serverstr, $this->username, $this->password, NIL, 1);
         return $this->mbox;
     }
 
@@ -154,6 +153,32 @@ class miMailFetcher {
             return $m[1];
         }
         return false;
+    }
+
+    private static function stripQuotes($message) {
+        $final_message = '';
+        foreach (split("\n", $message) as $num => $line) {
+            if (preg_match('/^On[\s]/i', $line)) {
+                $on_line = $num;
+                $found_on = true;
+            }
+
+            if (strpos($line, $modx->getOption('modisv.ticket_reply_separator')) !== false) {
+                $end_line = $num;
+                break;
+            }
+
+            if ($found_on) {
+                $message_on .= $line . "\n";
+            } else {
+                $final_message .= $line . "\n";
+            }
+        }
+
+        if ((($end_line - $on_line) > 2) || !$end_line)
+            $final_message .= $message_on;
+
+        return trim($final_message);
     }
 
     private function getMailInfo($mid) {
@@ -293,10 +318,7 @@ class miMailFetcher {
             }
         } else {
             // ticket reply
-            if (($tag = $modx->getOption('modisv.ticket_reply_separator')) && ($pos = strpos($var['body'], $tag))) {
-                $var['body'] = substr($var['body'], 0, $pos);    // strip quoted reply
-            }
-
+            $var['body'] = self::stripQuotes($var['body']);
             if (!$ticket->reply($var)) {
                 return false;
             }

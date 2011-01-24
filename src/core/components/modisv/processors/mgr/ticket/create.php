@@ -29,6 +29,8 @@
 
 // create ticket
 $ticket = $modx->newObject('miTicket');
+if(!$scriptProperties['subject'])
+    $scriptProperties['subject'] = '[no subject]';
 $ticket->fromArray($scriptProperties);
 $ticket->set('status', 'open');
 $ticket->set('author_name', $modx->user->getOne('Profile')->get('fullname'));

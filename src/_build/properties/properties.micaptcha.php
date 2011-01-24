@@ -21,55 +21,55 @@
  * @package modisv
  */
 /**
- * Properties for the miFiles snippet.
+ * Properties for the miCaptcha snippet.
  *
  * @package modisv
  * @subpackage build
  */
+
 $properties = array(
     array(
         'name' => 'tpl',
-        'desc' => 'The chunk that will be used to display the files of a release.',
+        'desc' => 'The template string of the captcha.',
         'type' => 'textfield',
         'options' => '',
-        'value' => 'miReleaseFiles',
+        'value' => '[[+question]]<input type="text" name="captcha" /><input type="hidden" name="captcha_id" value="[[+id]]" />',
     ),
     array(
-        'name' => 'fileTpl',
-        'desc' => 'The chunk that will be used to display a file.',
-        'type' => 'textfield',
-        'options' => '',
-        'value' => 'miFile',
-    ),
-    array(
-        'name' => 'product',
-        'desc' => 'The alias of the product whose files will be displayed.',
-        'type' => 'textfield',
-        'options' => '',
-        'value' => '',
-    ),
-    array(
-        'name' => 'customersOnly',
-        'desc' => 'Show files of the releases that current user hold licenses of.',
+        'name' => 'skipMember',
+        'desc' => 'Whether to hide captcha for authenticated members.',
         'type' => 'combo-boolean',
         'options' => '',
         'value' => '0',
     ),
     array(
-        'name' => 'showOldVersions',
-        'desc' => 'Whether or not to display files of old releases.',
-        'type' => 'combo-boolean',
+        'name' => 'promoteCount',
+        'desc' => 'The number of correct answers after which the user will be prompted (thus no captcha any more). Set to zero to disable the feature.',
+        'type' => 'textfield',
         'options' => '',
         'value' => '0',
     ),
     array(
-        'name' => 'downloadResourceId',
-        'desc' => 'The resource ID of the download page.',
+        'name' => 'maxAttempts',
+        'desc' => 'The number of wrong answers after which the user will be limited.',
         'type' => 'textfield',
         'options' => '',
-        'value' => '1',
+        'value' => '10',
+    ),
+    array(
+        'name' => 'timeout',
+        'desc' => 'The time out of a captcha session, in seconds.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '600',
+    ),
+    array(
+        'name' => 'concurrentLimit',
+        'desc' => 'The max concurrent captcha sessions allowed for a user.',
+        'type' => 'textfield',
+        'options' => '',
+        'value' => '10',
     ),
 );
-
 
 return $properties;

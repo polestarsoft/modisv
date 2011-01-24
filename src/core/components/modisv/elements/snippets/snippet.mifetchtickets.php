@@ -31,8 +31,9 @@ if (!$fetchStat) {
     $fetchStat->set('name', $fetchName);
 }
 if (time() - strtotime($fetchStat->get('last_fetch')) < $freq || // too frequent
-        ($fetchStat->get('errors') >= $maxErrors && time() - strtotime($fetchStat->get('last_error')) < $errorsDelay))  // still within max errors delay
+        ($fetchStat->get('errors') >= $maxErrors && time() - strtotime($fetchStat->get('last_error')) < $errorsDelay)) { // still within max errors delay
     return '';
+}
 
 // do it now
 $fetcher = new miMailFetcher($username, $password, $hostname, $port, $protocol, $encryption);

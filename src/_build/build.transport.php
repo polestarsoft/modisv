@@ -35,7 +35,7 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME', 'modISV');
 define('PKG_NAME_LOWER', strtolower(PKG_NAME));
-define('PKG_VERSION', '1.0.1');
+define('PKG_VERSION', '1.1.0');
 define('PKG_RELEASE', 'rc1');
 
 /* define sources */
@@ -120,41 +120,41 @@ if (!is_array($plugins)) {
     }
     $modx->log(modX::LOG_LEVEL_INFO, 'Packaged in ' . count($plugins) . ' plugins.');
 }
-unset($vehicle, $plugins, $plugi);
+unset($vehicle, $plugins, $plugin);
 
 /* create category vehicle */
 $attr = array(
     xPDOTransport::UNIQUE_KEY => 'category',
-    xPDOTransport::PRESERVE_KEYS => false,
+    xPDOTransport::PRESERVE_KEYS => true,
     xPDOTransport::UPDATE_OBJECT => true,
     xPDOTransport::RELATED_OBJECTS => true,
     xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array(
         'Children' => array(
-            xPDOTransport::PRESERVE_KEYS => false,
+            xPDOTransport::PRESERVE_KEYS => true,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'category',
             xPDOTransport::RELATED_OBJECTS => true,
             xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array(
                 'Snippets' => array(
-                    xPDOTransport::PRESERVE_KEYS => false,
+                    xPDOTransport::PRESERVE_KEYS => true,
                     xPDOTransport::UPDATE_OBJECT => true,
                     xPDOTransport::UNIQUE_KEY => 'name',
                 ),
                 'Chunks' => array(
                     xPDOTransport::PRESERVE_KEYS => false,
-                    xPDOTransport::UPDATE_OBJECT => true,
+                    xPDOTransport::UPDATE_OBJECT => false,  // don't overwrite chunks, since user may already customized it
                     xPDOTransport::UNIQUE_KEY => 'name',
                 ),
             ),
         ),
         'Snippets' => array(
-            xPDOTransport::PRESERVE_KEYS => false,
+            xPDOTransport::PRESERVE_KEYS => true,
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',
         ),
         'Chunks' => array(
             xPDOTransport::PRESERVE_KEYS => false,
-            xPDOTransport::UPDATE_OBJECT => true,
+            xPDOTransport::UPDATE_OBJECT => false,  // don't overwrite chunks, since user may already customized it
             xPDOTransport::UNIQUE_KEY => 'name',
         ),
     ),
@@ -169,6 +169,12 @@ $vehicle->resolve('file', array(
 $vehicle->resolve('file', array(
     'source' => $sources['source_core'],
     'target' => "return MODX_CORE_PATH . 'components/';",
+));
+$vehicle->resolve('php',array(
+    'source' => $sources['resolvers'] . 'resolve.tables.php',
+));
+$vehicle->resolve('php',array(
+    'source' => $sources['resolvers'] . 'resolve.paths.php',
 ));
 $builder->putVehicle($vehicle);
 

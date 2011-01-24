@@ -36,17 +36,21 @@ if ($object->xpdo) {
             $manager = $modx->getManager();
 
             $modx->setLogLevel(modX::LOG_LEVEL_ERROR);
+            $manager->createObjectContainer('miAttachment');
             $manager->createObjectContainer('miClient');
             $manager->createObjectContainer('miCoupon');
             $manager->createObjectContainer('miEdition');
             $manager->createObjectContainer('miFile');
             $manager->createObjectContainer('miHardwareID');
             $manager->createObjectContainer('miLicense');
+            $manager->createObjectContainer('miMessage');
             $manager->createObjectContainer('miOrder');
             $manager->createObjectContainer('miOrderItem');
             $manager->createObjectContainer('miProduct');
             $manager->createObjectContainer('miRelease');
             $manager->createObjectContainer('miSubscription');
+            $manager->createObjectContainer('miTicket');
+            $manager->createObjectContainer('miTicketFetch');
             $manager->createObjectContainer('miUpdate');
             $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 

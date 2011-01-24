@@ -21,55 +21,34 @@
  * @package modisv
  */
 /**
- * Properties for the miFiles snippet.
+ * Properties for the miViewTicket snippet.
  *
  * @package modisv
  * @subpackage build
  */
+
 $properties = array(
     array(
         'name' => 'tpl',
-        'desc' => 'The chunk that will be used to display the files of a release.',
+        'desc' => 'The chunk that will be used to display the ticket.',
         'type' => 'textfield',
         'options' => '',
-        'value' => 'miReleaseFiles',
+        'value' => 'miViewTicket',
     ),
     array(
-        'name' => 'fileTpl',
-        'desc' => 'The chunk that will be used to display a file.',
+        'name' => 'messageTpl',
+        'desc' => 'The chunk that will be used to display a message in the ticket.',
         'type' => 'textfield',
         'options' => '',
-        'value' => 'miFile',
+        'value' => 'miMessage',
     ),
     array(
-        'name' => 'product',
-        'desc' => 'The alias of the product whose files will be displayed.',
+        'name' => 'attachmentTpl',
+        'desc' => 'The chunk that will be used to display an attachment in the ticket.',
         'type' => 'textfield',
         'options' => '',
-        'value' => '',
-    ),
-    array(
-        'name' => 'customersOnly',
-        'desc' => 'Show files of the releases that current user hold licenses of.',
-        'type' => 'combo-boolean',
-        'options' => '',
-        'value' => '0',
-    ),
-    array(
-        'name' => 'showOldVersions',
-        'desc' => 'Whether or not to display files of old releases.',
-        'type' => 'combo-boolean',
-        'options' => '',
-        'value' => '0',
-    ),
-    array(
-        'name' => 'downloadResourceId',
-        'desc' => 'The resource ID of the download page.',
-        'type' => 'textfield',
-        'options' => '',
-        'value' => '1',
+        'value' => 'miAttachment',
     ),
 );
-
 
 return $properties;

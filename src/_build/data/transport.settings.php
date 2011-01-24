@@ -199,4 +199,41 @@ $settings['modisv.upload_max_files']->fromArray(array(
     'area' => 'ticket'
 ), '', true, true);
 
+$settings['modisv.ticket_autoresponse_template'] = $modx->newObject('modSystemSetting');
+$settings['modisv.ticket_autoresponse_template']->fromArray(array(
+    'key' => 'modisv.ticket_autoresponse_template',
+    'value' => 'miTicketAutoresponse',
+    'xtype' => 'textfield',
+    'namespace' => 'modisv',
+    'area' => 'ticket'
+), '', true, true);
+
+$settings['modisv.ticket_reply_template'] = $modx->newObject('modSystemSetting');
+$settings['modisv.ticket_reply_template']->fromArray(array(
+    'key' => 'modisv.ticket_reply_template',
+    'value' => 'miTicketReply',
+    'xtype' => 'textfield',
+    'namespace' => 'modisv',
+    'area' => 'ticket'
+), '', true, true);
+
+$settings['modisv.new_ticket_notification_template'] = $modx->newObject('modSystemSetting');
+$settings['modisv.new_ticket_notification_template']->fromArray(array(
+    'key' => 'modisv.new_ticket_notification_template',
+    'value' => 'miNewTicketNotification',
+    'xtype' => 'textfield',
+    'namespace' => 'modisv',
+    'area' => 'ticket'
+), '', true, true);
+
+$settings['modisv.new_message_notification_template'] = $modx->newObject('modSystemSetting');
+$settings['modisv.new_message_notification_template']->fromArray(array(
+    'key' => 'modisv.new_message_notification_template',
+    'value' => 'miNewMessageNotification',
+    'xtype' => 'textfield',
+    'namespace' => 'modisv',
+    'area' => 'ticket'
+), '', true, true);
+
+
 return $settings;

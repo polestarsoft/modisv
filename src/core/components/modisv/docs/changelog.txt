@@ -1,5 +1,13 @@
 Changelog for modISV.
 
+Quip 1.0.2
+======================================
+- Added miCaptcha/miCaptchaValidate snippet
+- Added miTickets/miNewTicket/miViewTicket/miFetchTickes snippets
+- Added miTicket related chunks
+- Added miTicket related backend processor/controllers
+- Lots of minor fixes
+
 Quip 1.0.1
 ======================================
 - Added miVersionHistory snippet

@@ -211,5 +211,75 @@ $chunks['miRandomClient']->fromArray(array(
     'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/mirandomclient.chunk.tpl'),
     'properties' => '',
 ), '', true, true);
+$chunks['miTicketReply'] = $modx->newObject('modChunk');
+$chunks['miTicketReply']->fromArray(array(
+    'name' => 'miTicketReply',
+    'description' => '',
+    'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/miticketreply.chunk.tpl'),
+    'properties' => '',
+), '', true, true);
+$chunks['miTicketAutoresponse'] = $modx->newObject('modChunk');
+$chunks['miTicketAutoresponse']->fromArray(array(
+    'name' => 'miTicketAutoresponse',
+    'description' => '',
+    'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/miticketautoresponse.chunk.tpl'),
+    'properties' => '',
+), '', true, true);
+$chunks['miNewTicketNotification'] = $modx->newObject('modChunk');
+$chunks['miNewTicketNotification']->fromArray(array(
+    'name' => 'miNewTicketNotification',
+    'description' => '',
+    'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/minewticketnotification.chunk.tpl'),
+    'properties' => '',
+), '', true, true);
+$chunks['miNewMessageNotification'] = $modx->newObject('modChunk');
+$chunks['miNewMessageNotification']->fromArray(array(
+    'name' => 'miNewMessageNotification',
+    'description' => '',
+    'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/minewmessagenotification.chunk.tpl'),
+    'properties' => '',
+), '', true, true);
+$chunks['miTickets'] = $modx->newObject('modChunk');
+$chunks['miTickets']->fromArray(array(
+    'name' => 'miTickets',
+    'description' => '',
+    'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/mitickets.chunk.tpl'),
+    'properties' => '',
+), '', true, true);
+$chunks['miTicketsItem'] = $modx->newObject('modChunk');
+$chunks['miTicketsItem']->fromArray(array(
+    'name' => 'miTicketsItem',
+    'description' => '',
+    'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/miticketsitem.chunk.tpl'),
+    'properties' => '',
+), '', true, true);
+$chunks['miViewTicket'] = $modx->newObject('modChunk');
+$chunks['miViewTicket']->fromArray(array(
+    'name' => 'miViewTicket',
+    'description' => '',
+    'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/miviewticket.chunk.tpl'),
+    'properties' => '',
+), '', true, true);
+$chunks['miMessage'] = $modx->newObject('modChunk');
+$chunks['miMessage']->fromArray(array(
+    'name' => 'miMessage',
+    'description' => '',
+    'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/mimessage.chunk.tpl'),
+    'properties' => '',
+), '', true, true);
+$chunks['miAttachment'] = $modx->newObject('modChunk');
+$chunks['miAttachment']->fromArray(array(
+    'name' => 'miAttachment',
+    'description' => '',
+    'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/miattachment.chunk.tpl'),
+    'properties' => '',
+), '', true, true);
+$chunks['miNewTicket'] = $modx->newObject('modChunk');
+$chunks['miNewTicket']->fromArray(array(
+    'name' => 'miNewTicket',
+    'description' => '',
+    'snippet' => file_get_contents($sources['source_core'] . '/elements/chunks/minewticket.chunk.tpl'),
+    'properties' => '',
+), '', true, true);
 
 return $chunks;

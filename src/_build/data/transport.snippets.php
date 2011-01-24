@@ -136,4 +136,58 @@ $snippets['miRandomClient']->fromArray(array(
 $properties = include $sources['build'] . 'properties/properties.mirandomclient.php';
 $snippets['miRandomClient']->setProperties($properties);
 
+$snippets['miNewTicket'] = $modx->newObject('modSnippet');
+$snippets['miNewTicket']->fromArray(array(
+    'name' => 'miNewTicket',
+    'description' => 'A snippet used to create new ticket.',
+    'snippet' => getSnippetContent($sources['source_core'] . '/elements/snippets/snippet.minewticket.php'),
+        ), '', true, true);
+$properties = include $sources['build'] . 'properties/properties.minewticket.php';
+$snippets['miNewTicket']->setProperties($properties);
+
+$snippets['miViewTicket'] = $modx->newObject('modSnippet');
+$snippets['miViewTicket']->fromArray(array(
+    'name' => 'miViewTicket',
+    'description' => 'A snippet used view a ticket.',
+    'snippet' => getSnippetContent($sources['source_core'] . '/elements/snippets/snippet.miviewticket.php'),
+        ), '', true, true);
+$properties = include $sources['build'] . 'properties/properties.miviewticket.php';
+$snippets['miViewTicket']->setProperties($properties);
+
+$snippets['miTickets'] = $modx->newObject('modSnippet');
+$snippets['miTickets']->fromArray(array(
+    'name' => 'miTickets',
+    'description' => ' snippet for listing all tickets of the current user.',
+    'snippet' => getSnippetContent($sources['source_core'] . '/elements/snippets/snippet.mitickets.php'),
+        ), '', true, true);
+$properties = include $sources['build'] . 'properties/properties.mitickets.php';
+$snippets['miTickets']->setProperties($properties);
+
+$snippets['miFetchTickets'] = $modx->newObject('modSnippet');
+$snippets['miFetchTickets']->fromArray(array(
+    'name' => 'miFetchTickets',
+    'description' => 'A snippet used to fetch ticket from email boxes via pop3/imap.',
+    'snippet' => getSnippetContent($sources['source_core'] . '/elements/snippets/snippet.mifetchtickets.php'),
+        ), '', true, true);
+$properties = include $sources['build'] . 'properties/properties.mifetchtickets.php';
+$snippets['miFetchTickets']->setProperties($properties);
+
+$snippets['miCaptcha'] = $modx->newObject('modSnippet');
+$snippets['miCaptcha']->fromArray(array(
+    'name' => 'miCaptcha',
+    'description' => 'A snippet used to render simple captcha.',
+    'snippet' => getSnippetContent($sources['source_core'] . '/elements/snippets/snippet.micaptcha.php'),
+        ), '', true, true);
+$properties = include $sources['build'] . 'properties/properties.micaptcha.php';
+$snippets['miCaptcha']->setProperties($properties);
+
+$snippets['miCaptchaValidate'] = $modx->newObject('modSnippet');
+$snippets['miCaptchaValidate']->fromArray(array(
+    'name' => 'miCaptchaValidate',
+    'description' => 'A snippet used to validate captcha answer.',
+    'snippet' => getSnippetContent($sources['source_core'] . '/elements/snippets/snippet.micaptchavalidate.php'),
+        ), '', true, true);
+$properties = include $sources['build'] . 'properties/properties.micaptchavalidate.php';
+$snippets['miCaptchaValidate']->setProperties($properties);
+
 return $snippets;

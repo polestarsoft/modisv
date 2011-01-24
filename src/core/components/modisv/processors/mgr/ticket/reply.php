@@ -36,6 +36,11 @@ if ($ticket->get('status') != 'open') {
     return $modx->error->failure('Ticket already closed.');
 }
 
+$staffs = array_filter(array_map('trim', explode(',', $modx->getOption('modisv.ticket_staffs'))));
+if (!in_array($modx->user->get('username'), $staffs)) {
+    return $modx->error->failure('You are not a support staff. Please use `modisv.ticket_staffs` settings to specify support staffs.');
+}
+
 // check input
 if (empty($scriptProperties['body'])) {
     $modx->error->addField('body', 'Please enter the message.');
@@ -43,7 +48,7 @@ if (empty($scriptProperties['body'])) {
 }
 
 if (strlen($scriptProperties['body']) < 20) {
-    $modx->error->addField('body', 'Message to short.');
+    $modx->error->addField('body', 'Message too short.');
     return $modx->error->failure('');
 }
 
