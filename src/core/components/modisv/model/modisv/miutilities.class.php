@@ -37,14 +37,13 @@ class miUtilities {
                 $filename = 'file';
             }
         } else {
-            $file = MODX_BASE_PATH . $file;
-            if (!file_exists($file)) {
+            if (!file_exists(MODX_BASE_PATH . $file)) {
                 $modx->log(modX::LOG_LEVEL_ERROR, "[modISV] The file to download '{$file}' does not exist.");
                 return false;
             }
-            $len = filesize($file);
+            $len = filesize(MODX_BASE_PATH . $file);
             if (empty($filename)) {
-                $filename = basename($file);
+                $filename = basename(MODX_BASE_PATH . $file);
             }
         }
 
@@ -64,7 +63,11 @@ class miUtilities {
         if ($string) {
             echo $file;
         } else {
-            @readfile($file);
+            if($modx->getOption('modisv.xsendfile', null, false)) {
+                header("X-Accel-Redirect: " . MODX_BASE_URL . $file);
+            } else {
+                @readfile(MODX_BASE_PATH . $file);
+            }
         }
         exit;
     }

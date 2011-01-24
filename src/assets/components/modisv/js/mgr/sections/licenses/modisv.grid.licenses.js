@@ -87,6 +87,11 @@ modISV.grid.Licenses = function (config) {
             xtype: 'textfield',
             emptyText: 'Search',
             id: 'queryUser'
+        }, ' ', 'Code:',
+        {
+            xtype: 'textfield',
+            emptyText: 'Search',
+            id: 'queryCode'
         }, ' ', 'Date:',
         {
             xtype: 'datefield',

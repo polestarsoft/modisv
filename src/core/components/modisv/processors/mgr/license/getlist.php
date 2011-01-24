@@ -36,6 +36,8 @@ if (!empty($scriptProperties['user'])) {
     $c->innerJoin('modUser', 'User');
     $c->where(array('User.username:LIKE' => '%' . trim($scriptProperties['user']) . '%'));
 }
+if (!empty($scriptProperties['code']))
+    $c->andCondition(array('code:LIKE' => '%' . trim($scriptProperties['code']) . '%'));
 if (!empty($scriptProperties['dateFrom']))
     $c->andCondition(array('createdon:>=' => trim($scriptProperties['dateFrom'])));
 if (!empty($scriptProperties['dateTo']))

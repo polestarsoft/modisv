@@ -72,5 +72,7 @@ $_lang['setting_modisv.new_ticket_notification_template'] = 'New ticket notifica
 $_lang['setting_modisv.new_ticket_notification_template_desc'] = 'The name of the chunk used as the new ticket notification email template (to staff).';
 $_lang['setting_modisv.new_message_notification_template'] = 'New message notification template';
 $_lang['setting_modisv.new_message_notification_template_desc'] = 'The name of the chunk used as the new message notification email template (to staff).';
+$_lang['setting_modisv.xsendfile'] = 'X-Sendfile';
+$_lang['setting_modisv.xsendfile'] = 'Whether to use X-Sendfile instead of readfile function when sending file to client.';
 
 

@@ -235,5 +235,14 @@ $settings['modisv.new_message_notification_template']->fromArray(array(
     'area' => 'ticket'
 ), '', true, true);
 
+$settings['modisv.xsendfile'] = $modx->newObject('modSystemSetting');
+$settings['modisv.xsendfile']->fromArray(array(
+    'key' => 'modisv.xsendfile',
+    'value' => '0',
+    'xtype' => 'combo-boolean',
+    'namespace' => 'modisv',
+    'area' => 'site'
+), '', true, true);
+
 
 return $settings;

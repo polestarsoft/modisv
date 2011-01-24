@@ -1,6 +1,6 @@
 Changelog for modISV.
 
-Quip 1.0.2
+modISV 1.1.0
 ======================================
 - Added miCaptcha/miCaptchaValidate snippet
 - Added miTickets/miNewTicket/miViewTicket/miFetchTickes snippets
@@ -8,7 +8,7 @@ Quip 1.0.2
 - Added miTicket related backend processor/controllers
 - Lots of minor fixes
 
-Quip 1.0.1
+modISV 1.0.1
 ======================================
 - Added miVersionHistory snippet
 - Added miVersionHistory & miVersionHistoryItem chunks
