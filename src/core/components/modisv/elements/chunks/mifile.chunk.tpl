@@ -1,6 +1,6 @@
 <tr class="[[+class]]">
     <td class="title">
-        <img alt="" src="assets/site/images/filetypes/[[+icon]].png"/>
+        <div class="filetype_[[+icon]]"></div>
         [[+name]]
         [[!If? &subject=`[[+subtitle]]` &operator=`isnotempty` &then=`
         <em>[[+subtitle]]</em>
