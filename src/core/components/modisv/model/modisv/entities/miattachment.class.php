@@ -61,7 +61,7 @@ class miAttachment extends xPDOSimpleObject {
 
         // get new path
         do {
-            $newFilename = strtolower(miUtilities::generateRandomId()) . '_' . $name;
+            $newFilename = strtolower(miUtilities::generateRandomId());
             $newPath = miUtilities::joinPaths(MODX_BASE_PATH, $attachmentsDir, $newFilename);
         } while (file_exists($newPath));
 
