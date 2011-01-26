@@ -167,6 +167,7 @@ Ext.extend(modISV.grid.Licenses, MODx.grid.Grid, {
         this.getStore().baseParams = {
             action: 'mgr/license/getlist',
             user: Ext.getCmp('queryUser').getValue(),
+            code: Ext.getCmp('queryCode').getValue(),
             dateFrom: Ext.getCmp('queryDateFrom').getValue(),
             dateTo: Ext.getCmp('queryDateTo').getValue(),
             edition: Ext.getCmp('queryEdition').getValue()
@@ -176,6 +177,7 @@ Ext.extend(modISV.grid.Licenses, MODx.grid.Grid, {
     },
     reset: function(btn, e) {
         Ext.getCmp('queryUser').setValue('');
+        Ext.getCmp('queryCode').setValue('');
         Ext.getCmp('queryDateFrom').setValue('');
         Ext.getCmp('queryDateTo').setValue('');
         Ext.getCmp('queryEdition').setValue('');
