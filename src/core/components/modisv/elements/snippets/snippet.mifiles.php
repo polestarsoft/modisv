@@ -42,7 +42,9 @@ foreach ($products as $p) {
         if ($showOldVersions) {
             $releases = array_merge($releases, $p->getReleases());
         } else {
-            $releases[] = $p->getCurrentRelease();
+            $r = $p->getCurrentRelease();
+            if ($r)
+                $releases[] = $r;
         }
     }
 }
@@ -50,9 +52,9 @@ foreach ($products as $p) {
 $output = '';
 foreach ($releases as $r) {
     $files = $r->getFiles($customersOnly);
-    if(empty($files))
+    if (empty($files))
         continue;
-    
+
     $wrapper = '';
     $i = 0;
     foreach ($files as $f) {
