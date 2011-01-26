@@ -116,7 +116,7 @@ class miUtilities {
             $paths = array_merge($paths, (array) $arg);
         }
 
-        $paths = array_map(create_function('$p', 'return trim($p, "/");'), $paths);
+        $paths = array_map(create_function('$p', 'return rtrim($p, "/");'), $paths);
         $paths = array_filter($paths);
         return join('/', $paths);
     }
