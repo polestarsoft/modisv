@@ -124,6 +124,9 @@ class miTicket extends xPDOSimpleObject {
     public function createNew($properties) {
         global $modx;
 
+        if (!isset($properties['files']))
+            $properties['files'] = array();
+
         // check input
         if (empty($properties['body']))
             return false;
@@ -214,6 +217,9 @@ class miTicket extends xPDOSimpleObject {
 
     public function reply($properties) {
         global $modx;
+
+        if (!isset($properties['files']))
+            $properties['files'] = array();
 
         // check status
         if ($this->get('status') != 'open') {
