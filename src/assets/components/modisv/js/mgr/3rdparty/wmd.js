@@ -377,7 +377,7 @@
 			return d;
 		}
 	}; // }}}
-	var position = { // {{{
+	var position = { // {{{ 
 		// UNFINISHED
 		// The assignment in the while loop makes jslint cranky.
 		// I'll change it to a better loop later.
@@ -667,15 +667,23 @@
 
 		var regexText;
 		var replacementText;
+    var match;
+
+    // New bug discovered in Chrome, which appears to be related to use of RegExp.$1
+    // Hack it to hold the match results. Sucks because we're double matching...
+    match = /(^\n*)/.exec(this.selection);
 
 		this.selection = this.selection.replace(/(^\n*)/, "");
-		this.startTag = this.startTag + re.$1;
-		this.selection = this.selection.replace(/(\n*$)/, "");
-		this.endTag = this.endTag + re.$1;
-		this.startTag = this.startTag.replace(/(^\n*)/, "");
-		this.before = this.before + re.$1;
-		this.endTag = this.endTag.replace(/(\n*$)/, "");
-		this.after = this.after + re.$1;
+    this.startTag = this.startTag + (match ? match[1] : "");
+    match = /(\n*$)/.exec(this.selection);
+    this.selection = this.selection.replace(/(\n*$)/, "");
+    this.endTag = this.endTag + (match ? match[1] : "");
+    match = /(^\n*)/.exec(this.startTag);
+    this.startTag = this.startTag.replace(/(^\n*)/, "");
+    this.before = this.before + (match ? match[1] : "");
+    match = /(\n*$)/.exec(this.endTag);
+    this.endTag = this.endTag.replace(/(\n*$)/, "");
+    this.after = this.after + (match ? match[1] : "");
 
 		if (this.before) {
 
@@ -1181,7 +1189,7 @@
 					setMode("escape");
 				}
 				else if ((keyCode < 16 || keyCode > 20) && keyCode != 91) {
-					// 16-20 are shift, etc.
+					// 16-20 are shift, etc. 
 					// 91: left window key
 					// I think this might be a little messed up since there are
 					// a lot of nonprinting keys above 20.
@@ -1276,7 +1284,7 @@
 		var command = wmd.Command;
 
 		// Internet explorer has problems with CSS sprite buttons that use HTML
-		// lists.  When you click on the background image "button", IE will
+		// lists.  When you click on the background image "button", IE will 
 		// select the non-existent link text and discard the selection in the
 		// textarea.  The solution to this is to cache the textarea selection
 		// on the button's mousedown event and set a flag.  In the part of the
@@ -1336,7 +1344,7 @@
 					//
 					// var link = CreateLinkDialog();
 					// makeMarkdownLink(link);
-					//
+					// 
 					// Instead of this straightforward method of handling a
 					// dialog I have to pass any code which would execute
 					// after the dialog is dismissed (e.g. link creation)
