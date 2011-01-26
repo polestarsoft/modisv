@@ -1,11 +1,12 @@
 Changelog for modISV.
 
-modISV 1.1.0
+modISV 1.1.x
 ======================================
 - Added miCaptcha/miCaptchaValidate snippet
 - Added miTickets/miNewTicket/miViewTicket/miFetchTickes snippets
 - Added miTicket related chunks
 - Added miTicket related backend processor/controllers
+- Applied several minor fixes created via modx online
 - Lots of minor fixes
 
 modISV 1.0.1

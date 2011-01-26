@@ -1,7 +1,7 @@
 --------------------
 modISV
 --------------------
-Version: 1.1.0
+Version: 1.1.3
 Author: Wenqiang Wang <wenqiang@polestarsoft.com>
 --------------------
 

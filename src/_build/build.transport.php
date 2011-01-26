@@ -35,7 +35,7 @@ set_time_limit(0);
 /* define package */
 define('PKG_NAME', 'modISV');
 define('PKG_NAME_LOWER', strtolower(PKG_NAME));
-define('PKG_VERSION', '1.1.0');
+define('PKG_VERSION', '1.1.3');
 define('PKG_RELEASE', 'rc1');
 
 /* define sources */
