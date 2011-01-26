@@ -156,8 +156,9 @@ class miMailFetcher {
     }
 
     private static function stripQuotes($message) {
+        global $modx;
         $final_message = '';
-        foreach (split("\n", $message) as $num => $line) {
+        foreach (explode("\n", $message) as $num => $line) {
             if (preg_match('/^On[\s]/i', $line)) {
                 $on_line = $num;
                 $found_on = true;
