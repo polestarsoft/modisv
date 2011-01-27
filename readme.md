@@ -12,6 +12,4 @@ http://www.polestarsoft.com/projects/modisv
 
 Copyright
 ---------
-Wenqiang Wang 
-wenqiang@polestarsoft.com
-http://www.polestarsoft.com
+Wenqiang Wang (wenqiang@polestarsoft.com)
