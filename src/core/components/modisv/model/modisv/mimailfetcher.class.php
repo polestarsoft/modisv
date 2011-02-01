@@ -157,29 +157,47 @@ class miMailFetcher {
 
     private static function stripQuotes($message) {
         global $modx;
-        $final_message = '';
-        foreach (explode("\n", $message) as $num => $line) {
-            if (preg_match('/^On[\s]/i', $line)) {
-                $on_line = $num;
-                $found_on = true;
-            }
+        $replySeparator = $modx->getOption('modisv.ticket_reply_separator');
+        $supportEmail = $modx->getOption('modisv.support_email');
 
-            if (strpos($line, $modx->getOption('modisv.ticket_reply_separator')) !== false) {
-                $end_line = $num;
+        // split into lines
+        $lines = explode("\n", $message);
+                
+        // get the line number of the reply separator
+        $endLine = -1;
+        foreach ($lines as $num => $line) {
+            if (strpos($line, $replySeparator) !== false) {
+                $endLine = $num;
                 break;
-            }
-
-            if ($found_on) {
-                $message_on .= $line . "\n";
-            } else {
-                $final_message .= $line . "\n";
             }
         }
 
-        if ((($end_line - $on_line) > 2) || !$end_line)
-            $final_message .= $message_on;
+        // get the final message
+        $finalMsg = '';
+        foreach ($lines as $num => $line) {
+            if($num == $endLine) {   // reach the reply separator
+                break;
+            }
 
-        return trim($final_message);
+            if (preg_match('/^[\-]{5,}\s*Original Message\s*[\-]{5}\s*$/', $line)) { // reach the "-----Original Message-----" line
+                    break;
+            }
+            
+            if (preg_match('/^On[\s]/i', $line)) { // reach the "On SOME DAY, SOMEBODY wrote:" line
+                if (($endLine - $num) <= 2) 
+                    break;
+            }
+
+            if (stripos($line, 'From:') === 0 && stripos($line, '[mailto:' . $supportEmail . ']') !== false) { // reach the "FROM: XXXX [mailto:support@domain.com]" line
+                if (($endLine - $num) <= 12)
+                    break;
+            }
+
+            // otherwise, this will be a line in final message
+            $finalMsg .= $line . "\n";
+        }
+
+        return trim($finalMsg);
     }
 
     private function getMailInfo($mid) {
