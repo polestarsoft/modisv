@@ -162,7 +162,7 @@ class miMailFetcher {
 
         // split into lines
         $lines = explode("\n", $message);
-                
+
         // get the line number of the reply separator
         $endLine = -1;
         foreach ($lines as $num => $line) {
@@ -175,16 +175,16 @@ class miMailFetcher {
         // get the final message
         $finalMsg = '';
         foreach ($lines as $num => $line) {
-            if($num == $endLine) {   // reach the reply separator
+            if ($num == $endLine) {   // reach the reply separator
                 break;
             }
 
             if (preg_match('/^[\-]{5,}\s*Original Message\s*[\-]{5}\s*$/', $line)) { // reach the "-----Original Message-----" line
-                    break;
+                break;
             }
-            
+
             if (preg_match('/^On[\s]/i', $line)) { // reach the "On SOME DAY, SOMEBODY wrote:" line
-                if (($endLine - $num) <= 2) 
+                if (($endLine - $num) <= 2)
                     break;
             }
 
@@ -269,14 +269,21 @@ class miMailFetcher {
         if ($maxCount <= 0)
             return $files;
 
-        if ($part && $part->ifdparameters && $part->dparameters[0]->value) { //attachment
-            $index = $index ? : 1;
-            if ($part->bytes <= $maxSize) {
-                $file = array();
-                $file['content'] = self::decode($part->encoding, imap_fetchbody($this->mbox, $mid, $index));
-                $file['name'] = $part->dparameters[0]->value;
-                $file['size'] = $part->bytes;
-                $files[] = $file;
+        if ($part && $part->ifdparameters) {
+            $dparams = array();
+            foreach ($part->dparameters as $x) { // get all disposition parameters
+                $dparams[strtolower($x->attribute)] = $x->value;
+            }
+
+            if ($dparams['name'] || $dparams['filename']) { //attachment
+                $index = $index ? : 1;
+                if ($part->bytes <= $maxSize) {
+                    $file = array();
+                    $file['content'] = self::decode($part->encoding, imap_fetchbody($this->mbox, $mid, $index));
+                    $file['name'] = $dparams['name'] ? : $dparams['filename'];
+                    $file['size'] = $part->bytes;
+                    $files[] = $file;
+                }
             }
         }
 
