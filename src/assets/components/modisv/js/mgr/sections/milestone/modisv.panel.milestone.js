@@ -23,7 +23,7 @@ modISV.panel.Milestone = function (config) {
                     baseParams: {
                         action: 'mgr/ticket/getlist',
                         product: modISV.request.product,
-                        target_version: modISV.request.target_version
+                        target_version: modISV.request.name
                     },
                     preventRender: true,
                     id: 'gridTickets',
